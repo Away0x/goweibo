@@ -1,0 +1,14 @@
+APP:
+  NAME: gin_weibo
+  RUNMODE: debug # 模式: debug, release, test
+  Addr: :8888 # 端口
+  URL: http://local.gin_weibo.com
+  KEY: base64:O+VQ74YEigLPDzLKnh2HW/yjCdU2ON9v7xuKBgSOEAo=
+
+DB:
+  CONNECTION: mysql
+  HOST: 127.0.0.1
+  PORT: 3306
+  DATABASE: gin_weibo
+  USERNAME: wutong
+  PASSWORD: secret
