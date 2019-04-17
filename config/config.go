@@ -62,7 +62,7 @@ func InitConfig() error {
 // setDefaultConfig 默认配置
 func setDefaultConfig() {
 	// app 默认配置
-	viper.SetDefault("APP.NAME", "test")
+	viper.SetDefault("APP.NAME", "gin_weibo")
 	viper.SetDefault("APP.RUNMODE", "release")
 	viper.SetDefault("APP.ADDR", ":8080")
 	viper.SetDefault("APP.URL", "")
