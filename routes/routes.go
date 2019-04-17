@@ -4,6 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"gin_weibo/app/controllers/home"
 )
 
 // Register 注册路由和中间件
@@ -19,9 +21,8 @@ func Register(g *gin.Engine) *gin.Engine {
 	})
 
 	// root
-	g.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "hello go!!!")
-	})
+	g.GET("/", home.Index)
+	g.GET("/2", home.Index2)
 
 	return g
 }

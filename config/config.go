@@ -8,6 +8,11 @@ import (
 )
 
 const (
+	// 启动模式
+	runmodeDebug   = "debug"
+	runmodeRelease = "release"
+	runmodeTest    = "test"
+
 	// 配置文件路径
 	configFilePath = "./config.yaml"
 	// 配置文件格式
@@ -15,6 +20,10 @@ const (
 )
 
 var (
+	// ProjectConfig 项目固定配置
+	ProjectConfig = &projectConfig{
+		PublicPath: "public",
+	}
 	// AppConfig 应用配置
 	AppConfig *appConfig
 	// DBConfig 数据库配置
@@ -31,50 +40,15 @@ func InitConfig() error {
 		return err
 	}
 
-	// 初始化默认配置
-	setDefaultConfig()
-
 	// 初始化 app 配置
-	AppConfig = &appConfig{
-		Name:    viper.GetString("APP.NAME"),
-		RunMode: viper.GetString("APP.RUNMODE"),
-		Addr:    viper.GetString("APP.ADDR"),
-		URL:     viper.GetString("APP.URL"),
-		Key:     viper.GetString("APP.KEY"),
-	}
-
+	AppConfig = newAppConfig()
 	// 初始化数据库配置
-	DBConfig = &dbConfig{
-		Connection: viper.GetString("DB.CONNECTION"),
-		Host:       viper.GetString("DB.HOST"),
-		Port:       viper.GetInt("DB.PORT"),
-		Database:   viper.GetString("DB.DATABASE"),
-		Username:   viper.GetString("DB.USERNAME"),
-		Password:   viper.GetString("DB.PASSWORD"),
-	}
+	DBConfig = newDBConfig()
 
 	// 热更新配置文件
 	watchConfig()
 
 	return nil
-}
-
-// setDefaultConfig 默认配置
-func setDefaultConfig() {
-	// app 默认配置
-	viper.SetDefault("APP.NAME", "gin_weibo")
-	viper.SetDefault("APP.RUNMODE", "release")
-	viper.SetDefault("APP.ADDR", ":8080")
-	viper.SetDefault("APP.URL", "")
-	viper.SetDefault("APP.KEY", "base64:O+VQ74YEigLPDzLKnh2HW/yjCdU2ON9v7xuKBgSOEAo=")
-
-	// 数据库 默认配置
-	viper.SetDefault("DB.CONNECTION", "mysql")
-	viper.SetDefault("DB.HOST", "127.0.0.1")
-	viper.SetDefault("DB.PORT", 3306)
-	viper.SetDefault("DB.DATABASE", viper.GetString("APP.NAME"))
-	viper.SetDefault("DB.USERNAME", "gin")
-	viper.SetDefault("DB.PASSWORD", "")
 }
 
 // 监控配置文件变化
