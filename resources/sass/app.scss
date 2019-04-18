@@ -12,3 +12,30 @@ body {
 nav.navbar.navbar-expand-lg {
     margin-bottom: 20px;
 }
+
+/* footer */
+
+footer {
+  margin-top: 45px;
+  padding-top: 5px;
+  border-top: 1px solid #eaeaea;
+  color: #777;
+  font-size: 13px;
+  font-weight: bold;
+
+  a {
+    color: #555;
+  }
+
+  a:hover {
+    color: #222;
+  }
+
+  small {
+    float: left;
+  }
+  img.brand-icon {
+    width: 17px;
+    height: 17px;
+  }
+}
