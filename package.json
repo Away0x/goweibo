@@ -18,5 +18,8 @@
     "sass-loader": "^7.1.0",
     "ts-loader": "^5.3.3",
     "typescript": "^3.4.3"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1"
   }
 }

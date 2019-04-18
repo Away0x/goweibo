@@ -1,7 +1,14 @@
 // Variables
 @import 'variables';
 
+@import '~bootstrap/scss/bootstrap';
+
 
 body {
-  background-color: $orange;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+nav.navbar.navbar-expand-lg {
+    margin-bottom: 20px;
 }
