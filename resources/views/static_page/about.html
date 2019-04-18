@@ -1,0 +1,11 @@
+{{ define "static_page/about.html" }}
+
+{{ with "关于" }}
+  {{ template "layouts/header" . }}
+{{ end }}
+
+  <h1>关于</h1>
+
+{{ template "layouts/footer" }}
+
+{{ end }}

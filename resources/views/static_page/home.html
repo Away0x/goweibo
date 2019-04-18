@@ -1,0 +1,11 @@
+{{ define "static_page/home.html" }}
+
+{{ with "主页" }}
+  {{ template "layouts/header" . }}
+{{ end }}
+
+  <h1>主页</h1>
+
+{{ template "layouts/footer" }}
+
+{{ end }}
