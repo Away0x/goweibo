@@ -22,7 +22,7 @@ func main() {
 	setupGin(g)
 
 	// db config
-	db := database.InitDB(config.DBConfig.Connection, config.DBConfig.URL, config.DBConfig.Debug)
+	db := database.InitDB()
 	defer db.Close()
 
 	// router config
