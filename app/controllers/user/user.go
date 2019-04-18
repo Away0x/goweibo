@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/models"
+	viewmodels "gin_weibo/app/view_models"
 )
 
 // Index 用户列表
@@ -34,7 +35,7 @@ func Show(c *gin.Context) {
 		return
 	}
 
-	c.HTML(http.StatusOK, "user/show.html", user)
+	c.HTML(http.StatusOK, "user/show.html", viewmodels.NewUserViewModelSerializer(user))
 }
 
 // Store 保存用户

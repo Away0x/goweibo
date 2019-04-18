@@ -17,12 +17,19 @@ func registerWeb(g *gin.Engine) {
 	g.GET("/signup", user.Create)
 	userRouter := g.Group("/users")
 	{
+		// 用户列表
 		userRouter.GET("", user.Index)
+		// 创建用户页面
 		userRouter.GET("/create", user.Create)
+		// 展示具体用户页面
 		userRouter.GET("/show/:id", user.Show)
-		userRouter.POST("", user.Store)
+		// 编辑用户页面
 		userRouter.GET("/edit/:id", user.Edit)
-		userRouter.PATCH("/:id", user.Update)
-		userRouter.DELETE("/:id", user.Destroy)
+		// 保存新用户
+		userRouter.POST("", user.Store)
+		// 修改用户
+		userRouter.POST("/update/:id", user.Update)
+		// 删除用户
+		userRouter.POST("/destory/:id", user.Destroy)
 	}
 }
