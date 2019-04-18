@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/helpers"
+	"gin_weibo/app/models"
 	"gin_weibo/config"
 	"gin_weibo/database"
 	"gin_weibo/routes"
@@ -23,6 +24,9 @@ func main() {
 
 	// db config
 	db := database.InitDB()
+	db.AutoMigrate(
+		&models.User{},
+	)
 	defer db.Close()
 
 	// router config

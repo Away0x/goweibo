@@ -1,0 +1,11 @@
+{{ define "user/show.html" }}
+
+{{ with .Name }}
+  {{ template "layouts/header" . }}
+{{ end }}
+
+  {{ .Name }} - {{ .Email }}
+
+{{ template "layouts/footer" }}
+
+{{ end }}

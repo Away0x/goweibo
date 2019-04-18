@@ -15,4 +15,14 @@ func registerWeb(g *gin.Engine) {
 
 	// user
 	g.GET("/signup", user.Create)
+	userRouter := g.Group("/users")
+	{
+		userRouter.GET("", user.Index)
+		userRouter.GET("/create", user.Create)
+		userRouter.GET("/show/:id", user.Show)
+		userRouter.POST("", user.Store)
+		userRouter.GET("/edit/:id", user.Edit)
+		userRouter.PATCH("/:id", user.Update)
+		userRouter.DELETE("/:id", user.Destroy)
+	}
 }
