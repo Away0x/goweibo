@@ -18,8 +18,11 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	flashStore := flash.Read(c)
 	oldValueStore := flash.ReadOldFromValue(c)
 
+	// flash 数据
 	obj[flash.FlashInContextAndCookieKeyName] = flashStore.Data
+	// 上次 post form 的数据，用于回填
 	obj[flash.OldValueInContextAndCookieKeyName] = oldValueStore.Data
+
 	for k, v := range data {
 		obj[k] = v
 	}
