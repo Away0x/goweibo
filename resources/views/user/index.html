@@ -1,0 +1,11 @@
+{{ define "user/index.html" }}
+
+{{ with .Name }}
+  {{ template "layouts/header" . }}
+{{ end }}
+
+  {{ . }}
+
+{{ template "layouts/footer" }}
+
+{{ end }}

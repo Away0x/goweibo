@@ -6,10 +6,12 @@ require (
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.3.1 // indirect
+	github.com/gorilla/sessions v1.1.3 // indirect
 	github.com/jinzhu/gorm v1.9.2
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/spf13/viper v1.3.2
+	github.com/tommy351/gin-sessions v0.0.0-20150617141853-353060947eb6
 	github.com/ugorji/go/codec v0.0.0-20190320090025-2dc34c0b8780 // indirect
 	golang.org/x/net v0.0.0-20190320064053-1272bf9dcd53 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
