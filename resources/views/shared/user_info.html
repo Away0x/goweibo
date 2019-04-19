@@ -1,0 +1,8 @@
+{{ define "shared/user_info" }}
+
+<a href="/users/show/{{ .ID }}">
+  <img src="{{ .Avatar }}" alt="{{ .Name }}" class="gravatar"/>
+</a>
+<h1>{{ .Name }}</h1>
+
+{{ end }}

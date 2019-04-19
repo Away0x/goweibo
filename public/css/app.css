@@ -9767,3 +9767,26 @@ footer img.brand-icon {
   width: 17px;
   height: 17px;
 }
+
+/* User gravatar */
+section.user_info {
+  padding-bottom: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+section.user_info .gravatar {
+  float: none;
+  max-width: 70px;
+}
+section.user_info h1 {
+  font-size: 1.4em;
+  letter-spacing: -1px;
+  margin-bottom: 3px;
+  margin-top: 15px;
+}
+
+.gravatar {
+  float: left;
+  max-width: 50px;
+  border-radius: 50%;
+}

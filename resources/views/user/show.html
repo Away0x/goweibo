@@ -4,9 +4,17 @@
   {{ template "layouts/header" . }}
 {{ end }}
 
-  {{ .Name }} - {{ .Email }}
-
-  <img src="{{ .Avatar }}">
+  <div class="row">
+    <div class="offset-md-2 col-md-8">
+      <div class="col-md-12">
+        <div class="offset-md-2 col-md-8">
+          <section class="user_info">
+            {{ template "shared/user_info" . }}
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
 
 {{ template "layouts/footer" }}
 
