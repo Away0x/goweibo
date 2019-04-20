@@ -61,3 +61,30 @@ func (u *UserForm) Validate() (errors []string) {
 
 	return errors
 }
+
+func (u *UserForm) ValidateAndSave() (user *models.User, errors []string) {
+	errors = u.Validate()
+
+	if len(errors) != 0 {
+		return nil, errors
+	}
+
+	// 创建用户
+	user = &models.User{
+		Name:     u.Name,
+		Email:    u.Email,
+		Password: u.Password,
+	}
+
+	if err := user.Encrypt(); err != nil {
+		errors = append(errors, "用户创建失败: "+err.Error())
+		return nil, errors
+	}
+
+	if err := user.Create(); err != nil {
+		errors = append(errors, "用户创建失败: "+err.Error())
+		return nil, errors
+	}
+
+	return user, []string{}
+}

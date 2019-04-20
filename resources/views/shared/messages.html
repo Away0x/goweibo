@@ -1,0 +1,30 @@
+{{ define "shared/messages" }}
+    {{ if .flash.danger  }}
+      <div class="flash-message">
+        <p class="alert alert-danger">
+          {{ .flash.danger }}
+        </p>
+      </div>
+    {{ end }}
+    {{ if .flash.warning  }}
+      <div class="flash-message">
+        <p class="alert alert-warning">
+          {{ .flash.warning }}
+        </p>
+      </div>
+    {{ end }}
+    {{ if .flash.success  }}
+      <div class="flash-message">
+        <p class="alert alert-success">
+          {{ .flash.success }}
+        </p>
+      </div>
+    {{ end }}
+    {{ if .flash.info  }}
+      <div class="flash-message">
+        <p class="alert alert-info">
+          {{ .flash.info }}
+        </p>
+      </div>
+    {{ end }}
+{{ end }}

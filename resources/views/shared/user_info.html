@@ -1,8 +1,8 @@
 {{ define "shared/user_info" }}
 
-<a href="/users/show/{{ .ID }}">
-  <img src="{{ .Avatar }}" alt="{{ .Name }}" class="gravatar"/>
+<a href="/users/show/{{ .userData.ID }}">
+  <img src="{{ .userData.Avatar }}" alt="{{ .userData.Name }}" class="gravatar"/>
 </a>
-<h1>{{ .Name }}</h1>
+<h1>{{ .userData.Name }}</h1>
 
 {{ end }}

@@ -1,8 +1,10 @@
 {{ define "user/show.html" }}
 
-{{ with .Name }}
+{{ with .userData.Name }}
   {{ template "layouts/header" . }}
 {{ end }}
+
+  {{ template "shared/messages" . }}
 
   <div class="row">
     <div class="offset-md-2 col-md-8">
