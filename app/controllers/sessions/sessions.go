@@ -16,6 +16,7 @@ func Create(c *gin.Context) {
 
 // Store 登录 (创建新会话)
 func Store(c *gin.Context) {
+	// 验证参数并且获取用户
 	userLoginForm := &userRequest.UserLoginForm{
 		Email:    c.PostForm("email"),
 		Password: c.PostForm("password"),
@@ -24,10 +25,11 @@ func Store(c *gin.Context) {
 
 	if len(errors) != 0 || user == nil {
 		flash.SaveValidateMessage(c, errors)
-		controllers.Redirect(c, "/login")
+		controllers.RedirectToLoginPage(c)
 		return
 	}
 
+	// TODO 登录用户
 	flash.NewSuccessFlash(c, "欢迎回来！")
 	controllers.RedirectToUserShowPage(c, user)
 }

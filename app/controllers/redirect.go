@@ -18,3 +18,13 @@ func Redirect(c *gin.Context, redirectRoute string) {
 func RedirectToUserShowPage(c *gin.Context, user *models.User) {
 	Redirect(c, "/users/show/"+strconv.Itoa(int(user.ID)))
 }
+
+// 重定向到登录页面
+func RedirectToLoginPage(c *gin.Context) {
+	Redirect(c, "/login")
+}
+
+// 重定向到用户创建页面 (注册页面)
+func RedirectToUserCreatePage(c *gin.Context) {
+	Redirect(c, "/users/create")
+}

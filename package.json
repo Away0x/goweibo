@@ -20,6 +20,8 @@
     "typescript": "^3.4.3"
   },
   "dependencies": {
-    "bootstrap": "^4.3.1"
+    "@types/bootstrap": "^4.3.0",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.0"
   }
 }

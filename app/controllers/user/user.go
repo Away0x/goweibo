@@ -57,9 +57,9 @@ func Store(c *gin.Context) {
 	}
 	user, errors := userCreateForm.ValidateAndSave()
 
-	if len(errors) != 0 {
+	if len(errors) != 0 || user == nil {
 		flash.SaveValidateMessage(c, errors)
-		controllers.Redirect(c, "/users/create")
+		controllers.RedirectToUserCreatePage(c)
 		return
 	}
 

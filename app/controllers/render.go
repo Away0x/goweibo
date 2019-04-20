@@ -31,7 +31,7 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	obj[flash.ValidateContextAndCookieKeyName] = validateMsgArr
 	// csrf
 	if config.AppConfig.EnableCsrf {
-		if csrfHtml, ok := CsrfField(c); ok {
+		if csrfHtml, ok := csrfField(c); ok {
 			obj["csrfField"] = csrfHtml
 		}
 	}
@@ -68,8 +68,8 @@ func Render404(c *gin.Context) {
 	RenderError(c, http.StatusNotFound, "页面没找到")
 }
 
-// CsrfField csrf input
-func CsrfField(c *gin.Context) (template.HTML, bool) {
+// private ---------------------
+func csrfField(c *gin.Context) (template.HTML, bool) {
 	token := c.Keys[config.AppConfig.CsrfParamName]
 	tokenStr, ok := token.(string)
 	if !ok {
