@@ -21,12 +21,15 @@ type (
 func Render(c *gin.Context, tplPath string, data renderObj) {
 	obj := make(renderObj)
 	flashStore := flash.Read(c)
-	oldValueStore := flash.ReadOldFromValue(c)
+	oldValueStore := flash.ReadOldFormValue(c)
+	validateMsgArr := flash.ReadValidateMessage(c)
 
 	// flash 数据
 	obj[flash.FlashInContextAndCookieKeyName] = flashStore.Data
 	// 上次 post form 的数据，用于回填
 	obj[flash.OldValueInContextAndCookieKeyName] = oldValueStore.Data
+	// 上次表单的验证信息
+	obj[flash.ValidateContextAndCookieKeyName] = validateMsgArr
 	// csrf
 	if config.AppConfig.EnableCsrf {
 		if csrfHtml, ok := CsrfField(c); ok {
@@ -68,7 +71,7 @@ func Render404(c *gin.Context) {
 
 // Redirect : 路由重定向
 func Redirect(c *gin.Context, redirectRoute string) {
-	c.Redirect(http.StatusMovedPermanently, redirectRoute)
+	c.Redirect(http.StatusMovedPermanently, config.AppConfig.URL+redirectRoute)
 }
 
 // CsrfField csrf input

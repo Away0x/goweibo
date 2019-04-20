@@ -16,7 +16,7 @@ func SaveOldFormValue(c *gin.Context, obj map[string]string) {
 	f.save(c, OldValueInContextAndCookieKeyName)
 }
 
-// ReadOldFromValue : 读取上次表单 post 的数据
-func ReadOldFromValue(c *gin.Context) *FlashData {
+// ReadOldFormValue : 读取上次表单 post 的数据
+func ReadOldFormValue(c *gin.Context) *FlashData {
 	return read(c, OldValueInContextAndCookieKeyName)
 }
