@@ -1,8 +1,7 @@
 package routes
 
 import (
-	"net/http"
-
+	"gin_weibo/app/controllers"
 	"gin_weibo/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +28,7 @@ func Register(g *gin.Engine) *gin.Engine {
 	// ---------------------------------- 注册路由 ----------------------------------
 	// 404
 	g.NoRoute(func(c *gin.Context) {
-		c.String(http.StatusNotFound, "404 not found")
+		controllers.Render404(c)
 	})
 	// web
 	registerWeb(g)

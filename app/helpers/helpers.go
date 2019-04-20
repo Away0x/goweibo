@@ -13,6 +13,11 @@ var (
 	manifests = make(map[string]string)
 )
 
+// 生成项目静态文件地址
+func Static(staticFilePath string) string {
+	return "/" + config.ProjectConfig.PublicPath + staticFilePath
+}
+
 // Mix 根据 laravel-mix 生成静态文件 path
 func Mix(staticFilePath string) string {
 	result := manifests[staticFilePath]
@@ -21,23 +26,23 @@ func Mix(staticFilePath string) string {
 		filename := path.Join(config.ProjectConfig.PublicPath, "mix-manifest.json")
 		file, err := os.Open(filename)
 		if err != nil {
-			return staticFilePath
+			return Static(staticFilePath)
 		}
 		defer file.Close()
 
 		dec := json.NewDecoder(file)
 		if err := dec.Decode(&manifests); err != nil {
-			return staticFilePath
+			return Static(staticFilePath)
 		}
 
 		result = manifests[staticFilePath]
 	}
 
 	if result == "" {
-		return staticFilePath
+		return Static(staticFilePath)
 	}
 
-	return "/" + config.ProjectConfig.PublicPath + result
+	return Static(result)
 }
 
 // func HasSession(key string) bool {

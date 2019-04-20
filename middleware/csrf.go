@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"gin_weibo/app/controllers"
 	"gin_weibo/config"
 	"gin_weibo/pkg/utils"
 )
@@ -23,7 +24,7 @@ func Csrf() gin.HandlerFunc {
 				paramCsrfToken := getCsrfTokenFromParamsOrHeader(c)
 
 				if paramCsrfToken == "" || paramCsrfToken != csrfToken {
-					c.String(http.StatusForbidden, "csrf 验证失败")
+					controllers.Render403(c)
 					panic("csrf 验证失败")
 				}
 			}
