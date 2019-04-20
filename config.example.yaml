@@ -4,6 +4,7 @@ APP:
   Addr: :8888 # 端口
   URL: http://local.gin_weibo.com
   KEY: base64:O+VQ74YEigLPDzLKnh2HW/yjCdU2ON9v7xuKBgSOEAo=
+  ENABLE_CSRF: true # 是否开启 csrf
 
 DB:
   CONNECTION: mysql

@@ -16,6 +16,13 @@ type appConfig struct {
 	URL string
 	// secret key
 	Key string
+
+	// 是否开启 csrf
+	EnableCsrf bool
+	// csrf param name
+	CsrfParamName string
+	// csrf header
+	CsrfHeaderName string
 }
 
 func newAppConfig() *appConfig {
@@ -25,6 +32,7 @@ func newAppConfig() *appConfig {
 	viper.SetDefault("APP.ADDR", ":8080")
 	viper.SetDefault("APP.URL", "")
 	viper.SetDefault("APP.KEY", "base64:O+VQ74YEigLPDzLKnh2HW/yjCdU2ON9v7xuKBgSOEAo=")
+	viper.SetDefault("APP.ENABLE_CSRF", true)
 
 	return &appConfig{
 		Name:    viper.GetString("APP.NAME"),
@@ -32,5 +40,9 @@ func newAppConfig() *appConfig {
 		Addr:    viper.GetString("APP.ADDR"),
 		URL:     viper.GetString("APP.URL"),
 		Key:     viper.GetString("APP.KEY"),
+
+		EnableCsrf:     viper.GetBool("APP.ENABLE_CSRF"),
+		CsrfParamName:  "_csrf",
+		CsrfHeaderName: "X-CsrfToken",
 	}
 }

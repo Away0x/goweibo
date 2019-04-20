@@ -11,6 +11,7 @@ require (
 	github.com/jinzhu/inflection v0.0.0-20180308033659-04140366298a // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
 	github.com/spf13/viper v1.3.2
+	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/tommy351/gin-sessions v0.0.0-20150617141853-353060947eb6
 	github.com/ugorji/go/codec v0.0.0-20190320090025-2dc34c0b8780 // indirect
 	golang.org/x/net v0.0.0-20190320064053-1272bf9dcd53 // indirect

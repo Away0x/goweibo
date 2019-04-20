@@ -23,6 +23,7 @@ func Register(g *gin.Engine) *gin.Engine {
 	store := ginSessions.NewCookieStore(sessionKeyPairs)
 	g.Use(ginSessions.Middleware(sessionStoreName, store))
 	// 自定义全局中间件
+	g.Use(middleware.Csrf())     // csrf
 	g.Use(middleware.OldValue()) // 记忆上次表单提交的内容，消费即消失
 
 	// ---------------------------------- 注册路由 ----------------------------------

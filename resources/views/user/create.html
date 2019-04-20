@@ -11,7 +11,7 @@
       </div>
       <div class="card-body">
         <form method="POST" action="/users">
-            {{ CsrfField }}
+            {{ .csrfField }}
 
             <div class="form-group">
               <label for="name">名称：</label>

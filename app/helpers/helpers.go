@@ -2,8 +2,6 @@ package helpers
 
 import (
 	"encoding/json"
-	"fmt"
-	"html/template"
 	"os"
 	"path"
 
@@ -40,11 +38,6 @@ func Mix(staticFilePath string) string {
 	}
 
 	return "/" + config.ProjectConfig.PublicPath + result
-}
-
-// CsrfField csrf input
-func CsrfField() template.HTML {
-	return template.HTML(fmt.Sprintf(`<input type="hidden" name="_token" value="%s">`, "asd"))
 }
 
 // func HasSession(key string) bool {

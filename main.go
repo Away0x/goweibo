@@ -49,8 +49,7 @@ func setupGin(g *gin.Engine) {
 	// 模板配置
 	// 注册模板函数
 	g.SetFuncMap(template.FuncMap{
-		"Mix":       helpers.Mix,
-		"CsrfField": helpers.CsrfField,
+		"Mix": helpers.Mix,
 	})
 	g.LoadHTMLGlob("resources/views/**/*")
 }
