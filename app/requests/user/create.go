@@ -1,21 +1,22 @@
-package requests
+package user
 
 import (
 	"gin_weibo/app/models"
+	"gin_weibo/app/requests"
 )
 
 // 以后可以改为 tag 来调用验证器函数
-type UserForm struct {
+type UserCreateForm struct {
 	Name                 string
 	Email                string
 	Password             string
 	PasswordConfirmation string
 }
 
-func (u *UserForm) emailUniqueValidator() validatorFunc {
+func (u *UserCreateForm) emailUniqueValidator() requests.ValidatorFunc {
 	return func() (msg string) {
 		m := &models.User{}
-		if _, err := m.GetByEmail(u.Email); err != nil {
+		if err := m.GetByEmail(u.Email); err != nil {
 			return ""
 		}
 		return "邮箱已经被注册过了"
@@ -23,25 +24,26 @@ func (u *UserForm) emailUniqueValidator() validatorFunc {
 }
 
 // Validate : 验证函数
-func (u *UserForm) Validate() (errors []string) {
-	errors = RunValidators(
-		validatorMap{
+func (u *UserCreateForm) Validate() (errors []string) {
+	errors = requests.RunValidators(
+		requests.ValidatorMap{
 			"name": {
-				RequiredValidator(u.Name),
-				MaxLengthValidator(u.Name, 50),
+				requests.RequiredValidator(u.Name),
+				requests.MaxLengthValidator(u.Name, 50),
 			},
 			"email": {
-				RequiredValidator(u.Email),
-				MaxLengthValidator(u.Email, 255),
+				requests.RequiredValidator(u.Email),
+				requests.MaxLengthValidator(u.Email, 255),
+				requests.EmailValidator(u.Email),
 				u.emailUniqueValidator(),
 			},
 			"password": {
-				RequiredValidator(u.Password),
-				MixLengthValidator(u.Password, 6),
-				EqualValidator(u.Password, u.PasswordConfirmation),
+				requests.RequiredValidator(u.Password),
+				requests.MixLengthValidator(u.Password, 6),
+				requests.EqualValidator(u.Password, u.PasswordConfirmation),
 			},
 		},
-		validatorMsgArr{
+		requests.ValidatorMsgArr{
 			"name": {
 				"名称不能为空",
 				"名称长度不能大于 50 个字符",
@@ -49,6 +51,7 @@ func (u *UserForm) Validate() (errors []string) {
 			"email": {
 				"邮箱不能为空",
 				"邮箱长度不能大于 255 个字符",
+				"邮箱格式错误",
 				"邮箱已经被注册过了",
 			},
 			"password": {
@@ -62,7 +65,8 @@ func (u *UserForm) Validate() (errors []string) {
 	return errors
 }
 
-func (u *UserForm) ValidateAndSave() (user *models.User, errors []string) {
+// ValidateAndSave 验证参数并且创建用户
+func (u *UserCreateForm) ValidateAndSave() (user *models.User, errors []string) {
 	errors = u.Validate()
 
 	if len(errors) != 0 {

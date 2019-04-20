@@ -2,24 +2,25 @@ package requests
 
 import (
 	"gin_weibo/pkg/utils"
+	"regexp"
 	"strconv"
 	"strings"
 )
 
 type (
 	// 验证器函数
-	validatorFunc = func() (msg string)
+	ValidatorFunc = func() (msg string)
 	// 验证器数组 map
-	validatorMap = map[string][]validatorFunc
+	ValidatorMap = map[string][]ValidatorFunc
 	// 错误信息数组
-	validatorMsgArr = map[string][]string
+	ValidatorMsgArr = map[string][]string
 )
 
 /*
 验证器数组按顺序验证，一旦验证没通过，即结束该字段的验证
 
 RunValidators(
-  validatorMap{
+  ValidatorMap{
     "name": {
       RequiredValidator(u.Name),
       MaxLengthValidator(u.Name, 50),
@@ -35,7 +36,7 @@ RunValidators(
       EqualValidator(u.Password, u.PasswordConfirmation),
     },
   },
-  validatorMsgArr{
+  ValidatorMsgArr{
     "name": {
       "名称不能为空", // 自定义错误信息 (需按验证器注册顺序摆放, "" 表示使用默认错误信息)
     },
@@ -50,7 +51,7 @@ RunValidators(
   password 必须等于 password_confirmation
 ]
 */
-func RunValidators(m validatorMap, msgMap validatorMsgArr) (errors []string) {
+func RunValidators(m ValidatorMap, msgMap ValidatorMsgArr) (errors []string) {
 	for k, validators := range m {
 		customMsgArr := msgMap[k] // 自定义错误信息数组
 		customMsgArrLen := len(customMsgArr)
@@ -83,7 +84,7 @@ func RunValidators(m validatorMap, msgMap validatorMsgArr) (errors []string) {
 }
 
 // RequiredValidator : value 必须存在
-func RequiredValidator(value string) validatorFunc {
+func RequiredValidator(value string) ValidatorFunc {
 	return func() (msg string) {
 		if value == "" {
 			return "$key1$ 必须存在"
@@ -94,7 +95,7 @@ func RequiredValidator(value string) validatorFunc {
 }
 
 // MixLengthValidator -
-func MixLengthValidator(value string, minStrLen int) validatorFunc {
+func MixLengthValidator(value string, minStrLen int) ValidatorFunc {
 	return func() (msg string) {
 		l := len(value)
 
@@ -107,7 +108,7 @@ func MixLengthValidator(value string, minStrLen int) validatorFunc {
 }
 
 // MaxLengthValidator -
-func MaxLengthValidator(value string, maxStrLen int) validatorFunc {
+func MaxLengthValidator(value string, maxStrLen int) ValidatorFunc {
 	return func() (msg string) {
 		l := len(value)
 
@@ -120,10 +121,25 @@ func MaxLengthValidator(value string, maxStrLen int) validatorFunc {
 }
 
 // EqualValidator -
-func EqualValidator(v1 string, v2 string) validatorFunc {
+func EqualValidator(v1 string, v2 string) ValidatorFunc {
 	return func() (msg string) {
 		if v1 != v2 {
 			return "$key1$ 必须等于 $key2$"
+		}
+
+		return ""
+	}
+}
+
+// EmailValidator 验证邮箱格式
+func EmailValidator(value string) ValidatorFunc {
+	return func() (msg string) {
+		pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*` // 匹配电子邮箱
+		reg := regexp.MustCompile(pattern)
+		status := reg.MatchString(value)
+
+		if !status {
+			return "$key1$ 邮箱格式错误"
 		}
 
 		return ""

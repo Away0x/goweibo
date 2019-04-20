@@ -10,7 +10,7 @@ import (
 	viewmodels "gin_weibo/app/view_models"
 
 	"gin_weibo/app/controllers"
-	"gin_weibo/app/requests"
+	userRequest "gin_weibo/app/requests/user"
 	"gin_weibo/pkg/flash"
 )
 
@@ -34,8 +34,8 @@ func Show(c *gin.Context) {
 		return
 	}
 
-	m := &models.User{}
-	user, err := m.Get(id)
+	user := &models.User{}
+	err = user.Get(id)
 	if err != nil {
 		c.String(http.StatusOK, "用户获取错误 %v", err)
 		return
@@ -48,14 +48,14 @@ func Show(c *gin.Context) {
 
 // Store 保存用户
 func Store(c *gin.Context) {
-	// 验证参数
-	userForm := &requests.UserForm{
+	// 验证参数和创建用户
+	userCreateForm := &userRequest.UserCreateForm{
 		Name:                 c.PostForm("name"),
 		Email:                c.PostForm("email"),
 		Password:             c.PostForm("password"),
 		PasswordConfirmation: c.PostForm("password_confirmation"),
 	}
-	user, errors := userForm.ValidateAndSave()
+	user, errors := userCreateForm.ValidateAndSave()
 
 	if len(errors) != 0 {
 		flash.SaveValidateMessage(c, errors)
@@ -64,7 +64,7 @@ func Store(c *gin.Context) {
 	}
 
 	flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
-	controllers.Redirect(c, "/users/show/"+strconv.Itoa(int(user.ID)))
+	controllers.RedirectToUserShowPage(c, user)
 }
 
 // Edit 编辑用户页面

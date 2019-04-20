@@ -27,17 +27,15 @@ func (User) TableName() string {
 }
 
 // Get 获取一个用户
-func (User) Get(id int) (*User, error) {
-	u := &User{}
+func (u *User) Get(id int) error {
 	d := database.DB.First(&u, id)
-	return u, d.Error
+	return d.Error
 }
 
 // GetByEmail 根据 email 来获取用户
-func (User) GetByEmail(email string) (*User, error) {
-	u := &User{}
+func (u *User) GetByEmail(email string) error {
 	d := database.DB.Where("email = ?", email).First(&u)
-	return u, d.Error
+	return d.Error
 }
 
 // Gravatar 生成用户头像
@@ -54,5 +52,11 @@ func (u *User) Create() error {
 // 对密码进行加密
 func (u *User) Encrypt() (err error) {
 	u.Password, err = auth.Encrypt(u.Password)
+	return
+}
+
+// 验证用户密码
+func (u *User) Compare(pwd string) (err error) {
+	err = auth.Compare(u.Password, pwd)
 	return
 }
