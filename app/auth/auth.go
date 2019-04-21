@@ -22,7 +22,7 @@ func SaveUserToContext(c *gin.Context) {
 
 // GetUserFromSession : 从 session 中获取用户
 func GetUserFromSession(c *gin.Context) (*models.User, error) {
-	var user *models.User
+	user := new(models.User)
 	idStr := session.GetSession(c, config.AppConfig.AuthSessionKey)
 	if idStr == "" {
 		return nil, errors.New("没有获取到 session")
@@ -58,4 +58,9 @@ func GetUserFromContext(c *gin.Context) (*models.User, error) {
 // 登录
 func Login(c *gin.Context, u *models.User) {
 	session.SetSession(c, config.AppConfig.AuthSessionKey, u.GetIDstring())
+}
+
+// 登出
+func Logout(c *gin.Context) {
+	session.DeleteSession(c, config.AppConfig.AuthSessionKey)
 }

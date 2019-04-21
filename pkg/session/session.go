@@ -21,3 +21,10 @@ func GetSession(c *gin.Context, key string) string {
 		return s
 	}
 }
+
+// DeleteSession : 删除 session
+func DeleteSession(c *gin.Context, key string) {
+	session := sessions.Get(c)
+	session.Delete(key)
+	session.Save()
+}

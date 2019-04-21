@@ -1,23 +1,36 @@
 {{ define "user/show.html" }}
 
-{{ with .userData.Name }}
-  {{ template "layouts/header" . }}
-{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ .userData.Name }}</title>
+    {{ template "shared/style" }}
+  </head>
+  <body>
 
-  {{ template "shared/messages" . }}
+  {{ template "shared/nav" . }}
+  <div class="container">
+    <div class="offset-md-1 col-md-10">
+      {{ template "shared/messages" . }}
 
-  <div class="row">
-    <div class="offset-md-2 col-md-8">
-      <div class="col-md-12">
+      <div class="row">
         <div class="offset-md-2 col-md-8">
-          <section class="user_info">
-            {{ template "shared/user_info" . }}
-          </section>
+          <div class="col-md-12">
+            <div class="offset-md-2 col-md-8">
+              <section class="user_info">
+                {{ template "shared/user_info" . }}
+              </section>
+            </div>
+          </div>
         </div>
       </div>
+
+      {{ template "shared/footer" }}
     </div>
   </div>
-{{.}}
-{{ template "layouts/footer" }}
+  {{.}}
+  {{ template "shared/script" }}
+  </body>
+</html>
 
 {{ end }}

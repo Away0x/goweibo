@@ -1,13 +1,27 @@
 {{ define "user/index.html" }}
 
-{{ with .Name }}
-  {{ template "layouts/header" . }}
-{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>注册</title>
+    {{ template "shared/style" }}
+  </head>
+  <body>
 
-  {{ template "shared/messages" . }}
+  {{ template "shared/nav" . }}
+  <div class="container">
+    <div class="offset-md-1 col-md-10">
+      {{ template "shared/messages" . }}
 
-  {{ . }}
+      {{ . }}
 
-{{ template "layouts/footer" }}
+      {{ template "shared/footer" }}
+    </div>
+  </div>
+
+  {{ template "shared/script" }}
+  </body>
+</html>
+
 
 {{ end }}

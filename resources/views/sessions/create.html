@@ -1,42 +1,56 @@
 {{ define "sessions/create.html" }}
 
-{{ with "登录" }}
-  {{ template "layouts/header" . }}
-{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>登录</title>
+    {{ template "shared/style" }}
+  </head>
+  <body>
 
-  {{ template "shared/messages" . }}
+  {{ template "shared/nav" . }}
+  <div class="container">
+    <div class="offset-md-1 col-md-10">
+      {{ template "shared/messages" . }}
 
-  <div class="offset-md-2 col-md-8">
-    <div class="card ">
-      <div class="card-header">
-        <h5>登录</h5>
+      <div class="offset-md-2 col-md-8">
+        <div class="card ">
+          <div class="card-header">
+            <h5>登录</h5>
+          </div>
+          <div class="card-body">
+            {{ template "shared/errors" . }}
+
+            <form method="POST" action="/login">
+                {{ .csrfField }}
+
+                <div class="form-group">
+                  <label for="email">邮箱：</label>
+                  <input type="text" name="email" class="form-control" value="{{ .oldValue.email }}">
+                </div>
+
+                <div class="form-group">
+                  <label for="password">密码：</label>
+                  <input type="password" name="password" class="form-control" value="{{ .oldValue.password }}">
+                </div>
+
+                <button type="submit" class="btn btn-primary">登录</button>
+            </form>
+
+            <hr>
+
+            <p>还没账号？<a href="/signup">现在注册！</a></p>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-        {{ template "shared/errors" . }}
 
-        <form method="POST" action="/login">
-            {{ .csrfField }}
-
-            <div class="form-group">
-              <label for="email">邮箱：</label>
-              <input type="text" name="email" class="form-control" value="{{ .oldValue.email }}">
-            </div>
-
-            <div class="form-group">
-              <label for="password">密码：</label>
-              <input type="password" name="password" class="form-control" value="{{ .oldValue.password }}">
-            </div>
-
-            <button type="submit" class="btn btn-primary">登录</button>
-        </form>
-
-        <hr>
-
-        <p>还没账号？<a href="/signup">现在注册！</a></p>
-      </div>
+      {{ template "shared/footer" }}
     </div>
   </div>
 
-{{ template "layouts/footer" }}
+  {{ template "shared/script" }}
+  </body>
+</html>
+
 
 {{ end }}

@@ -1,0 +1,33 @@
+{{define "shared/nav"}}
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container ">
+      <a class="navbar-brand" href="/">Weibo App</a>
+      <ul class="navbar-nav justify-content-end">
+        {{ if .auth }}
+          <li class="nav-item"><a class="nav-link" href="#">用户列表</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ .auth.Name }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/users/show/{{ .auth.ID }}">个人中心</a>
+              <a class="dropdown-item" href="#">编辑资料</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" id="logout" href="#">
+                <form action="/logout" method="POST">
+                  {{ .csrfField }}
+                  <button class="btn btn-block btn-danger" type="submit" name="button">退出</button>
+                </form>
+              </a>
+            </div>
+          </li>
+        {{ else }}
+          <li class="nav-item"><a class="nav-link" href="/help">帮助</a></li>
+          <li class="nav-item" ><a class="nav-link" href="/login">登录</a></li>
+        {{ end }}
+      </ul>
+    </div>
+  </nav>
+
+{{ end }}

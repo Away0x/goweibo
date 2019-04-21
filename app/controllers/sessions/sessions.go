@@ -37,5 +37,7 @@ func Store(c *gin.Context) {
 
 // Destroy 登出 (销毁会话)
 func Destroy(c *gin.Context) {
-
+	auth.Logout(c)
+	flash.NewSuccessFlash(c, "您已成功退出！")
+	controllers.RedirectToLoginPage(c)
 }

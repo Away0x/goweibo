@@ -1,13 +1,25 @@
 {{ define "static_page/help.html" }}
 
-{{ with "帮助" }}
-  {{ template "layouts/header" . }}
-{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>帮助</title>
+    {{ template "shared/style" }}
+  </head>
+  <body>
 
-  {{ template "shared/messages" . }}
+  {{ template "shared/nav" . }}
+  <div class="container">
+    <div class="offset-md-1 col-md-10">
+      {{ template "shared/messages" . }}
+      <h1>帮助</h1>
+      {{ template "shared/footer" }}
+    </div>
+  </div>
 
-  <h1>帮助</h1>
+  {{ template "shared/script" }}
+  </body>
+</html>
 
-{{ template "layouts/footer" }}
 
 {{ end }}

@@ -1,24 +1,38 @@
 {{ define "static_page/home.html" }}
 
-{{ with "主页" }}
-  {{ template "layouts/header" . }}
-{{ end }}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>帮助</title>
+    {{ template "shared/style" }}
+  </head>
+  <body>
 
-  {{ template "shared/messages" . }}
+  {{ template "shared/nav" . }}
+  <div class="container">
+    <div class="offset-md-1 col-md-10">
+      {{ template "shared/messages" . }}
 
-  <div class="jumbotron">
-    <h1>Hello Gin</h1>
-    <p class="lead">
-      你现在所看到的是 Gin weibo 主页。
-    </p>
-    <p>
-      一切，将从这里开始。
-    </p>
-    <p>
-      <a class="btn btn-lg btn-success" href="/signup" role="button">现在注册</a>
-    </p>
+      <div class="jumbotron">
+        <h1>Hello Gin</h1>
+        <p class="lead">
+          你现在所看到的是 Gin weibo 主页。
+        </p>
+        <p>
+          一切，将从这里开始。
+        </p>
+        <p>
+          <a class="btn btn-lg btn-success" href="/signup" role="button">现在注册</a>
+        </p>
+      </div>
+
+      {{ template "shared/footer" }}
+    </div>
   </div>
 
-{{ template "layouts/footer" }}
+  {{ template "shared/script" }}
+  </body>
+</html>
+
 
 {{ end }}
