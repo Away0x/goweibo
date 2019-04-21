@@ -24,8 +24,9 @@ func Csrf() gin.HandlerFunc {
 				paramCsrfToken := getCsrfTokenFromParamsOrHeader(c)
 
 				if paramCsrfToken == "" || paramCsrfToken != csrfToken {
-					controllers.Render403(c)
-					panic("csrf 验证失败")
+					controllers.Render403(c, "很抱歉！您的 Session 已过期，请刷新后再试一次。")
+					c.Abort()
+					return
 				}
 			}
 		}

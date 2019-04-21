@@ -40,8 +40,8 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	}
 
 	// 获取当前登录的用户 (如果用户登录了的话，中间件中会通过 session 存储用户数据)
-	if user, err := auth.GetUserFromContext(c); err == nil {
-		obj[config.AppConfig.ContextUserDataKey] = viewmodels.NewUserViewModelSerializer(user)
+	if user, err := auth.GetCurrentUserFromContext(c); err == nil {
+		obj[config.AppConfig.ContextCurrentUserDataKey] = viewmodels.NewUserViewModelSerializer(user)
 	}
 
 	// 填充传递进来的数据
@@ -68,13 +68,18 @@ func RenderError(c *gin.Context, code int, msg string) {
 }
 
 // Render403 -
-func Render403(c *gin.Context) {
-	RenderError(c, http.StatusForbidden, "很抱歉！您的 Session 已过期，请刷新后再试一次。")
+func Render403(c *gin.Context, msg string) {
+	RenderError(c, http.StatusForbidden, msg)
 }
 
 // Render404 -
 func Render404(c *gin.Context) {
-	RenderError(c, http.StatusNotFound, "页面没找到")
+	RenderError(c, http.StatusNotFound, "很抱歉！您浏览的页面不存在。")
+}
+
+// RenderUnauthorized -
+func RenderUnauthorized(c *gin.Context) {
+	Render403(c, "很抱歉，您没有权限访问该页面")
 }
 
 // private ---------------------

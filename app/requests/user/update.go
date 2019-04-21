@@ -58,22 +58,15 @@ func (u *UserUpdateForm) Validate() (errors []string) {
 }
 
 // ValidateAndSave 验证参数并且创建用户
-func (u *UserUpdateForm) ValidateAndSave(id int) (user *models.User, errors []string) {
+func (u *UserUpdateForm) ValidateAndSave(user *models.User) (errors []string) {
 	var err error
 	errors = u.Validate()
 
 	if len(errors) != 0 {
-		return nil, errors
+		return errors
 	}
 
 	// 更新用户
-	user = &models.User{}
-	err = user.Get(id)
-	if err != nil {
-		errors = append(errors, "用户更新失败: "+err.Error())
-		return nil, errors
-	}
-
 	user.Name = u.Name
 	if u.Password != "" {
 		user.Password = u.Password
@@ -81,13 +74,13 @@ func (u *UserUpdateForm) ValidateAndSave(id int) (user *models.User, errors []st
 
 	if err = user.Encrypt(); err != nil {
 		errors = append(errors, "用户更新失败: "+err.Error())
-		return nil, errors
+		return errors
 	}
 
 	if err = user.Update(); err != nil {
 		errors = append(errors, "用户更新失败: "+err.Error())
-		return nil, errors
+		return errors
 	}
 
-	return user, []string{}
+	return []string{}
 }

@@ -1,14 +1,13 @@
 package user
 
 import (
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/auth"
 	"gin_weibo/app/models"
 
 	"gin_weibo/app/controllers"
+	"gin_weibo/app/policies"
 	userRequest "gin_weibo/app/requests/user"
 	viewmodels "gin_weibo/app/view_models"
 	"gin_weibo/pkg/flash"
@@ -28,8 +27,14 @@ func Create(c *gin.Context) {
 
 // Show 用户详情
 func Show(c *gin.Context) {
-	user := getUser(c)
-	if user == nil {
+	id, err := controllers.GetIntParam(c, "id")
+	if err != nil {
+		controllers.Render404(c)
+		return
+	}
+
+	user, err := auth.GetUserFromContextOrDataBase(c, id)
+	if err != nil || user == nil {
 		controllers.Render404(c)
 		return
 	}
@@ -62,23 +67,33 @@ func Store(c *gin.Context) {
 }
 
 // Edit 编辑用户页面
-func Edit(c *gin.Context) {
-	user := getUser(c)
-	if user == nil {
+func Edit(c *gin.Context, currentUser *models.User) {
+	id, err := controllers.GetIntParam(c, "id")
+	if err != nil {
 		controllers.Render404(c)
 		return
 	}
 
+	// 只能查看自己的编辑页面
+	if ok := policies.UserPlolicyUpdate(c, currentUser, id); !ok {
+		return
+	}
+
 	controllers.Render(c, "user/edit.html", gin.H{
-		"userData": viewmodels.NewUserViewModelSerializer(user),
+		"userData": viewmodels.NewUserViewModelSerializer(currentUser),
 	})
 }
 
 // Update 编辑用户
-func Update(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
+func Update(c *gin.Context, currentUser *models.User) {
+	id, err := controllers.GetIntParam(c, "id")
 	if err != nil {
 		controllers.Render404(c)
+		return
+	}
+
+	// 只能更新自己
+	if ok := policies.UserPlolicyUpdate(c, currentUser, id); !ok {
 		return
 	}
 
@@ -88,36 +103,19 @@ func Update(c *gin.Context) {
 		Password:             c.PostForm("password"),
 		PasswordConfirmation: c.PostForm("password_confirmation"),
 	}
-	user, errors := userUpdateForm.ValidateAndSave(id)
+	errors := userUpdateForm.ValidateAndSave(currentUser)
 
-	if len(errors) != 0 || user == nil {
+	if len(errors) != 0 {
 		flash.SaveValidateMessage(c, errors)
-		controllers.RedirectToUserEditPage(c, c.Param("id"))
+		controllers.RedirectToUserEditPage(c, currentUser.GetIDstring())
 		return
 	}
 
-	controllers.RedirectToUserShowPage(c, user)
+	flash.NewSuccessFlash(c, "个人资料更新成功！")
+	controllers.RedirectToUserShowPage(c, currentUser)
 }
 
 // Destroy 删除用户
 func Destroy(c *gin.Context) {
 
-}
-
-// -- private
-func getUser(c *gin.Context) *models.User {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		controllers.Render404(c)
-		return nil
-	}
-
-	user := &models.User{}
-	err = user.Get(id)
-	if err != nil {
-		controllers.Render404(c)
-		return nil
-	}
-
-	return user
 }

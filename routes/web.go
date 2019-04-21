@@ -6,6 +6,7 @@ import (
 	"gin_weibo/app/controllers/sessions"
 	staticpage "gin_weibo/app/controllers/static_page"
 	"gin_weibo/app/controllers/user"
+	"gin_weibo/middleware"
 )
 
 func registerWeb(g *gin.Engine) {
@@ -18,21 +19,24 @@ func registerWeb(g *gin.Engine) {
 
 	// ------------------------------ user ------------------------------
 	{
-		g.GET("/signup", user.Create)
+		g.GET("/signup", middleware.Guest(user.Create))
 		userRouter := g.Group("/users")
 		{
 			// 用户列表页面
 			userRouter.GET("", user.Index)
-			// 创建用户页面
-			userRouter.GET("/create", user.Create)
 			// 展示具体用户页面
 			userRouter.GET("/show/:id", user.Show)
-			// 编辑用户页面
-			userRouter.GET("/edit/:id", user.Edit)
+
+			// 创建用户页面
+			userRouter.GET("/create", middleware.Guest(user.Create))
 			// 保存新用户
 			userRouter.POST("", user.Store)
+
+			// 编辑用户页面
+			userRouter.GET("/edit/:id", middleware.Auth(user.Edit))
 			// 修改用户
-			userRouter.POST("/update/:id", user.Update)
+			userRouter.POST("/update/:id", middleware.Auth(user.Update))
+
 			// 删除用户
 			userRouter.POST("/destory/:id", user.Destroy)
 		}

@@ -10,7 +10,7 @@ import (
 func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
-		auth.SaveUserToContext(c)
+		auth.SaveCurrentUserToContext(c)
 
 		c.Next()
 	}

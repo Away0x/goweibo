@@ -26,8 +26,8 @@ type appConfig struct {
 
 	// auth session key
 	AuthSessionKey string
-	// Context 中用户数据的 key
-	ContextUserDataKey string
+	// Context 中当前用户数据的 key
+	ContextCurrentUserDataKey string
 }
 
 func newAppConfig() *appConfig {
@@ -50,7 +50,7 @@ func newAppConfig() *appConfig {
 		CsrfParamName:  "_csrf",
 		CsrfHeaderName: "X-CsrfToken",
 
-		AuthSessionKey:     "gin_session",
-		ContextUserDataKey: "auth",
+		AuthSessionKey:            "gin_session",
+		ContextCurrentUserDataKey: "currentUserData",
 	}
 }

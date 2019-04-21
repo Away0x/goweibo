@@ -12,7 +12,9 @@ import (
 
 // Create 登录界面
 func Create(c *gin.Context) {
-	controllers.Render(c, "sessions/create.html", gin.H{})
+	controllers.Render(c, "sessions/create.html", gin.H{
+		"back": c.Query("back"),
+	})
 }
 
 // Store 登录 (创建新会话)
@@ -32,6 +34,14 @@ func Store(c *gin.Context) {
 
 	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "欢迎回来！")
+
+	// 返回上次访问的页面
+	back := c.Query("back")
+	if back != "" {
+		controllers.Redirect(c, back)
+		return
+	}
+
 	controllers.RedirectToUserShowPage(c, user)
 }
 

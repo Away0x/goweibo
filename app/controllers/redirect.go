@@ -20,7 +20,12 @@ func RedirectToUserShowPage(c *gin.Context, u *models.User) {
 
 // 重定向到登录页面
 func RedirectToLoginPage(c *gin.Context) {
-	Redirect(c, "/login")
+	if c.Request.Method == http.MethodPost {
+		Redirect(c, "/login")
+		return
+	}
+
+	Redirect(c, "/login?back="+c.Request.URL.Path)
 }
 
 // 重定向到用户创建页面 (注册页面)
@@ -31,4 +36,9 @@ func RedirectToUserCreatePage(c *gin.Context) {
 // 重定向到用户更新编辑页面
 func RedirectToUserEditPage(c *gin.Context, idStr string) {
 	Redirect(c, "/users/edit/"+idStr)
+}
+
+// 重定向到 root page
+func RedirectToRootPage(c *gin.Context) {
+	Redirect(c, "/")
 }
