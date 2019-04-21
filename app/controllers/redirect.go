@@ -4,7 +4,6 @@ import (
 	"gin_weibo/app/models"
 	"gin_weibo/config"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,8 +14,8 @@ func Redirect(c *gin.Context, redirectRoute string) {
 }
 
 // 重定向到用户展示页面
-func RedirectToUserShowPage(c *gin.Context, user *models.User) {
-	Redirect(c, "/users/show/"+strconv.Itoa(int(user.ID)))
+func RedirectToUserShowPage(c *gin.Context, u *models.User) {
+	Redirect(c, "/users/show/"+u.GetIDstring())
 }
 
 // 重定向到登录页面

@@ -1,6 +1,7 @@
 package sessions
 
 import (
+	"gin_weibo/app/auth"
 	"gin_weibo/app/controllers"
 	"gin_weibo/pkg/flash"
 
@@ -29,7 +30,7 @@ func Store(c *gin.Context) {
 		return
 	}
 
-	// TODO 登录用户
+	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "欢迎回来！")
 	controllers.RedirectToUserShowPage(c, user)
 }

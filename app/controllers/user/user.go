@@ -6,11 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"gin_weibo/app/auth"
 	"gin_weibo/app/models"
-	viewmodels "gin_weibo/app/view_models"
 
 	"gin_weibo/app/controllers"
 	userRequest "gin_weibo/app/requests/user"
+	viewmodels "gin_weibo/app/view_models"
 	"gin_weibo/pkg/flash"
 )
 
@@ -63,6 +64,7 @@ func Store(c *gin.Context) {
 		return
 	}
 
+	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
 	controllers.RedirectToUserShowPage(c, user)
 }

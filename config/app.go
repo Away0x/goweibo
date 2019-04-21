@@ -23,6 +23,11 @@ type appConfig struct {
 	CsrfParamName string
 	// csrf header
 	CsrfHeaderName string
+
+	// auth session key
+	AuthSessionKey string
+	// Context 中用户数据的 key
+	ContextUserDataKey string
 }
 
 func newAppConfig() *appConfig {
@@ -44,5 +49,8 @@ func newAppConfig() *appConfig {
 		EnableCsrf:     viper.GetBool("APP.ENABLE_CSRF"),
 		CsrfParamName:  "_csrf",
 		CsrfHeaderName: "X-CsrfToken",
+
+		AuthSessionKey:     "gin_session",
+		ContextUserDataKey: "auth",
 	}
 }

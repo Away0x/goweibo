@@ -147,7 +147,9 @@ func read(c *gin.Context, keyName string) *FlashData {
 				}
 			}
 		}
-		// 读取一次即删除
+		// 读取一次即删除 (beego 里 flash 的实现方式)
+		// github.com/tommy351/gin-sessions 的实现方式是，每次 save 都会保存替换所有 session，
+		//    所以读取 flash 时，将 flash 从 session 对象中 delete 掉再 save 即可
 		c.SetCookie(keyName, "", -1, "/", "", false, true)
 	}
 	c.Keys[keyName] = flash.Data

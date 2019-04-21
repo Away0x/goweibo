@@ -52,6 +52,12 @@ RunValidators(
 ]
 */
 func RunValidators(m ValidatorMap, msgMap ValidatorMsgArr) (errors []string) {
+	// start := time.Now()
+	// defer func() {
+	// 	cost := time.Since(start)
+	// 	fmt.Println("cost=========", cost)
+	// }()
+
 	for k, validators := range m {
 		customMsgArr := msgMap[k] // 自定义错误信息数组
 		customMsgArrLen := len(customMsgArr)
@@ -82,6 +88,62 @@ func RunValidators(m ValidatorMap, msgMap ValidatorMsgArr) (errors []string) {
 
 	return errors
 }
+
+// func RunValidators(m ValidatorMap, msgMap ValidatorMsgArr) (errors []string) {
+// 	start := time.Now()
+// 	defer func() {
+// 		cost := time.Since(start)
+// 		fmt.Println("cost=========", cost)
+// 	}()
+
+// 	wg := sync.WaitGroup{}
+// 	finished := make(chan bool, 1)
+
+// 	for key, validators := range m {
+// 		wg.Add(1)
+// 		customMsgArr := msgMap[key] // 自定义错误信息数组
+// 		customMsgArrLen := len(customMsgArr)
+
+// 		go func(k string, v []ValidatorFunc) {
+// 			defer wg.Done()
+
+// 			for i, fn := range v {
+// 				msg := fn()
+// 				if msg != "" {
+// 					if i < customMsgArrLen && customMsgArr[i] != "" {
+// 						// 采用自定义的错误信息输出
+// 						msg = customMsgArr[i]
+// 					} else {
+// 						// 采用默认的错误信息输出
+// 						names := strings.Split(k, "|")
+// 						data := make(map[string]string)
+
+// 						for ti, tv := range names {
+// 							data["$key"+strconv.Itoa(ti+1)+"$"] = tv
+// 						}
+
+// 						msg = utils.ParseEasyTemplate(msg, data)
+// 					}
+
+// 					errors = append(errors, msg)
+// 					break // 进行下一个字段的验证
+// 				}
+// 			}
+// 		}(key, validators)
+// 	}
+
+// 	go func() {
+// 		wg.Wait() // 上面多个 goroutine 的并行处理完会发送消息给 finished
+// 		close(finished)
+// 	}()
+
+// 	// 等待消息 (无可用 case 也无 default 会堵塞)
+// 	select {
+// 	case <-finished:
+// 	}
+
+// 	return errors
+// }
 
 // RequiredValidator : value 必须存在
 func RequiredValidator(value string) ValidatorFunc {

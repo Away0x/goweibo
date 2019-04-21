@@ -60,3 +60,8 @@ func (u *User) Compare(pwd string) (err error) {
 	err = auth.Compare(u.Password, pwd)
 	return
 }
+
+// 获取字符串形式的 id
+func (u *User) GetIDstring() string {
+	return strconv.Itoa(int(u.ID))
+}
