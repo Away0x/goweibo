@@ -38,10 +38,22 @@ func (u *User) GetByEmail(email string) error {
 	return d.Error
 }
 
-// Gravatar 生成用户头像
-func (u *User) Gravatar() string {
-	hash := md5.Sum([]byte(u.Email))
-	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:])
+// All 获取所有用户
+func (User) All() ([]*User, error) {
+	users := make([]*User, 0)
+	d := database.DB.Find(&users)
+	return users, d.Error
+}
+
+// List 获取用户列表
+func (User) List(offset, limit int) ([]*User, error) {
+	users := make([]*User, 0)
+
+	if err := database.DB.Offset(offset).Limit(limit).Order("id desc").Find(&users).Error; err != nil {
+		return users, err
+	}
+
+	return users, nil
 }
 
 // Create 创建用户
@@ -64,6 +76,12 @@ func (u *User) Encrypt() (err error) {
 func (u *User) Compare(pwd string) (err error) {
 	err = auth.Compare(u.Password, pwd)
 	return
+}
+
+// Gravatar 生成用户头像
+func (u *User) Gravatar() string {
+	hash := md5.Sum([]byte(u.Email))
+	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:])
 }
 
 // 获取字符串形式的 id

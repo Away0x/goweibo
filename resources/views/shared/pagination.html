@@ -1,0 +1,36 @@
+{{ define "shared/pagination" }}
+
+  <ul class="pagination" role="navigation">
+
+
+          <li class="page-item disabled" aria-disabled="true" aria-label="前一页">
+              <span class="page-link" aria-hidden="true">&lsaquo;</span>
+          </li>
+
+          <li class="page-item">
+              <a class="page-link" href="" rel="prev" aria-label="前一页">&lsaquo;</a>
+          </li>
+
+
+
+              <li class="page-item disabled" aria-disabled="true"><span class="page-link"></span></li>
+
+
+
+                      <li class="page-item active" aria-current="page"><span class="page-link"></span></li>
+
+                      <li class="page-item"><a class="page-link" href=""></a></li>
+
+
+
+          <li class="page-item">
+              <a class="page-link" href="" rel="next" aria-label="后一页">&rsaquo;</a>
+          </li>
+
+          <li class="page-item disabled" aria-disabled="true" aria-label="后一页">
+              <span class="page-link" aria-hidden="true">&rsaquo;</span>
+          </li>
+
+  </ul>
+
+{{ end }}

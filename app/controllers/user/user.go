@@ -9,14 +9,18 @@ import (
 	"gin_weibo/app/controllers"
 	"gin_weibo/app/policies"
 	userRequest "gin_weibo/app/requests/user"
+	"gin_weibo/app/services"
 	viewmodels "gin_weibo/app/view_models"
 	"gin_weibo/pkg/flash"
 )
 
 // Index 用户列表
-func Index(c *gin.Context) {
+func Index(c *gin.Context, currentUser *models.User) {
+	offset, limit := controllers.GetPageQuery(c, 10)
+	users := services.UserListService(offset, limit)
+
 	controllers.Render(c, "user/index.html", gin.H{
-		"my": "user index",
+		"users": users,
 	})
 }
 
@@ -26,14 +30,20 @@ func Create(c *gin.Context) {
 }
 
 // Show 用户详情
-func Show(c *gin.Context) {
+func Show(c *gin.Context, currentUser *models.User) {
 	id, err := controllers.GetIntParam(c, "id")
 	if err != nil {
 		controllers.Render404(c)
 		return
 	}
 
-	user, err := auth.GetUserFromContextOrDataBase(c, id)
+	// 如果要看的就是当前用户，那么就不用再去数据库中获取了
+	user := currentUser
+	if id != int(currentUser.ID) {
+		user = &models.User{}
+		err = user.Get(id)
+	}
+
 	if err != nil || user == nil {
 		controllers.Render404(c)
 		return
