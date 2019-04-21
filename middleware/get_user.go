@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Auth : auth middleware
-func Auth() gin.HandlerFunc {
+// GetUser : 从 session 中获取 user model 的 middleware
+func GetUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		auth.SaveUserToContext(c)

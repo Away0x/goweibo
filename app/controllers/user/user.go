@@ -1,7 +1,6 @@
 package user
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -29,21 +28,14 @@ func Create(c *gin.Context) {
 
 // Show 用户详情
 func Show(c *gin.Context) {
-	id, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		c.String(http.StatusOK, "参数错误 %v", err)
-		return
-	}
-
-	user := &models.User{}
-	err = user.Get(id)
-	if err != nil {
-		c.String(http.StatusOK, "用户获取错误 %v", err)
+	user := getUser(c)
+	if user == nil {
+		controllers.Render404(c)
 		return
 	}
 
 	controllers.Render(c, "user/show.html", gin.H{
-		"userData": viewmodels.NewUserViewModelSerializer(user, 140),
+		"userData": viewmodels.NewUserViewModelSerializer(user),
 	})
 }
 
@@ -71,15 +63,61 @@ func Store(c *gin.Context) {
 
 // Edit 编辑用户页面
 func Edit(c *gin.Context) {
+	user := getUser(c)
+	if user == nil {
+		controllers.Render404(c)
+		return
+	}
 
+	controllers.Render(c, "user/edit.html", gin.H{
+		"userData": viewmodels.NewUserViewModelSerializer(user),
+	})
 }
 
 // Update 编辑用户
 func Update(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		controllers.Render404(c)
+		return
+	}
 
+	// 验证参数和更新用户
+	userUpdateForm := &userRequest.UserUpdateForm{
+		Name:                 c.PostForm("name"),
+		Password:             c.PostForm("password"),
+		PasswordConfirmation: c.PostForm("password_confirmation"),
+	}
+	user, errors := userUpdateForm.ValidateAndSave(id)
+
+	if len(errors) != 0 || user == nil {
+		flash.SaveValidateMessage(c, errors)
+		controllers.RedirectToUserEditPage(c, c.Param("id"))
+		return
+	}
+
+	controllers.RedirectToUserShowPage(c, user)
 }
 
 // Destroy 删除用户
 func Destroy(c *gin.Context) {
 
+}
+
+// -- private
+func getUser(c *gin.Context) *models.User {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		controllers.Render404(c)
+		return nil
+	}
+
+	user := &models.User{}
+	err = user.Get(id)
+	if err != nil {
+		controllers.Render404(c)
+		return nil
+	}
+
+	return user
 }

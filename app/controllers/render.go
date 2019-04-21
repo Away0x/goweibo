@@ -41,7 +41,7 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 
 	// 获取当前登录的用户 (如果用户登录了的话，中间件中会通过 session 存储用户数据)
 	if user, err := auth.GetUserFromContext(c); err == nil {
-		obj[config.AppConfig.ContextUserDataKey] = viewmodels.NewUserViewModelSerializer(user, 140)
+		obj[config.AppConfig.ContextUserDataKey] = viewmodels.NewUserViewModelSerializer(user)
 	}
 
 	// 填充传递进来的数据

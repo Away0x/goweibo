@@ -63,3 +63,14 @@ section.user_info {
   max-width: 50px;
   border-radius: 50%;
 }
+
+/* Users edit */
+
+.gravatar_edit {
+  margin: 15px auto;
+  text-align: center;
+  .gravatar {
+    float: none;
+    max-width: 100px;
+  }
+}

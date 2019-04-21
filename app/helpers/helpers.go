@@ -44,15 +44,3 @@ func Mix(staticFilePath string) string {
 
 	return Static(result)
 }
-
-// func HasSession(key string) bool {
-
-// }
-
-// func GetSession(key string) string {
-
-// }
-
-// func Old(key string, defaultValue string) string {
-
-// }

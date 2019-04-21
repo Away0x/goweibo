@@ -12,7 +12,7 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="/users/show/{{ .auth.ID }}">个人中心</a>
-              <a class="dropdown-item" href="#">编辑资料</a>
+              <a class="dropdown-item" href="/users/edit/{{ .auth.ID }}">编辑资料</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" id="logout" href="#">
                 <form action="/logout" method="POST">

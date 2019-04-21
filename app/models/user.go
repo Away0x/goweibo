@@ -39,14 +39,19 @@ func (u *User) GetByEmail(email string) error {
 }
 
 // Gravatar 生成用户头像
-func (u *User) Gravatar(size int) string {
+func (u *User) Gravatar() string {
 	hash := md5.Sum([]byte(u.Email))
-	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:]) + "?s=" + strconv.Itoa(size)
+	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:])
 }
 
 // Create 创建用户
 func (u *User) Create() error {
 	return database.DB.Create(&u).Error
+}
+
+// Update 更新用户
+func (u *User) Update() error {
+	return database.DB.Save(&u).Error
 }
 
 // 对密码进行加密

@@ -24,7 +24,7 @@ func Register(g *gin.Engine) *gin.Engine {
 	// 自定义全局中间件
 	g.Use(middleware.Csrf())     // csrf
 	g.Use(middleware.OldValue()) // 记忆上次表单提交的内容，消费即消失
-	g.Use(middleware.Auth())     // 获取用户
+	g.Use(middleware.GetUser())  // 从 session 中获取用户
 
 	// ---------------------------------- 注册路由 ----------------------------------
 	// 404

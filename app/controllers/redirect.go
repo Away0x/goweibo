@@ -27,3 +27,8 @@ func RedirectToLoginPage(c *gin.Context) {
 func RedirectToUserCreatePage(c *gin.Context) {
 	Redirect(c, "/users/create")
 }
+
+// 重定向到用户更新编辑页面
+func RedirectToUserEditPage(c *gin.Context, idStr string) {
+	Redirect(c, "/users/edit/"+idStr)
+}

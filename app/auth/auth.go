@@ -55,7 +55,8 @@ func GetUserFromContext(c *gin.Context) (*models.User, error) {
 	}
 }
 
-// 登录
+// 登录 (”记住我“功能还没做)
+// func Login(c *gin.Context, u *models.User, rememberMe bool) {}
 func Login(c *gin.Context, u *models.User) {
 	session.SetSession(c, config.AppConfig.AuthSessionKey, u.GetIDstring())
 }
