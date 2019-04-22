@@ -34,8 +34,8 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	obj[flash.ValidateContextAndCookieKeyName] = validateMsgArr
 	// csrf
 	if config.AppConfig.EnableCsrf {
-		if csrfHtml, ok := csrfField(c); ok {
-			obj["csrfField"] = csrfHtml
+		if csrfHTML, ok := csrfField(c); ok {
+			obj["csrfField"] = csrfHTML
 		}
 	}
 

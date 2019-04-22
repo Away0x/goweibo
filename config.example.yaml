@@ -2,7 +2,7 @@ APP:
   NAME: gin_weibo
   RUNMODE: debug # 模式: debug, release, test
   Addr: :8888 # 端口
-  URL: http://local.gin_weibo.com
+  URL: http://localhost:8888
   KEY: base64:O+VQ74YEigLPDzLKnh2HW/yjCdU2ON9v7xuKBgSOEAo=
   ENABLE_CSRF: true # 是否开启 csrf
 

@@ -2,34 +2,33 @@
 
   <ul class="pagination" role="navigation">
 
+    {{ if .pagination.OnFirstPage }}
+      <li class="page-item disabled" aria-disabled="true" aria-label="{{ .pagination.PreviousButtonText }}">
+        <span class="page-link" aria-hidden="true">&lsaquo;</span>
+      </li>
+    {{ else }}
+      <li class="page-item">
+        <a class="page-link" href="{{ .pagination.URL }}{{ .pagination.PreviousPageIndex }}" rel="prev" aria-label="{{ .pagination.PreviousButtonText }}">&lsaquo;</a>
+      </li>
+    {{ end }}
 
-          <li class="page-item disabled" aria-disabled="true" aria-label="前一页">
-              <span class="page-link" aria-hidden="true">&lsaquo;</span>
-          </li>
+    {{ range $i, $v := .pagination.Elements }}
+      {{ if eq $v $.pagination.CurrentPage }}
+        <li class="page-item active" aria-current="page"><span class="page-link">{{ $v }}</span></li>
+      {{ else }}
+        <li class="page-item"><a class="page-link" href="{{ $.pagination.URL }}{{ $v }}">{{ $v }}</a></li>
+      {{ end }}
+    {{ end }}
 
-          <li class="page-item">
-              <a class="page-link" href="" rel="prev" aria-label="前一页">&lsaquo;</a>
-          </li>
-
-
-
-              <li class="page-item disabled" aria-disabled="true"><span class="page-link"></span></li>
-
-
-
-                      <li class="page-item active" aria-current="page"><span class="page-link"></span></li>
-
-                      <li class="page-item"><a class="page-link" href=""></a></li>
-
-
-
-          <li class="page-item">
-              <a class="page-link" href="" rel="next" aria-label="后一页">&rsaquo;</a>
-          </li>
-
-          <li class="page-item disabled" aria-disabled="true" aria-label="后一页">
-              <span class="page-link" aria-hidden="true">&rsaquo;</span>
-          </li>
+    {{ if .pagination.HasMorePages }}
+      <li class="page-item">
+        <a class="page-link" href="{{ .pagination.URL }}{{ .pagination.NextPageIndex }}" rel="next" aria-label="{{ .pagination.NextButtonText }}">&rsaquo;</a>
+      </li>
+    {{ else }}
+      <li class="page-item disabled" aria-disabled="true" aria-label="{{ .pagination.NextButtonText }}">
+        <span class="page-link" aria-hidden="true">&rsaquo;</span>
+      </li>
+    {{ end }}
 
   </ul>
 

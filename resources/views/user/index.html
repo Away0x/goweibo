@@ -13,6 +13,8 @@
     <div class="offset-md-1 col-md-10">
       {{ template "shared/messages" . }}
 
+      {{ .pagination }}
+
       <div class="offset-md-2 col-md-8">
         <h2 class="mb-4 text-center">所有用户</h2>
         <div class="list-group list-group-flush">
@@ -27,6 +29,7 @@
         </div>
       </div>
 
+      {{ template "shared/pagination" . }}
       {{ template "shared/footer" }}
     </div>
   </div>

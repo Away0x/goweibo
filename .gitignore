@@ -15,7 +15,7 @@
 /.idea
 
 /tmp
-/fresh_tmp
+/storage/fresh_tmp
 /node_modules
 npm-debug.log
 yarn-error.log

@@ -8,11 +8,13 @@ import (
 
 // GetPageQuery 从 query 中获取有关分页的参数
 // xx.com?page=1&pageline=10
-func GetPageQuery(c *gin.Context, defaultPageLine int) (offset, limit int) {
+func GetPageQuery(c *gin.Context, defaultPageLine, totalCount int) (offset, limit, currentPage, pageTotalCount int) {
 	page, err := strconv.Atoi(c.Query("page"))
 	if err != nil {
 		page = 1
 	}
+
+	currentPage = page
 	pageline, err := strconv.Atoi(c.Query("pageline"))
 	if err != nil {
 		pageline = defaultPageLine
@@ -26,6 +28,11 @@ func GetPageQuery(c *gin.Context, defaultPageLine int) (offset, limit int) {
 	}
 
 	limit = pageline
+
+	pageTotalCount = int(totalCount / pageline)
+	if pageTotalCount <= 0 {
+		pageTotalCount = 1
+	}
 
 	return
 }

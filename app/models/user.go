@@ -56,6 +56,13 @@ func (User) List(offset, limit int) ([]*User, error) {
 	return users, nil
 }
 
+// AllCount 总用户数
+func (u *User) AllCount() int {
+	count := 0
+	database.DB.Table(u.TableName()).Count(&count)
+	return count
+}
+
 // Create 创建用户
 func (u *User) Create() error {
 	return database.DB.Create(&u).Error
@@ -66,13 +73,13 @@ func (u *User) Update() error {
 	return database.DB.Save(&u).Error
 }
 
-// 对密码进行加密
+// Encrypt 对密码进行加密
 func (u *User) Encrypt() (err error) {
 	u.Password, err = auth.Encrypt(u.Password)
 	return
 }
 
-// 验证用户密码
+// Compare 验证用户密码
 func (u *User) Compare(pwd string) (err error) {
 	err = auth.Compare(u.Password, pwd)
 	return
@@ -84,7 +91,7 @@ func (u *User) Gravatar() string {
 	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:])
 }
 
-// 获取字符串形式的 id
+// GetIDstring 获取字符串形式的 id
 func (u *User) GetIDstring() string {
 	return strconv.Itoa(int(u.ID))
 }

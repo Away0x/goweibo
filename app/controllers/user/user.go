@@ -12,16 +12,29 @@ import (
 	"gin_weibo/app/services"
 	viewmodels "gin_weibo/app/view_models"
 	"gin_weibo/pkg/flash"
+	"gin_weibo/pkg/pagination"
 )
 
 // Index 用户列表
 func Index(c *gin.Context, currentUser *models.User) {
-	offset, limit := controllers.GetPageQuery(c, 10)
+	m := models.User{}
+	allUserCount := m.AllCount()
+	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, 10, allUserCount)
+
+	if currentPage > pageTotalCount {
+		controllers.Render404(c)
+		return
+	}
+
 	users := services.UserListService(offset, limit)
 
-	controllers.Render(c, "user/index.html", gin.H{
-		"users": users,
-	})
+	controllers.Render(
+		c,
+		"user/index.html",
+		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
+			"users": users,
+		}),
+	)
 }
 
 // Create 创建用户页面
