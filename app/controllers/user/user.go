@@ -26,7 +26,8 @@ func Index(c *gin.Context, currentUser *models.User) {
 	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, defaultPageLine, allUserCount)
 
 	if currentPage > pageTotalCount {
-		controllers.Render404(c)
+		// controllers.Render404(c)
+		controllers.RedirectToUserIndexPage(c, "1") // 超出就跳转到第一页
 		return
 	}
 
@@ -99,7 +100,7 @@ func Edit(c *gin.Context, currentUser *models.User) {
 	}
 
 	// 只能查看自己的编辑页面
-	if ok := policies.UserPlolicyUpdate(c, currentUser, id); !ok {
+	if ok := policies.UserPolicyUpdate(c, currentUser, id); !ok {
 		return
 	}
 
@@ -117,7 +118,7 @@ func Update(c *gin.Context, currentUser *models.User) {
 	}
 
 	// 只能更新自己
-	if ok := policies.UserPlolicyUpdate(c, currentUser, id); !ok {
+	if ok := policies.UserPolicyUpdate(c, currentUser, id); !ok {
 		return
 	}
 
@@ -139,7 +140,29 @@ func Update(c *gin.Context, currentUser *models.User) {
 	controllers.RedirectToUserShowPage(c, currentUser)
 }
 
-// Destroy 删除用户
-func Destroy(c *gin.Context) {
+// Destory 删除用户
+func Destory(c *gin.Context, currentUser *models.User) {
+	page := c.DefaultQuery("page", "1")
 
+	id, err := controllers.GetIntParam(c, "id")
+	if err != nil {
+		controllers.Render404(c)
+		return
+	}
+
+	// 是否有删除权限
+	if ok := policies.UserPolicyDestory(c, currentUser, id); !ok {
+		return
+	}
+
+	// 删除用户
+	user := &models.User{}
+	if err = user.Delete(id); err != nil {
+		flash.NewDangerFlash(c, "删除失败: "+err.Error())
+		controllers.RedirectToUserIndexPage(c, page)
+		return
+	}
+
+	flash.NewSuccessFlash(c, "成功删除用户！")
+	controllers.RedirectToUserIndexPage(c, page)
 }

@@ -2,6 +2,13 @@ package models
 
 import "time"
 
+const (
+	// TrueTinyint true
+	TrueTinyint = 1
+	// FalseTinyint false
+	FalseTinyint = 0
+)
+
 // BaseModel model 基类
 type BaseModel struct {
 	ID uint `gorm:"column:id;primary_key;AUTO_INCREMENT;not null"`

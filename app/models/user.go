@@ -84,6 +84,12 @@ func (u *User) Update(needEncryotPwd bool) error {
 	return database.DB.Save(&u).Error
 }
 
+// Delete : 删除用户
+func (u *User) Delete(id int) error {
+	u.BaseModel.ID = uint(id)
+	return database.DB.Delete(&u).Error
+}
+
 // Encrypt 对密码进行加密
 func (u *User) Encrypt() (err error) {
 	u.Password, err = auth.Encrypt(u.Password)
@@ -109,4 +115,9 @@ func (u *User) Gravatar() string {
 // GetIDstring 获取字符串形式的 id
 func (u *User) GetIDstring() string {
 	return strconv.Itoa(int(u.ID))
+}
+
+// IsAdmin 是否为管理员
+func (u *User) IsAdminRole() bool {
+	return u.IsAdmin == TrueTinyint
 }

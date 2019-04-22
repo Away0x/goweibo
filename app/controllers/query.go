@@ -24,7 +24,7 @@ func GetPageQuery(c *gin.Context, defaultPageLine, totalCount int) (offset, limi
 	if page == 0 {
 		offset = 0
 	} else {
-		offset = (page * pageline) - 1
+		offset = page * pageline
 	}
 
 	limit = pageline

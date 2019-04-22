@@ -13,6 +13,11 @@ func Redirect(c *gin.Context, redirectRoute string) {
 	c.Redirect(http.StatusMovedPermanently, config.AppConfig.URL+redirectRoute)
 }
 
+// RedirectToUserIndexPage : 重定向到用户列表页面
+func RedirectToUserIndexPage(c *gin.Context, page string) {
+	Redirect(c, "/users?page="+page)
+}
+
 // RedirectToUserShowPage : 重定向到用户展示页面
 func RedirectToUserShowPage(c *gin.Context, u *models.User) {
 	Redirect(c, "/users/show/"+u.GetIDstring())

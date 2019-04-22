@@ -30,6 +30,11 @@ func userFactory(i int) *factory.Factory {
 		RememberToken:   string(utils.RandomCreateBytes(10)),
 		EmailVerifiedAt: time.Now(),
 	}
+	// 第一个用户是管理员
+	if i == 0 {
+		u.IsAdmin = models.TrueTinyint
+	}
+
 	r := utils.RandInt(0, len(avatars)-1)
 
 	return factory.NewFactory(

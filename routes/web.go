@@ -38,7 +38,7 @@ func registerWeb(g *gin.Engine) {
 			userRouter.POST("/update/:id", middleware.Auth(user.Update))
 
 			// 删除用户
-			userRouter.POST("/destory/:id", user.Destroy)
+			userRouter.POST("/destory/:id", middleware.Auth(user.Destory))
 		}
 	}
 
