@@ -10,11 +10,15 @@ install:
 dev:
 	fresh -c ./fresh.conf
 
+mock:
+	go run ./main.go -m
+
 clean:
 	if [ -f ${APP_NAME} ]; then rm ${APP_NAME}; fi
 
 help:
 	@echo "make - compile the source code"
-	@echo "make clean - remove binary file"
-	@echo "make dev - run go fresh"
 	@echo "make install - install dep"
+	@echo "make dev - run go fresh"
+	@echo "make mock - mock data"
+	@echo "make clean - remove binary file"

@@ -2,6 +2,8 @@ module gin_weibo
 
 require (
 	github.com/Away0x/api_server v0.0.0-20180925062228-fa04897ba0e4
+	github.com/Pallinder/go-randomdata v1.1.0
+	github.com/bluele/factory-go v0.0.0-20181130035244-e6e8633dd3fe
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gin-contrib/sse v0.0.0-20190301062529-5545eab6dad3 // indirect
@@ -16,6 +18,7 @@ require (
 	github.com/leodido/go-urn v1.1.0 // indirect
 	github.com/lexkong/log v0.0.0-20180607165131-972f9cd951fc // indirect
 	github.com/mattn/go-isatty v0.0.7 // indirect
+	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.2
 	github.com/stretchr/objx v0.2.0 // indirect
 	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf

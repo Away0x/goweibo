@@ -17,9 +17,13 @@ import (
 
 // Index 用户列表
 func Index(c *gin.Context, currentUser *models.User) {
-	m := models.User{}
+	var (
+		m               = models.User{}
+		defaultPageLine = 10
+	)
+
 	allUserCount := m.AllCount()
-	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, 10, allUserCount)
+	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, defaultPageLine, allUserCount)
 
 	if currentPage > pageTotalCount {
 		controllers.Render404(c)
@@ -28,13 +32,10 @@ func Index(c *gin.Context, currentUser *models.User) {
 
 	users := services.UserListService(offset, limit)
 
-	controllers.Render(
-		c,
-		"user/index.html",
+	controllers.Render(c, "user/index.html",
 		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
 			"users": users,
-		}),
-	)
+		}))
 }
 
 // Create 创建用户页面

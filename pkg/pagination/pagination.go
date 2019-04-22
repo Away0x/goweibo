@@ -32,7 +32,7 @@ func CreatePaginationFillToTplData(c *gin.Context, pageQueryKeyName string, curr
 		URL:          c.Request.URL.Path + "?" + queryValues.Encode() + "&" + pageQueryKeyName + "=",
 		CurrentPage:  currentPage,
 		OnFirstPage:  currentPage == 1,
-		HasMorePages: currentPage == totalPage,
+		HasMorePages: currentPage != totalPage,
 		Elements:     countStartAndEndPageIndex(currentPage, totalPage, 3),
 
 		PreviousButtonText: "前一页",

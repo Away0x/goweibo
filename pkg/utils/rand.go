@@ -28,3 +28,11 @@ func RandomCreateBytes(n int, alphabets ...byte) []byte {
 	}
 	return bytes
 }
+
+// RandInt - 区间随机数
+func RandInt(min, max int) int {
+	if min >= max || min < 0 || max == 0 {
+		return max
+	}
+	return r.Intn(max-min) + min
+}

@@ -80,11 +80,6 @@ func (u *UserCreateForm) ValidateAndSave() (user *models.User, errors []string) 
 		Password: u.Password,
 	}
 
-	if err := user.Encrypt(); err != nil {
-		errors = append(errors, "用户创建失败: "+err.Error())
-		return nil, errors
-	}
-
 	if err := user.Create(); err != nil {
 		errors = append(errors, "用户创建失败: "+err.Error())
 		return nil, errors

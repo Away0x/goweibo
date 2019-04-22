@@ -6,19 +6,21 @@ import (
 	"gin_weibo/database"
 	"gin_weibo/pkg/auth"
 	"strconv"
+	"time"
 )
 
 // User 用户模型
 type User struct {
 	BaseModel
-	Name  string `gorm:"column:name;type:varchar(255);not null"`
-	Email string `gorm:"column:email;type:varchar(255);unique;not null"`
-	// EmailVerifiedAt time.Time `gorm:"column:email_verified_at"`
-	Password        string `gorm:"column:password;type:varchar(255);not null"`
-	RememberToken   string `gorm:"column:remember_token;type:varchar(100)"`
-	IsAdmin         uint   `gorm:"column:is_admin;type:tinyint(1)"`
-	ActivationTOken string `gorm:"column:activation_token;type:varchar(255)"`
-	Activated       uint   `gorm:"column:activated;type:tinyint(1);not null"`
+	Name            string    `gorm:"column:name;type:varchar(255);not null"`
+	Email           string    `gorm:"column:email;type:varchar(255);unique;not null"`
+	Avatar          string    `gorm:"column:avatar;type:varchar(255);not null"`
+	EmailVerifiedAt time.Time `gorm:"column:email_verified_at"`
+	Password        string    `gorm:"column:password;type:varchar(255);not null"`
+	RememberToken   string    `gorm:"column:remember_token;type:varchar(100)"`
+	IsAdmin         uint      `gorm:"column:is_admin;type:tinyint(1)"`
+	ActivationTOken string    `gorm:"column:activation_token;type:varchar(255)"`
+	Activated       uint      `gorm:"column:activated;type:tinyint(1);not null"`
 }
 
 // TableName 表名
@@ -65,11 +67,20 @@ func (u *User) AllCount() int {
 
 // Create 创建用户
 func (u *User) Create() error {
+	if err := u.Encrypt(); err != nil {
+		return err
+	}
 	return database.DB.Create(&u).Error
 }
 
 // Update 更新用户
-func (u *User) Update() error {
+func (u *User) Update(needEncryotPwd bool) error {
+	if needEncryotPwd {
+		if err := u.Encrypt(); err != nil {
+			return err
+		}
+	}
+
 	return database.DB.Save(&u).Error
 }
 
@@ -87,6 +98,10 @@ func (u *User) Compare(pwd string) (err error) {
 
 // Gravatar 生成用户头像
 func (u *User) Gravatar() string {
+	if u.Avatar != "" {
+		return u.Avatar
+	}
+
 	hash := md5.Sum([]byte(u.Email))
 	return "http://www.gravatar.com/avatar/" + hex.EncodeToString(hash[:])
 }

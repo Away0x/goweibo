@@ -11,10 +11,21 @@ import (
 	"gin_weibo/app/models"
 	"gin_weibo/config"
 	"gin_weibo/database"
+	"gin_weibo/database/factory"
 	"gin_weibo/routes"
+
+	"github.com/spf13/pflag"
+)
+
+var (
+	// 需要 mock data，注意该操作会覆盖数据库；只在非 release 时生效
+	needMock = pflag.BoolP("mock", "m", false, "need mock data")
 )
 
 func main() {
+	// 解析命令行参数
+	pflag.Parse()
+
 	// 初始化配置
 	config.InitConfig()
 
@@ -24,6 +35,9 @@ func main() {
 
 	// db config
 	db := database.InitDB()
+	// mock data
+	factoryMake()
+	// db migrate
 	db.AutoMigrate(
 		&models.User{},
 	)
@@ -53,4 +67,20 @@ func setupGin(g *gin.Engine) {
 		"Static": helpers.Static,
 	})
 	g.LoadHTMLGlob("resources/views/**/*")
+}
+
+// 数据 mock
+func factoryMake() {
+	// 只有非 release 时才可用该函数
+	if config.AppConfig.RunMode == "release" {
+		return
+	}
+	status := *needMock
+
+	if !status {
+		return
+	}
+
+	log.Println(".................................... MOCK ......................................................")
+	factory.UsersTableSeeder(true)
 }

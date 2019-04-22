@@ -68,16 +68,13 @@ func (u *UserUpdateForm) ValidateAndSave(user *models.User) (errors []string) {
 
 	// 更新用户
 	user.Name = u.Name
+	needEncryotPwd := false
 	if u.Password != "" {
 		user.Password = u.Password
+		needEncryotPwd = true
 	}
 
-	if err = user.Encrypt(); err != nil {
-		errors = append(errors, "用户更新失败: "+err.Error())
-		return errors
-	}
-
-	if err = user.Update(); err != nil {
+	if err = user.Update(needEncryotPwd); err != nil {
 		errors = append(errors, "用户更新失败: "+err.Error())
 		return errors
 	}

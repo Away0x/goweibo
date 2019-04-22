@@ -1,6 +1,10 @@
 github.com/Away0x/api_server v0.0.0-20180925062228-fa04897ba0e4 h1:txX5CH/RROx3yfK72bWvRexJHwbYhokRF79VwdwsWxU=
 github.com/Away0x/api_server v0.0.0-20180925062228-fa04897ba0e4/go.mod h1:jV+mlPfquUyx5mLc0pPRGvi9KW3U485YB3MN9H6Hp8Y=
+github.com/Pallinder/go-randomdata v1.1.0 h1:gUubB1IEUliFmzjqjhf+bgkg1o6uoFIkRsP3VrhEcx8=
+github.com/Pallinder/go-randomdata v1.1.0/go.mod h1:yHmJgulpD2Nfrm0cR9tI/+oAgRqCQQixsA8HyRZfV9Y=
 github.com/armon/consul-api v0.0.0-20180202201655-eb2c6b5be1b6/go.mod h1:grANhF5doyWs3UAsr3K4I6qtAmlQcZDesFNEHPZAzj8=
+github.com/bluele/factory-go v0.0.0-20181130035244-e6e8633dd3fe h1:hcoC5+O/CQZmIcE29I4dLy/m6VXWcbHvlwl4E1g5mFM=
+github.com/bluele/factory-go v0.0.0-20181130035244-e6e8633dd3fe/go.mod h1:C+/xfXxCR66wsm6I3Mzbf72W/Lz2NPsGQhSWDVBa5YU=
 github.com/coreos/etcd v3.3.10+incompatible/go.mod h1:uF7uidLiAD3TWHmW31ZFd/JWoc32PjwdhPthX9715RE=
 github.com/coreos/go-etcd v2.0.0+incompatible/go.mod h1:Jez6KQU2B/sWsbdaef3ED8NzMklzPG4d5KIOhIy30Tk=
 github.com/coreos/go-semver v0.2.0/go.mod h1:nnelYz7RCh+5ahJtPPxZlU+153eP4D4r3EedlOD2RNk=
