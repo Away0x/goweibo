@@ -27,8 +27,8 @@ var (
 func userFactory(i int) *factory.Factory {
 	u := &models.User{
 		Password:        "123456",
-		RememberToken:   string(utils.RandomCreateBytes(10)),
 		EmailVerifiedAt: time.Now(),
+		Activated:       models.TrueTinyint,
 	}
 	// 第一个用户是管理员
 	if i == 0 {

@@ -10,7 +10,7 @@ import (
 
 // Redirect : 路由重定向
 func Redirect(c *gin.Context, redirectRoute string) {
-	c.Redirect(http.StatusMovedPermanently, config.AppConfig.URL+redirectRoute)
+	c.Redirect(http.StatusFound, config.AppConfig.URL+redirectRoute)
 }
 
 // RedirectToUserIndexPage : 重定向到用户列表页面

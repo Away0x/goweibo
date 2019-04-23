@@ -1,5 +1,5 @@
 // 只有登录用户才可访问
-package middleware
+package wrapper
 
 import (
 	"gin_weibo/app/auth"

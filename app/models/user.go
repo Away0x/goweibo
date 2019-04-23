@@ -19,7 +19,6 @@ type User struct {
 	Avatar          string    `gorm:"column:avatar;type:varchar(255);not null"`
 	EmailVerifiedAt time.Time `gorm:"column:email_verified_at"`
 	Password        string    `gorm:"column:password;type:varchar(255);not null"`
-	RememberToken   string    `gorm:"column:remember_token;type:varchar(100)"`
 	IsAdmin         uint      `gorm:"column:is_admin;type:tinyint(1)"`
 	ActivationTOken string    `gorm:"column:activation_token;type:varchar(255)"`
 	Activated       uint      `gorm:"column:activated;type:tinyint(1);not null"`
@@ -152,7 +151,12 @@ func (u *User) GetIDstring() string {
 	return strconv.Itoa(int(u.ID))
 }
 
-// IsAdmin 是否为管理员
+// IsAdminRole 是否为管理员
 func (u *User) IsAdminRole() bool {
 	return u.IsAdmin == TrueTinyint
+}
+
+// IsActivated 是否已激活
+func (u *User) IsActivated() bool {
+	return u.Activated == TrueTinyint
 }

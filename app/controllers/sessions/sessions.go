@@ -32,6 +32,13 @@ func Store(c *gin.Context) {
 		return
 	}
 
+	// 用户是否激活
+	if !user.IsActivated() {
+		flash.NewWarningFlash(c, "你的账号未激活，请检查邮箱中的注册邮件进行激活。")
+		controllers.RedirectToRootPage(c)
+		return
+	}
+
 	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "欢迎回来！")
 

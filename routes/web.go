@@ -6,7 +6,7 @@ import (
 	"gin_weibo/app/controllers/sessions"
 	staticpage "gin_weibo/app/controllers/static_page"
 	"gin_weibo/app/controllers/user"
-	"gin_weibo/middleware"
+	"gin_weibo/middleware/wrapper"
 )
 
 func registerWeb(g *gin.Engine) {
@@ -19,35 +19,36 @@ func registerWeb(g *gin.Engine) {
 
 	// ------------------------------ user ------------------------------
 	{
-		g.GET("/signup", middleware.Guest(user.Create))
+		g.GET("/signup", wrapper.Guest(user.Create))
+		g.GET("/signup/confirm/:token", wrapper.Guest(user.ConfirmEmail))
 		userRouter := g.Group("/users")
 		{
 			// 创建用户页面
-			userRouter.GET("/create", middleware.Guest(user.Create))
+			userRouter.GET("/create", wrapper.Guest(user.Create))
 			// 保存新用户
-			userRouter.POST("", middleware.Guest(user.Store))
+			userRouter.POST("", wrapper.Guest(user.Store))
 
 			// 用户列表页面
-			userRouter.GET("", middleware.Auth(user.Index))
+			userRouter.GET("", wrapper.Auth(user.Index))
 			// 展示具体用户页面
-			userRouter.GET("/show/:id", middleware.Auth(user.Show))
+			userRouter.GET("/show/:id", wrapper.Auth(user.Show))
 
 			// 编辑用户页面
-			userRouter.GET("/edit/:id", middleware.Auth(user.Edit))
+			userRouter.GET("/edit/:id", wrapper.Auth(user.Edit))
 			// 修改用户
-			userRouter.POST("/update/:id", middleware.Auth(user.Update))
+			userRouter.POST("/update/:id", wrapper.Auth(user.Update))
 
 			// 删除用户
-			userRouter.POST("/destory/:id", middleware.Auth(user.Destory))
+			userRouter.POST("/destory/:id", wrapper.Auth(user.Destory))
 		}
 	}
 
 	// ------------------------------ sessions ------------------------------
 	{
 		// 登录页面
-		g.GET("/login", middleware.Guest(sessions.Create))
+		g.GET("/login", wrapper.Guest(sessions.Create))
 		// 登录
-		g.POST("/login", middleware.Guest(sessions.Store))
+		g.POST("/login", wrapper.Guest(sessions.Store))
 		// 登出
 		g.POST("/logout", sessions.Destroy)
 	}

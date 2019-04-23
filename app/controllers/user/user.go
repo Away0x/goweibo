@@ -166,3 +166,8 @@ func Destory(c *gin.Context, currentUser *models.User) {
 	flash.NewSuccessFlash(c, "成功删除用户！")
 	controllers.RedirectToUserIndexPage(c, page)
 }
+
+// ConfirmEmail : 邮箱验证
+func ConfirmEmail(c *gin.Context) {
+
+}

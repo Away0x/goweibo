@@ -13,3 +13,12 @@ DB:
   DATABASE: gin_weibo
   USERNAME: wutong
   PASSWORD: secret
+
+MAIL:
+  MAIL_DRIVER: smtp
+  MAIL_HOST: smtp.mailtrap.io
+  MAIL_PORT: 2525
+  MAIL_USERNAME:
+  MAIL_PASSWORD:
+  MAIL_ENCRYPTION:
+  MAIN_FROM_ADDRESS:
