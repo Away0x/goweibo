@@ -38,7 +38,9 @@ func main() {
 	// db config
 	db := database.InitDB()
 	// mock data
-	factoryMake()
+	if do := factoryMake(); do {
+		return
+	}
 	// db migrate
 	db.AutoMigrate(
 		&models.User{},
@@ -74,17 +76,18 @@ func setupGin(g *gin.Engine) {
 }
 
 // 数据 mock
-func factoryMake() {
+func factoryMake() (do bool) {
 	// 只有非 release 时才可用该函数
 	if config.AppConfig.RunMode == config.RunmodeRelease {
-		return
+		return false
 	}
 	status := *needMock
 
 	if !status {
-		return
+		return false
 	}
 
 	fmt.Print("\n\n-------------------------------------------------- MOCK --------------------------------------------------\n\n")
 	factory.UsersTableSeeder(true)
+	return true
 }
