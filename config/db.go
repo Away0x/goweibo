@@ -44,7 +44,7 @@ func newDBConfig() *dbConfig {
 		Username:   username,
 		Password:   password,
 		URL:        url,
-		Debug:      AppConfig.RunMode == runmodeDebug,
+		Debug:      AppConfig.RunMode == RunmodeDebug,
 	}
 }
 

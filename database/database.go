@@ -1,10 +1,11 @@
 package database
 
 import (
-	"log"
+	"fmt"
 
 	_ "github.com/go-sql-driver/mysql" // mysql
 	"github.com/jinzhu/gorm"
+	"github.com/lexkong/log"
 
 	"gin_weibo/config"
 )
@@ -16,9 +17,9 @@ var DB *gorm.DB
 func InitDB() *gorm.DB {
 	db, err := gorm.Open(config.DBConfig.Connection, config.DBConfig.URL)
 	if err != nil {
-		log.Fatalf("Database connection failed. Database url: %s error: %v", config.DBConfig.URL, err)
+		log.Fatal("Database connection failed. Database url: "+config.DBConfig.URL+" error: ", err)
 	} else {
-		log.Println("gorm open success!")
+		fmt.Print("\n\n------------------------------------------ GORM OPEN SUCCESS! -----------------------------------------------\n\n")
 	}
 
 	db.LogMode(config.DBConfig.Debug)

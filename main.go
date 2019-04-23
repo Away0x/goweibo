@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
-	"log"
 	"net/http"
+
+	"github.com/lexkong/log"
 
 	"github.com/gin-gonic/gin"
 
@@ -47,8 +49,10 @@ func main() {
 	routes.Register(g)
 
 	// 启动
-	log.Printf("Start to listening the incoming requests on http address: %s", config.AppConfig.Addr)
-	log.Fatal(http.ListenAndServe(config.AppConfig.Addr, g).Error())
+	fmt.Printf("\n\n-------------------------------------------------- Start to listening the incoming requests on http address: %s --------------------------------------------------\n\n", config.AppConfig.Addr)
+	if err := http.ListenAndServe(config.AppConfig.Addr, g); err != nil {
+		log.Fatal("http server 启动失败", err)
+	}
 }
 
 // 配置 gin
@@ -57,8 +61,8 @@ func setupGin(g *gin.Engine) {
 	gin.SetMode(config.AppConfig.RunMode)
 
 	// 项目静态文件配置
-	g.Static("/"+config.ProjectConfig.PublicPath, config.ProjectConfig.PublicPath)
-	g.StaticFile("/favicon.ico", config.ProjectConfig.PublicPath+"/favicon.ico")
+	g.Static("/"+config.AppConfig.PublicPath, config.AppConfig.PublicPath)
+	g.StaticFile("/favicon.ico", config.AppConfig.PublicPath+"/favicon.ico")
 
 	// 模板配置
 	// 注册模板函数
@@ -72,7 +76,7 @@ func setupGin(g *gin.Engine) {
 // 数据 mock
 func factoryMake() {
 	// 只有非 release 时才可用该函数
-	if config.AppConfig.RunMode == "release" {
+	if config.AppConfig.RunMode == config.RunmodeRelease {
 		return
 	}
 	status := *needMock
@@ -81,6 +85,6 @@ func factoryMake() {
 		return
 	}
 
-	log.Println(".................................... MOCK ......................................................")
+	fmt.Print("\n\n-------------------------------------------------- MOCK --------------------------------------------------\n\n")
 	factory.UsersTableSeeder(true)
 }

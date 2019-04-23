@@ -17,6 +17,9 @@ type appConfig struct {
 	// secret key
 	Key string
 
+	// 静态资源存放路径
+	PublicPath string
+
 	// 是否开启 csrf
 	EnableCsrf bool
 	// csrf param name
@@ -45,6 +48,8 @@ func newAppConfig() *appConfig {
 		Addr:    viper.GetString("APP.ADDR"),
 		URL:     viper.GetString("APP.URL"),
 		Key:     viper.GetString("APP.KEY"),
+
+		PublicPath: "public",
 
 		EnableCsrf:     viper.GetBool("APP.ENABLE_CSRF"),
 		CsrfParamName:  "_csrf",

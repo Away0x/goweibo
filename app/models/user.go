@@ -7,6 +7,8 @@ import (
 	"gin_weibo/pkg/auth"
 	"strconv"
 	"time"
+
+	"github.com/lexkong/log"
 )
 
 // User 用户模型
@@ -29,29 +31,43 @@ func (User) TableName() string {
 }
 
 // Get 获取一个用户
-func (u *User) Get(id int) error {
-	d := database.DB.First(&u, id)
-	return d.Error
+func (u *User) Get(id int) (err error) {
+	if err = database.DB.First(&u, id).Error; err != nil {
+		log.Warnf("用户获取失败: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 // GetByEmail 根据 email 来获取用户
-func (u *User) GetByEmail(email string) error {
-	d := database.DB.Where("email = ?", email).First(&u)
-	return d.Error
+func (u *User) GetByEmail(email string) (err error) {
+	if err = database.DB.Where("email = ?", email).First(&u).Error; err != nil {
+		log.Warnf("用户获取失败: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 // All 获取所有用户
-func (User) All() ([]*User, error) {
-	users := make([]*User, 0)
-	d := database.DB.Find(&users)
-	return users, d.Error
+func (User) All() (users []*User, err error) {
+	users = make([]*User, 0)
+
+	if err = database.DB.Find(&users).Error; err != nil {
+		log.Warnf("用户获取失败: %v", err)
+		return users, err
+	}
+
+	return users, nil
 }
 
 // List 获取用户列表
-func (User) List(offset, limit int) ([]*User, error) {
-	users := make([]*User, 0)
+func (User) List(offset, limit int) (users []*User, err error) {
+	users = make([]*User, 0)
 
 	if err := database.DB.Offset(offset).Limit(limit).Order("id desc").Find(&users).Error; err != nil {
+		log.Warnf("用户获取失败: %v", err)
 		return users, err
 	}
 
@@ -59,35 +75,54 @@ func (User) List(offset, limit int) ([]*User, error) {
 }
 
 // AllCount 总用户数
-func (u *User) AllCount() int {
-	count := 0
+func (u *User) AllCount() (count int) {
+	count = 0
 	database.DB.Table(u.TableName()).Count(&count)
 	return count
 }
 
 // Create 创建用户
-func (u *User) Create() error {
-	if err := u.Encrypt(); err != nil {
+func (u *User) Create() (err error) {
+	if err = u.Encrypt(); err != nil {
+		log.Warnf("用户创建失败: %v", err)
 		return err
 	}
-	return database.DB.Create(&u).Error
+
+	if err = database.DB.Create(&u).Error; err != nil {
+		log.Warnf("用户创建失败: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 // Update 更新用户
-func (u *User) Update(needEncryotPwd bool) error {
+func (u *User) Update(needEncryotPwd bool) (err error) {
 	if needEncryotPwd {
-		if err := u.Encrypt(); err != nil {
+		if err = u.Encrypt(); err != nil {
+			log.Warnf("用户更新失败: %v", err)
 			return err
 		}
 	}
 
-	return database.DB.Save(&u).Error
+	if err = database.DB.Save(&u).Error; err != nil {
+		log.Warnf("用户更新失败: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 // Delete : 删除用户
-func (u *User) Delete(id int) error {
+func (u *User) Delete(id int) (err error) {
 	u.BaseModel.ID = uint(id)
-	return database.DB.Delete(&u).Error
+
+	if err = database.DB.Delete(&u).Error; err != nil {
+		log.Warnf("用户删除失败: %v", err)
+		return err
+	}
+
+	return nil
 }
 
 // Encrypt 对密码进行加密

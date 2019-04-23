@@ -13,9 +13,9 @@ var (
 	manifests = make(map[string]string)
 )
 
-// 生成项目静态文件地址
+// Static 生成项目静态文件地址
 func Static(staticFilePath string) string {
-	return "/" + config.ProjectConfig.PublicPath + staticFilePath
+	return "/" + config.AppConfig.PublicPath + staticFilePath
 }
 
 // Mix 根据 laravel-mix 生成静态文件 path
@@ -23,7 +23,7 @@ func Mix(staticFilePath string) string {
 	result := manifests[staticFilePath]
 
 	if result == "" {
-		filename := path.Join(config.ProjectConfig.PublicPath, "mix-manifest.json")
+		filename := path.Join(config.AppConfig.PublicPath, "mix-manifest.json")
 		file, err := os.Open(filename)
 		if err != nil {
 			return Static(staticFilePath)

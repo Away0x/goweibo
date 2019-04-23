@@ -16,6 +16,7 @@
 
 /tmp
 /storage/fresh_tmp
+/storage/logs
 /node_modules
 npm-debug.log
 yarn-error.log
