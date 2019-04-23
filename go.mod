@@ -28,4 +28,5 @@ require (
 	golang.org/x/net v0.0.0-20190320064053-1272bf9dcd53 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
 	gopkg.in/go-playground/validator.v9 v9.28.0 // indirect
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )

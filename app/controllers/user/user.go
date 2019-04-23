@@ -1,12 +1,15 @@
 package user
 
 import (
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/auth"
 	"gin_weibo/app/models"
 
 	"gin_weibo/app/controllers"
+	"gin_weibo/app/helpers"
 	"gin_weibo/app/policies"
 	userRequest "gin_weibo/app/requests/user"
 	"gin_weibo/app/services"
@@ -86,9 +89,13 @@ func Store(c *gin.Context) {
 		return
 	}
 
-	auth.Login(c, user)
-	flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
-	controllers.RedirectToUserShowPage(c, user)
+	// auth.Login(c, user)
+	// flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
+	// controllers.RedirectToUserShowPage(c, user)
+
+	sendConfirmEmail(user)
+	flash.NewSuccessFlash(c, "验证邮件已发送到你的注册邮箱上，请注意查收。")
+	controllers.RedirectToRootPage(c)
 }
 
 // Edit 编辑用户页面
@@ -169,5 +176,36 @@ func Destory(c *gin.Context, currentUser *models.User) {
 
 // ConfirmEmail : 邮箱验证
 func ConfirmEmail(c *gin.Context) {
+	token := c.Param("token")
 
+	user := &models.User{}
+	err := user.GetByActivationToken(token)
+	if user == nil || err != nil {
+		controllers.Render404(c)
+		return
+	}
+
+	// 更新用户
+	user.Activated = models.TrueTinyint
+	user.ActivationToken = ""
+	if err = user.Update(false); err != nil {
+		flash.NewSuccessFlash(c, "用户激活失败: "+err.Error())
+		controllers.RedirectToRootPage(c)
+		return
+	}
+
+	auth.Login(c, user)
+	flash.NewSuccessFlash(c, "恭喜你，激活成功！")
+	controllers.RedirectToUserShowPage(c, user)
+}
+
+// -------------- private
+func sendConfirmEmail(u *models.User) {
+	subject := "感谢注册 Weibo 应用！请确认你的邮箱。"
+	tpl := "mail/confirm.html"
+	confirmURL := controllers.CreateSignupConfirmURL(u)
+
+	if err := helpers.SendMail([]string{u.Email}, subject, tpl, gin.H{"confirmURL": confirmURL}); err != nil {
+		fmt.Printf("send mail %v\n", err)
+	}
 }

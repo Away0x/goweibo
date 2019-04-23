@@ -1,4 +1,4 @@
-{{ define "email/confirm.html" }}
+{{ define "mail/confirm.html" }}
 
 <!DOCTYPE html>
 <html>
@@ -11,8 +11,8 @@
 
   <p>
     请点击下面的链接完成注册：
-    <a href="/signup/confirm/{{ .token }}">
-      /signup/confirm/{{ .token }}
+    <a href="{{ .confirmURL }}">
+      {{ .confirmURL }}
     </a>
   </p>
 

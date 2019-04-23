@@ -72,7 +72,7 @@ func setupGin(g *gin.Engine) {
 		"Mix":    helpers.Mix,
 		"Static": helpers.Static,
 	})
-	g.LoadHTMLGlob("resources/views/**/*")
+	g.LoadHTMLGlob(config.AppConfig.ViewsPath + "/**/*")
 }
 
 // 数据 mock

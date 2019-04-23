@@ -19,6 +19,10 @@ type appConfig struct {
 
 	// 静态资源存放路径
 	PublicPath string
+	// 模板等前端源码文件存放路径
+	ResourcesPath string
+	// 模板文件存放的路径
+	ViewsPath string
 
 	// 是否开启 csrf
 	EnableCsrf bool
@@ -49,7 +53,9 @@ func newAppConfig() *appConfig {
 		URL:     viper.GetString("APP.URL"),
 		Key:     viper.GetString("APP.KEY"),
 
-		PublicPath: "public",
+		PublicPath:    "public",
+		ResourcesPath: "resources",
+		ViewsPath:     "resources/views",
 
 		EnableCsrf:     viper.GetBool("APP.ENABLE_CSRF"),
 		CsrfParamName:  "_csrf",

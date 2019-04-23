@@ -30,6 +30,8 @@ var (
 	AppConfig *appConfig
 	// DBConfig 数据库配置
 	DBConfig *dbConfig
+	// MailConfig 邮件配置
+	MailConfig *mailConfig
 )
 
 // InitConfig 初始化配置
@@ -48,6 +50,8 @@ func InitConfig() {
 	AppConfig = newAppConfig()
 	// 初始化数据库配置
 	DBConfig = newDBConfig()
+	// 初始化邮件配置
+	MailConfig = newMailConfig()
 
 	// 热更新配置文件
 	watchConfig()

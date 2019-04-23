@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"gin_weibo/database"
 	"gin_weibo/pkg/auth"
+	"gin_weibo/pkg/utils"
 	"strconv"
 	"time"
 
@@ -20,7 +21,7 @@ type User struct {
 	EmailVerifiedAt time.Time `gorm:"column:email_verified_at"`
 	Password        string    `gorm:"column:password;type:varchar(255);not null"`
 	IsAdmin         uint      `gorm:"column:is_admin;type:tinyint(1)"`
-	ActivationTOken string    `gorm:"column:activation_token;type:varchar(255)"`
+	ActivationToken string    `gorm:"column:activation_token;type:varchar(255)"`
 	Activated       uint      `gorm:"column:activated;type:tinyint(1);not null"`
 }
 
@@ -32,7 +33,6 @@ func (User) TableName() string {
 // Get 获取一个用户
 func (u *User) Get(id int) (err error) {
 	if err = database.DB.First(&u, id).Error; err != nil {
-		log.Warnf("用户获取失败: %v", err)
 		return err
 	}
 
@@ -42,7 +42,15 @@ func (u *User) Get(id int) (err error) {
 // GetByEmail 根据 email 来获取用户
 func (u *User) GetByEmail(email string) (err error) {
 	if err = database.DB.Where("email = ?", email).First(&u).Error; err != nil {
-		log.Warnf("用户获取失败: %v", err)
+		return err
+	}
+
+	return nil
+}
+
+// GetByActivationToken 根据 activation_token 来获取用户
+func (u *User) GetByActivationToken(token string) (err error) {
+	if err = database.DB.Where("activation_token = ?", token).First(&u).Error; err != nil {
 		return err
 	}
 
@@ -54,7 +62,6 @@ func (User) All() (users []*User, err error) {
 	users = make([]*User, 0)
 
 	if err = database.DB.Find(&users).Error; err != nil {
-		log.Warnf("用户获取失败: %v", err)
 		return users, err
 	}
 
@@ -66,7 +73,6 @@ func (User) List(offset, limit int) (users []*User, err error) {
 	users = make([]*User, 0)
 
 	if err := database.DB.Offset(offset).Limit(limit).Order("id desc").Find(&users).Error; err != nil {
-		log.Warnf("用户获取失败: %v", err)
 		return users, err
 	}
 
@@ -85,6 +91,11 @@ func (u *User) Create() (err error) {
 	if err = u.Encrypt(); err != nil {
 		log.Warnf("用户创建失败: %v", err)
 		return err
+	}
+
+	// 生成用户激活 token
+	if u.ActivationToken == "" {
+		u.ActivationToken = string(utils.RandomCreateBytes(30))
 	}
 
 	if err = database.DB.Create(&u).Error; err != nil {

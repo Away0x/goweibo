@@ -15,10 +15,9 @@ DB:
   PASSWORD: secret
 
 MAIL:
-  MAIL_DRIVER: smtp
-  MAIL_HOST: smtp.mailtrap.io
-  MAIL_PORT: 2525
+  MAIL_DRIVER: smtp # smtp or log (使用支持 ESMTP 的 SMTP 服务器发送邮件)
+  MAIL_HOST: smtp.mailtrap.io # 邮箱的 SMTP 服务器地址
+  MAIL_PORT: 2525 # 邮箱的 SMTP 服务器端口
   MAIL_USERNAME:
-  MAIL_PASSWORD:
-  MAIL_ENCRYPTION:
-  MAIN_FROM_ADDRESS:
+  MAIL_PASSWORD: # 授权码或密码
+  MAIL_FROM_NAME: gin_weibo # 用来作为邮件的发送者名称

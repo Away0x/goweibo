@@ -10,6 +10,7 @@ import (
 
 // Redirect : 路由重定向
 func Redirect(c *gin.Context, redirectRoute string) {
+	// 千万注意，这个地方不能用 301(永久重定向)
 	c.Redirect(http.StatusFound, config.AppConfig.URL+redirectRoute)
 }
 
