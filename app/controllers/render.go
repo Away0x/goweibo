@@ -34,8 +34,9 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	obj[flash.ValidateContextAndCookieKeyName] = validateMsgArr
 	// csrf
 	if config.AppConfig.EnableCsrf {
-		if csrfHTML, ok := csrfField(c); ok {
+		if csrfHTML, csrfToken, ok := csrfField(c); ok {
 			obj["csrfField"] = csrfHTML
+			obj["csrfToken"] = csrfToken
 		}
 	}
 
@@ -83,12 +84,12 @@ func RenderUnauthorized(c *gin.Context) {
 }
 
 // private ---------------------
-func csrfField(c *gin.Context) (template.HTML, bool) {
+func csrfField(c *gin.Context) (template.HTML, string, bool) {
 	token := c.Keys[config.AppConfig.CsrfParamName]
 	tokenStr, ok := token.(string)
 	if !ok {
-		return "", false
+		return "", "", false
 	}
 
-	return template.HTML(fmt.Sprintf(`<input type="hidden" name="%s" value="%s">`, config.AppConfig.CsrfParamName, tokenStr)), true
+	return template.HTML(fmt.Sprintf(`<input type="hidden" name="%s" value="%s">`, config.AppConfig.CsrfParamName, tokenStr)), tokenStr, true
 }

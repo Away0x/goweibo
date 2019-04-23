@@ -45,7 +45,7 @@ func getCsrfTokenFromCookie(c *gin.Context) (token string) {
 
 	if token == "" {
 		token = string(utils.RandomCreateBytes(32))
-		c.SetCookie(keyName, token, 0, "/", "", false, true)
+		c.SetCookie(keyName, token, 0, "/", "", false, false)
 	}
 	c.Keys[keyName] = token
 

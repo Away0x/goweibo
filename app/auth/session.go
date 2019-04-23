@@ -10,13 +10,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// 登录 (”记住我“功能还没做)
-// func Login(c *gin.Context, u *models.User, rememberMe bool) {}
+const (
+	rememberFormKey = "remember"
+)
+
+// Login 登录
 func Login(c *gin.Context, u *models.User) {
+	// 记住我
+	rememberMe := c.PostForm(rememberFormKey) == "on"
+	if rememberMe {
+
+	}
+
 	session.SetSession(c, config.AppConfig.AuthSessionKey, u.GetIDstring())
 }
 
-// 登出
+// Logout 登出
 func Logout(c *gin.Context) {
 	session.DeleteSession(c, config.AppConfig.AuthSessionKey)
 }

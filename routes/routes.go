@@ -20,6 +20,11 @@ func Register(g *gin.Engine) *gin.Engine {
 	g.Use(gin.Logger())
 	// session
 	store := ginSessions.NewCookieStore(sessionKeyPairs)
+	store.Options(ginSessions.Options{
+		HttpOnly: true,
+		Path:     "/",
+		MaxAge:   86400 * 30,
+	})
 	g.Use(ginSessions.Middleware(sessionStoreName, store))
 	// 自定义全局中间件
 	g.Use(middleware.Csrf())     // csrf

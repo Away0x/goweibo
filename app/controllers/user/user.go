@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gin-gonic/gin"
 
@@ -188,6 +189,7 @@ func ConfirmEmail(c *gin.Context) {
 	// 更新用户
 	user.Activated = models.TrueTinyint
 	user.ActivationToken = ""
+	user.EmailVerifiedAt = time.Now()
 	if err = user.Update(false); err != nil {
 		flash.NewSuccessFlash(c, "用户激活失败: "+err.Error())
 		controllers.RedirectToRootPage(c)

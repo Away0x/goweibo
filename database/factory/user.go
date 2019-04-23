@@ -29,6 +29,7 @@ func userFactory(i int) *factory.Factory {
 		Password:        "123456",
 		EmailVerifiedAt: time.Now(),
 		Activated:       models.TrueTinyint,
+		RememberToken:   string(utils.RandomCreateBytes(10)),
 	}
 	// 第一个用户是管理员
 	if i == 0 {
