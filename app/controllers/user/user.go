@@ -1,13 +1,13 @@
 package user
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/auth"
 	"gin_weibo/app/models"
+	"gin_weibo/routes/named"
 
 	"gin_weibo/app/controllers"
 	"gin_weibo/app/helpers"
@@ -31,7 +31,7 @@ func Index(c *gin.Context, currentUser *models.User) {
 
 	if currentPage > pageTotalCount {
 		// controllers.Render404(c)
-		controllers.RedirectToUserIndexPage(c, "1") // 超出就跳转到第一页
+		controllers.Redirect(c, named.G("users.index")+"?page=1", false)
 		return
 	}
 
@@ -86,17 +86,21 @@ func Store(c *gin.Context) {
 
 	if len(errors) != 0 || user == nil {
 		flash.SaveValidateMessage(c, errors)
-		controllers.RedirectToUserCreatePage(c)
+		controllers.RedirectRouter(c, "users.create")
 		return
 	}
 
 	// auth.Login(c, user)
 	// flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
-	// controllers.RedirectToUserShowPage(c, user)
+	// controllers.RedirectRouter(c, "users.show", user)
 
-	sendConfirmEmail(user)
-	flash.NewSuccessFlash(c, "验证邮件已发送到你的注册邮箱上，请注意查收。")
-	controllers.RedirectToRootPage(c)
+	if err := sendConfirmEmail(user); err != nil {
+		flash.NewDangerFlash(c, "验证邮件发送失败: "+err.Error())
+	} else {
+		flash.NewSuccessFlash(c, "验证邮件已发送到你的注册邮箱上，请注意查收。")
+	}
+
+	controllers.RedirectRouter(c, "root")
 }
 
 // Edit 编辑用户页面
@@ -140,12 +144,12 @@ func Update(c *gin.Context, currentUser *models.User) {
 
 	if len(errors) != 0 {
 		flash.SaveValidateMessage(c, errors)
-		controllers.RedirectToUserEditPage(c, currentUser.GetIDstring())
+		controllers.RedirectRouter(c, "users.edit", currentUser.ID)
 		return
 	}
 
 	flash.NewSuccessFlash(c, "个人资料更新成功！")
-	controllers.RedirectToUserShowPage(c, currentUser)
+	controllers.RedirectRouter(c, "users.show", currentUser.ID)
 }
 
 // Destory 删除用户
@@ -167,12 +171,11 @@ func Destory(c *gin.Context, currentUser *models.User) {
 	user := &models.User{}
 	if err = user.Delete(id); err != nil {
 		flash.NewDangerFlash(c, "删除失败: "+err.Error())
-		controllers.RedirectToUserIndexPage(c, page)
-		return
+	} else {
+		flash.NewSuccessFlash(c, "成功删除用户！")
 	}
 
-	flash.NewSuccessFlash(c, "成功删除用户！")
-	controllers.RedirectToUserIndexPage(c, page)
+	controllers.Redirect(c, named.G("users.index")+"?page="+page, false)
 }
 
 // ConfirmEmail : 邮箱验证
@@ -192,22 +195,20 @@ func ConfirmEmail(c *gin.Context) {
 	user.EmailVerifiedAt = time.Now()
 	if err = user.Update(false); err != nil {
 		flash.NewSuccessFlash(c, "用户激活失败: "+err.Error())
-		controllers.RedirectToRootPage(c)
+		controllers.RedirectRouter(c, "root")
 		return
 	}
 
 	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "恭喜你，激活成功！")
-	controllers.RedirectToUserShowPage(c, user)
+	controllers.RedirectRouter(c, "users.show", user.ID)
 }
 
 // -------------- private
-func sendConfirmEmail(u *models.User) {
+func sendConfirmEmail(u *models.User) error {
 	subject := "感谢注册 Weibo 应用！请确认你的邮箱。"
 	tpl := "mail/confirm.html"
-	confirmURL := controllers.CreateSignupConfirmURL(u)
+	confirmURL := named.G("signup.confirm", "token", u.ActivationToken)
 
-	if err := helpers.SendMail([]string{u.Email}, subject, tpl, gin.H{"confirmURL": confirmURL}); err != nil {
-		fmt.Printf("send mail %v\n", err)
-	}
+	return helpers.SendMail([]string{u.Email}, subject, tpl, gin.H{"confirmURL": confirmURL})
 }

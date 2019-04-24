@@ -22,7 +22,7 @@
 
             {{ template "shared/errors" . }}
 
-            <form method="POST" action="/users">
+            <form method="POST" action='{{ Route "users.store" }}'>
                 {{ .csrfField }}
 
                 <div class="form-group">

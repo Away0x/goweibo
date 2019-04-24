@@ -20,13 +20,13 @@
           {{ range .users }}
             <div class="list-group-item">
               <img class="mr-3" src="{{ .Avatar }}?s=100" alt="{{ .Name }}" width=32>
-              <a href="/users/show/{{ .ID }}">
+              <a href='{{ Route "users.show" .ID }}'>
                 {{ .Name }}
               </a>
               <!-- 当前用户为管理员并且不是操作的不是自己，才显示删除按钮 -->
               {{ if $.currentUserData.IsAdmin }}
                 {{ if ne .ID $.currentUserData.ID }}
-                  <form action="/users/destory/{{ .ID }}?page={{ $.pagination.CurrentPage }}" method="post" class="float-right">
+                  <form action='{{ Route "users.destory" .ID }}?page={{ $.pagination.CurrentPage }}' method="post" class="float-right">
                     {{ $.csrfField }}
                     <button type="submit" class="btn btn-sm btn-danger delete-btn">删除</button>
                   </form>

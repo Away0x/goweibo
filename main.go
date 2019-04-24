@@ -15,6 +15,7 @@ import (
 	"gin_weibo/database"
 	"gin_weibo/database/factory"
 	"gin_weibo/routes"
+	"gin_weibo/routes/named"
 
 	"github.com/spf13/pflag"
 )
@@ -71,6 +72,7 @@ func setupGin(g *gin.Engine) {
 	g.SetFuncMap(template.FuncMap{
 		"Mix":    helpers.Mix,
 		"Static": helpers.Static,
+		"Route":  named.G,
 	})
 	g.LoadHTMLGlob(config.AppConfig.ViewsPath + "/**/*")
 }

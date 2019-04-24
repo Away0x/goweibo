@@ -16,7 +16,7 @@ func Guest(handler gin.HandlerFunc) gin.HandlerFunc {
 		currentUser, err := auth.GetCurrentUserFromContext(c)
 		if currentUser != nil || err == nil {
 			flash.NewInfoFlash(c, "您已登录，无需再次操作。")
-			controllers.RedirectToRootPage(c)
+			controllers.RedirectRouter(c, "root")
 			return
 		}
 

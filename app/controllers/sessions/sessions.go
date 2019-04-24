@@ -3,9 +3,8 @@ package sessions
 import (
 	"gin_weibo/app/auth"
 	"gin_weibo/app/controllers"
-	"gin_weibo/pkg/flash"
-
 	userRequest "gin_weibo/app/requests/user"
+	"gin_weibo/pkg/flash"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +34,7 @@ func Store(c *gin.Context) {
 	// 用户是否激活
 	if !user.IsActivated() {
 		flash.NewWarningFlash(c, "你的账号未激活，请检查邮箱中的注册邮件进行激活。")
-		controllers.RedirectToRootPage(c)
+		controllers.RedirectRouter(c, "root")
 		return
 	}
 
@@ -45,11 +44,11 @@ func Store(c *gin.Context) {
 	// 返回上次访问的页面
 	back := c.Query("back")
 	if back != "" {
-		controllers.Redirect(c, back)
+		controllers.Redirect(c, back, true)
 		return
 	}
 
-	controllers.RedirectToUserShowPage(c, user)
+	controllers.RedirectRouter(c, "users.show", user.ID)
 }
 
 // Destroy 登出 (销毁会话)

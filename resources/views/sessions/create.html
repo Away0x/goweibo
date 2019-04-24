@@ -21,7 +21,7 @@
           <div class="card-body">
             {{ template "shared/errors" . }}
 
-            <form method="POST" action="/login?back={{ .back }}">
+            <form method="POST" action='{{ Route "login.store" }}?back={{ .back }}'>
                 {{ .csrfField }}
 
                 <div class="form-group">
@@ -46,7 +46,7 @@
 
             <hr>
 
-            <p>还没账号？<a href="/signup">现在注册！</a></p>
+            <p>还没账号？<a href='{{ Route "signup" }}'>现在注册！</a></p>
           </div>
         </div>
       </div>

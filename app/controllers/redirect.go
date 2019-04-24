@@ -1,50 +1,42 @@
 package controllers
 
 import (
-	"gin_weibo/app/models"
 	"gin_weibo/config"
+	"gin_weibo/routes/named"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-// Redirect : 路由重定向
-func Redirect(c *gin.Context, redirectRoute string) {
-	// 千万注意，这个地方不能用 301(永久重定向)
-	c.Redirect(http.StatusFound, config.AppConfig.URL+redirectRoute)
+// Redirect : 路由重定向 use path
+func Redirect(c *gin.Context, redirectPath string, withRoot bool) {
+	path := redirectPath
+	if withRoot {
+		path = config.AppConfig.URL + redirectPath
+	}
+
+	redirect(c, path)
 }
 
-// RedirectToUserIndexPage : 重定向到用户列表页面
-func RedirectToUserIndexPage(c *gin.Context, page string) {
-	Redirect(c, "/users?page="+page)
-}
-
-// RedirectToUserShowPage : 重定向到用户展示页面
-func RedirectToUserShowPage(c *gin.Context, u *models.User) {
-	Redirect(c, "/users/show/"+u.GetIDstring())
+// RedirectRouter : 路由重定向 use router name
+func RedirectRouter(c *gin.Context, routerName string, args ...interface{}) {
+	redirect(c, named.G(routerName, args...))
 }
 
 // RedirectToLoginPage : 重定向到登录页面
 func RedirectToLoginPage(c *gin.Context) {
+	loginPath := named.G("login.create")
+
 	if c.Request.Method == http.MethodPost {
-		Redirect(c, "/login")
+		redirect(c, loginPath)
 		return
 	}
 
-	Redirect(c, "/login?back="+c.Request.URL.Path)
+	redirect(c, loginPath+"?back="+c.Request.URL.Path)
 }
 
-// RedirectToUserCreatePage : 重定向到用户创建页面 (注册页面)
-func RedirectToUserCreatePage(c *gin.Context) {
-	Redirect(c, "/users/create")
-}
-
-// RedirectToUserEditPage : 重定向到用户更新编辑页面
-func RedirectToUserEditPage(c *gin.Context, idStr string) {
-	Redirect(c, "/users/edit/"+idStr)
-}
-
-// RedirectToRootPage :重定向到 root page
-func RedirectToRootPage(c *gin.Context) {
-	Redirect(c, "/")
+// ------------------------ private
+func redirect(c *gin.Context, redirectPath string) {
+	// 千万注意，这个地方不能用 301(永久重定向)
+	c.Redirect(http.StatusFound, redirectPath)
 }

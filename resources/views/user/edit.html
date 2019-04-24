@@ -28,7 +28,7 @@
                 </a>
               </div>
 
-              <form method="POST" action="/users/update/{{ .userData.ID }}">
+              <form method="POST" action='{{ Route "users.update" .userData.ID }}'>
                   {{ .csrfField }}
 
                   <div class="form-group">

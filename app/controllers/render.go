@@ -5,6 +5,7 @@ import (
 	"gin_weibo/app/helpers"
 	"gin_weibo/config"
 	"gin_weibo/pkg/flash"
+	"gin_weibo/routes/named"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -64,7 +65,7 @@ func RenderError(c *gin.Context, code int, msg string) {
 		"errorMsg":  msg,
 		"errorCode": errorCode,
 		"errorImg":  helpers.Static("/svg/" + strconv.Itoa(code) + ".svg"),
-		"backUrl":   "/",
+		"backUrl":   named.G("root"),
 	})
 }
 
