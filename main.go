@@ -46,6 +46,7 @@ func main() {
 	db.AutoMigrate(
 		&models.User{},
 		&models.PasswordReset{},
+		&models.Status{},
 	)
 	defer db.Close()
 
