@@ -135,7 +135,8 @@ func (u *User) Update(needEncryotPwd bool) (err error) {
 func (u *User) Delete(id int) (err error) {
 	u.BaseModel.ID = uint(id)
 
-	if err = database.DB.Delete(&u).Error; err != nil {
+	// Unscoped: 永久删除而不是软删除 (由于该操作是管理员操作的，所以不使用软删除)
+	if err = database.DB.Unscoped().Delete(&u).Error; err != nil {
 		log.Warnf("用户删除失败: %v", err)
 		return err
 	}
