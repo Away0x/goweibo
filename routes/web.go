@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
+	"gin_weibo/app/controllers/password"
 	"gin_weibo/app/controllers/sessions"
 	staticpage "gin_weibo/app/controllers/static_page"
 	"gin_weibo/app/controllers/user"
@@ -69,5 +70,22 @@ func registerWeb(g *gin.Engine) {
 		g.POST("/logout", sessions.Destroy)
 		named.Name(g, "login.destory", "/logout")
 		named.Name(g, "logout", "/logout")
+	}
+
+	// ------------------------------ password ------------------------------
+	passwordRouter := g.Group("/password")
+	{
+		// 显示重置密码的邮箱发送页面
+		passwordRouter.GET("/reset", wrapper.Guest(password.ShowLinkRequestsForm))
+		named.Name(passwordRouter, "password.request", "/reset")
+		// 邮箱发送重设链接
+		passwordRouter.POST("/email", wrapper.Guest(password.SendResetLinkEmail))
+		named.Name(passwordRouter, "password.email", "/email")
+		// 密码更新页面
+		passwordRouter.GET("/reset/:token", wrapper.Guest(password.ShowResetForm))
+		named.Name(passwordRouter, "password.reset", "/reset/:token")
+		// 执行密码更新操作
+		passwordRouter.POST("/reset", wrapper.Guest(password.Reset))
+		named.Name(passwordRouter, "password.update", "/reset")
 	}
 }
