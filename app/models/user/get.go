@@ -6,23 +6,30 @@ import (
 
 // Get -
 func Get(id int) (*User, error) {
-  user := &User{}
-  d := database.DB.First(&user, id)
-  return user, d.Error
+	user := &User{}
+	d := database.DB.First(&user, id)
+	return user, d.Error
 }
 
 // GetByEmail -
 func GetByEmail(email string) (*User, error) {
-  user := &User{}
-  d := database.DB.Where("email = ?", email).First(&user)
-  return user, d.Error
+	user := &User{}
+	d := database.DB.Where("email = ?", email).First(&user)
+	return user, d.Error
 }
 
 // GetByActivationToken -
 func GetByActivationToken(token string) (*User, error) {
-  user := &User{}
-  d := database.DB.Where("activation_token = ?", token).First(&user)
-  return user, d.Error
+	user := &User{}
+	d := database.DB.Where("activation_token = ?", token).First(&user)
+	return user, d.Error
+}
+
+// GetByRememberToken -
+func GetByRememberToken(token string) (*User, error) {
+	user := &User{}
+	d := database.DB.Where("remember_token = ?", token).First(&user)
+	return user, d.Error
 }
 
 // List 获取用户列表

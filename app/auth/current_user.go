@@ -26,11 +26,12 @@ func GetCurrentUserFromContext(c *gin.Context) (*userModel.User, error) {
 		return nil, err
 	}
 
-	if user, ok := userDataFromContext.(*userModel.User); !ok {
+	user, ok := userDataFromContext.(*userModel.User)
+	if !ok {
 		return nil, err
-	} else {
-		return user, nil
 	}
+
+	return user, nil
 }
 
 // GetUserFromContextOrDataBase : 从 context 或者从数据库中获取用户模型
