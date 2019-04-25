@@ -6,6 +6,7 @@ import (
 	"gin_weibo/app/controllers/password"
 	"gin_weibo/app/controllers/sessions"
 	staticpage "gin_weibo/app/controllers/static_page"
+	"gin_weibo/app/controllers/status"
 	"gin_weibo/app/controllers/user"
 	"gin_weibo/middleware/wrapper"
 	"gin_weibo/routes/named"
@@ -87,5 +88,16 @@ func registerWeb(g *gin.Engine) {
 		// 执行密码更新操作
 		passwordRouter.POST("/reset", wrapper.Guest(password.Reset))
 		named.Name(passwordRouter, "password.update", "/reset")
+	}
+
+	// ------------------------------ statuses ------------------------------
+	statusRouter := g.Group("/statuses")
+	{
+		// 处理创建微博的请求
+		statusRouter.POST("", wrapper.Auth(status.Store))
+		named.Name(statusRouter, "statuses.store", "")
+		// 处理删除微博的请求
+		statusRouter.POST("/destroy/:id", wrapper.Auth(status.Destroy))
+		named.Name(statusRouter, "statuses.destroy", "/destroy/:id")
 	}
 }
