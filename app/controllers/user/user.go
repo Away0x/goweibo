@@ -7,6 +7,7 @@ import (
 
 	"gin_weibo/app/auth"
 	"gin_weibo/app/models"
+	statusModel "gin_weibo/app/models/status"
 	userModel "gin_weibo/app/models/user"
 	"gin_weibo/routes/named"
 
@@ -68,9 +69,27 @@ func Show(c *gin.Context, currentUser *userModel.User) {
 		return
 	}
 
-	controllers.Render(c, "user/show.html", gin.H{
-		"userData": viewmodels.NewUserViewModelSerializer(user),
-	})
+	// 获取分页参数
+	statusesAllLength, _ := statusModel.GetUserAllStatusCount(int(user.ID))
+	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, 10, statusesAllLength)
+	if currentPage > pageTotalCount {
+		controllers.Redirect(c, named.G("users.show")+"?page=1", false)
+		return
+	}
+
+	// 获取用户的微博
+	statuses, _ := statusModel.GetUserStatus(int(user.ID), offset, limit)
+	statusesViewModels := make([]*viewmodels.StatusViewModel, 0)
+	for _, s := range statuses {
+		statusesViewModels = append(statusesViewModels, viewmodels.NewStatusViewModelSerializer(s))
+	}
+
+	controllers.Render(c, "user/show.html",
+		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
+			"userData":       viewmodels.NewUserViewModelSerializer(user),
+			"statuses":       statusesViewModels,
+			"statusesLength": statusesAllLength,
+		}))
 }
 
 // Store 保存用户

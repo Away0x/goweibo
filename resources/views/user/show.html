@@ -20,11 +20,33 @@
               <section class="user_info">
                 {{ template "shared/user_info" . }}
               </section>
+              <!-- 微博 -->
+              <section class="status">
+                {{ if gt .statusesLength 0 }}
+                  <ul class="list-unstyled">
+                    {{ range .statuses }}
+                      <li class="media mt-4 mb-4">
+                        <a href='{{ Route "users.show" .UserID }}'>
+                          <img src="{{ $.userData.Avatar }}" alt="{{ $.userData.Name }}" class="mr-3 gravatar"/>
+                        </a>
+                        <div class="media-body">
+                          <h5 class="mt-0 mb-1">{{ $.userData.Name }} <small> / {{ .CreatedAt }}</small></h5>
+                          {{ .Content }}
+                        </div>
+                      </li>
+                    {{ end }}
+                  </ul>
+                  <div class="mt-5">
+                    {{ template "shared/pagination" . }}
+                  </div>
+                {{ else }}
+                  <p>没有数据！</p>
+                {{ end }}
+              </section>
             </div>
           </div>
         </div>
       </div>
-
       {{ template "shared/footer" }}
     </div>
   </div>

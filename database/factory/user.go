@@ -13,7 +13,6 @@ import (
 )
 
 var (
-	fakeCount = 100
 	// 头像假数据
 	avatars = []string{
 		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/s5ehp11z6s.png",
@@ -59,7 +58,7 @@ func UsersTableSeeder(needCleanTable bool) {
 		DropAndCreateTable(&userModel.User{})
 	}
 
-	for i := 0; i < fakeCount; i++ {
+	for i := 0; i < 100; i++ {
 		user := userFactory(i).MustCreate().(*userModel.User)
 		if err := user.Create(); err != nil {
 			fmt.Printf("mock user error： %v\n", err)

@@ -10,9 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/helpers"
-	userModel "gin_weibo/app/models/user"
-	statusModel "gin_weibo/app/models/status"
 	passwordResetModel "gin_weibo/app/models/password_reset"
+	statusModel "gin_weibo/app/models/status"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/config"
 	"gin_weibo/database"
 	"gin_weibo/database/factory"
@@ -95,5 +95,6 @@ func factoryMake() (do bool) {
 
 	fmt.Print("\n\n-------------------------------------------------- MOCK --------------------------------------------------\n\n")
 	factory.UsersTableSeeder(true)
+	factory.StatusTableSeeder(true)
 	return true
 }
