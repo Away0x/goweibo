@@ -20,6 +20,11 @@ type (
 	renderObj = map[string]interface{}
 )
 
+const (
+	csrfInputHTML = "csrfField"
+	csrfTokenName = "csrfToken"
+)
+
 // Render : 渲染 html
 func Render(c *gin.Context, tplPath string, data renderObj) {
 	obj := make(renderObj)
@@ -36,8 +41,8 @@ func Render(c *gin.Context, tplPath string, data renderObj) {
 	// csrf
 	if config.AppConfig.EnableCsrf {
 		if csrfHTML, csrfToken, ok := csrfField(c); ok {
-			obj["csrfField"] = csrfHTML
-			obj["csrfToken"] = csrfToken
+			obj[csrfInputHTML] = csrfHTML
+			obj[csrfTokenName] = csrfToken
 		}
 	}
 
