@@ -15,23 +15,14 @@ import (
 const (
 	rememberFormKey    = "remember"
 	rememberCookieName = "remember_me"
+	rememberMaxAge     = 88888888
 )
 
 // Login 登录
 func Login(c *gin.Context, u *userModel.User) {
 	session.SetSession(c, config.AppConfig.AuthSessionKey, u.GetIDstring())
-
-	// 记住我 (如果 登录的 PostForm 中有着 remember="on" 说明开启记住我功能)
-	rememberMe := c.PostForm(rememberFormKey) == "on"
-	if rememberMe {
-		newToken := string(utils.RandomCreateBytes(10))
-		u.RememberToken = newToken
-		if err := u.Update(false); err != nil {
-			return
-		}
-
-		setRememberTokenInCookie(c, u.RememberToken)
-	}
+	// 记住我
+	setRememberTokenInCookie(c, u)
 }
 
 // Logout 登出
@@ -71,9 +62,23 @@ func getCurrentUserFromSession(c *gin.Context) (*userModel.User, error) {
 	return user, nil
 }
 
-// 记住我功能 utils
-func setRememberTokenInCookie(c *gin.Context, token string) {
-	c.SetCookie(rememberCookieName, token, 88888888, "/", "", false, true)
+// -------------- 记住我功能 utils --------------
+func setRememberTokenInCookie(c *gin.Context, u *userModel.User) {
+	// 记住我 (如果 登录的 PostForm 中有着 remember="on" 说明开启记住我功能)
+	rememberMe := c.PostForm(rememberFormKey) == "on"
+	if !rememberMe {
+		return
+	}
+
+	// 更新用户的 RememberToken
+	newToken := string(utils.RandomCreateBytes(10))
+	u.RememberToken = newToken
+	if err := u.Update(false); err != nil {
+		return
+	}
+
+	// 写入 cookie
+	c.SetCookie(rememberCookieName, u.RememberToken, rememberMaxAge, "/", "", false, true)
 }
 
 func getRememberTokenFromCookie(c *gin.Context) string {
