@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/auth"
-	userModel "gin_weibo/app/models/user"
 	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/routes/named"
 
 	"gin_weibo/app/controllers"
@@ -21,9 +21,7 @@ import (
 
 // Index 用户列表
 func Index(c *gin.Context, currentUser *userModel.User) {
-	var (
-		defaultPageLine = 10
-	)
+	defaultPageLine := 10
 
 	allUserCount, err := userModel.AllCount()
 	if err != nil {
@@ -34,7 +32,6 @@ func Index(c *gin.Context, currentUser *userModel.User) {
 	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, defaultPageLine, allUserCount)
 
 	if currentPage > pageTotalCount {
-		// controllers.Render404(c)
 		controllers.Redirect(c, named.G("users.index")+"?page=1", false)
 		return
 	}
@@ -92,10 +89,6 @@ func Store(c *gin.Context) {
 		controllers.RedirectRouter(c, "users.create")
 		return
 	}
-
-	// auth.Login(c, user)
-	// flash.NewSuccessFlash(c, "欢迎，您将在这里开启一段新的旅程~")
-	// controllers.RedirectRouter(c, "users.show", user)
 
 	if err := sendConfirmEmail(user); err != nil {
 		flash.NewDangerFlash(c, "验证邮件发送失败: "+err.Error())
