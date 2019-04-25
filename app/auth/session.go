@@ -2,7 +2,7 @@ package auth
 
 import (
 	"errors"
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/config"
 	"gin_weibo/pkg/session"
 	"strconv"
@@ -15,7 +15,7 @@ const (
 )
 
 // Login 登录
-func Login(c *gin.Context, u *models.User) {
+func Login(c *gin.Context, u *userModel.User) {
 	// 记住我
 	rememberMe := c.PostForm(rememberFormKey) == "on"
 	if rememberMe {
@@ -32,8 +32,7 @@ func Logout(c *gin.Context) {
 
 // -------------- private --------------
 // getCurrentUserFromSession : 从 session 中获取用户
-func getCurrentUserFromSession(c *gin.Context) (*models.User, error) {
-	user := new(models.User)
+func getCurrentUserFromSession(c *gin.Context) (*userModel.User, error) {
 	idStr := session.GetSession(c, config.AppConfig.AuthSessionKey)
 	if idStr == "" {
 		return nil, errors.New("没有获取到 session")
@@ -44,7 +43,8 @@ func getCurrentUserFromSession(c *gin.Context) (*models.User, error) {
 		return nil, err
 	}
 
-	if err = user.Get(id); err != nil {
+	user, err := userModel.Get(id)
+	if err != nil {
 		return nil, err
 	}
 

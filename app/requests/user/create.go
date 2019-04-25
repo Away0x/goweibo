@@ -1,7 +1,7 @@
 package user
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/app/requests"
 )
 
@@ -15,8 +15,7 @@ type UserCreateForm struct {
 
 func (u *UserCreateForm) emailUniqueValidator() requests.ValidatorFunc {
 	return func() (msg string) {
-		m := &models.User{}
-		if err := m.GetByEmail(u.Email); err != nil {
+		if _, err := userModel.GetByEmail(u.Email); err != nil {
 			return ""
 		}
 		return "邮箱已经被注册过了"
@@ -66,7 +65,7 @@ func (u *UserCreateForm) Validate() (errors []string) {
 }
 
 // ValidateAndSave 验证参数并且创建用户
-func (u *UserCreateForm) ValidateAndSave() (user *models.User, errors []string) {
+func (u *UserCreateForm) ValidateAndSave() (user *userModel.User, errors []string) {
 	errors = u.Validate()
 
 	if len(errors) != 0 {
@@ -74,7 +73,7 @@ func (u *UserCreateForm) ValidateAndSave() (user *models.User, errors []string) 
 	}
 
 	// 创建用户
-	user = &models.User{
+	user = &userModel.User{
 		Name:     u.Name,
 		Email:    u.Email,
 		Password: u.Password,

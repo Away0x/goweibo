@@ -1,7 +1,7 @@
 package viewmodels
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 )
 
 // UserViewModel 用户
@@ -14,7 +14,7 @@ type UserViewModel struct {
 }
 
 // NewUserViewModelSerializer 用户数据展示
-func NewUserViewModelSerializer(u *models.User) *UserViewModel {
+func NewUserViewModelSerializer(u *userModel.User) *UserViewModel {
 	return &UserViewModel{
 		ID:      int(u.ID),
 		Name:    u.Name,

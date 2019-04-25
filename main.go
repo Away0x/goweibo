@@ -10,7 +10,9 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/helpers"
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
+	statusModel "gin_weibo/app/models/status"
+	passwordResetModel "gin_weibo/app/models/password_reset"
 	"gin_weibo/config"
 	"gin_weibo/database"
 	"gin_weibo/database/factory"
@@ -44,9 +46,9 @@ func main() {
 	}
 	// db migrate
 	db.AutoMigrate(
-		&models.User{},
-		&models.PasswordReset{},
-		&models.Status{},
+		&userModel.User{},
+		&passwordResetModel.PasswordReset{},
+		&statusModel.Status{},
 	)
 	defer db.Close()
 

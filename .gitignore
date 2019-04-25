@@ -13,6 +13,7 @@
 
 # ide
 /.idea
+/.vscode
 
 /tmp
 /storage/fresh_tmp

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/app/requests"
 
 	"gin_weibo/pkg/flash"
@@ -43,7 +43,7 @@ func (u *UserLoginForm) Validate() (errors []string) {
 }
 
 // ValidateAndLogin 验证参数并且获取用户
-func (u *UserLoginForm) ValidateAndGetUser(c *gin.Context) (user *models.User, errors []string) {
+func (u *UserLoginForm) ValidateAndGetUser(c *gin.Context) (user *userModel.User, errors []string) {
 	errors = u.Validate()
 
 	if len(errors) != 0 {
@@ -51,8 +51,8 @@ func (u *UserLoginForm) ValidateAndGetUser(c *gin.Context) (user *models.User, e
 	}
 
 	// 通过邮箱获取用户，并且判断密码是否正确
-	user = &models.User{}
-	if err := user.GetByEmail(u.Email); err != nil {
+	user, err := userModel.GetByEmail(u.Email)
+	if err != nil {
 		errors = append(errors, "该邮箱没有注册过用户: "+err.Error())
 		return nil, errors
 	}

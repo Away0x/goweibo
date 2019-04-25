@@ -4,13 +4,13 @@ package wrapper
 import (
 	"gin_weibo/app/auth"
 	"gin_weibo/app/controllers"
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 
 	"github.com/gin-gonic/gin"
 )
 
 type (
-	AuthHandlerFunc = func(*gin.Context, *models.User)
+	AuthHandlerFunc = func(*gin.Context, *userModel.User)
 )
 
 // Auth : 登录用户才可访问

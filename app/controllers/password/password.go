@@ -2,13 +2,10 @@ package password
 
 import (
 	"gin_weibo/app/controllers"
-	"gin_weibo/app/models"
-	"gin_weibo/routes/named"
+	passwordResetModel "gin_weibo/app/models/password_reset"
 
 	passwordRequest "gin_weibo/app/requests/password"
 	"gin_weibo/pkg/flash"
-
-	"gin_weibo/app/helpers"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +32,7 @@ func SendResetLinkEmail(c *gin.Context) {
 	if err := sendResetEmail(pwd); err != nil {
 		flash.NewDangerFlash(c, "重置密码邮件发送失败: "+err.Error())
 		// 删除 token
-		pwd.Delete(pwd.Email)
+		passwordResetModel.DeleteByEmail(pwd.Email)
 	} else {
 		flash.NewSuccessFlash(c, "重置密码已发送到你的邮箱上，请注意查收。")
 	}
@@ -46,8 +43,8 @@ func SendResetLinkEmail(c *gin.Context) {
 // ShowResetForm 密码更新页面
 func ShowResetForm(c *gin.Context) {
 	token := c.Param("token")
-	p := &models.PasswordReset{}
-	if err := p.GetByToken(token); err != nil {
+	p, err := passwordResetModel.GetByToken(token)
+	if err != nil {
 		controllers.Render404(c)
 		return
 	}
@@ -75,13 +72,4 @@ func Reset(c *gin.Context) {
 
 	flash.NewSuccessFlash(c, "重置密码成功")
 	controllers.RedirectRouter(c, "root")
-}
-
-// -------------- private
-func sendResetEmail(pwd *models.PasswordReset) error {
-	subject := "重置密码！请确认你的邮箱。"
-	tpl := "mail/reset_password.html"
-	resetPasswordURL := named.G("password.reset", "token", pwd.Token)
-
-	return helpers.SendMail([]string{pwd.Email}, subject, tpl, gin.H{"resetPasswordURL": resetPasswordURL})
 }

@@ -1,7 +1,7 @@
 package user
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/app/requests"
 )
 
@@ -58,7 +58,7 @@ func (u *UserUpdateForm) Validate() (errors []string) {
 }
 
 // ValidateAndSave 验证参数并且创建用户
-func (u *UserUpdateForm) ValidateAndSave(user *models.User) (errors []string) {
+func (u *UserUpdateForm) ValidateAndSave(user *userModel.User) (errors []string) {
 	var err error
 	errors = u.Validate()
 

@@ -1,7 +1,7 @@
 package services
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	viewmodels "gin_weibo/app/view_models"
 	"sync"
 )
@@ -19,8 +19,6 @@ func UserListService(offset, limit int) userViewArr {
 	var (
 		// 最后返回的数据
 		userViewModels = make(userViewArr, 0)
-		// user model
-		m = models.User{}
 		// 用于最后排序的 id 列表
 		ids = []uint{}
 
@@ -29,26 +27,26 @@ func UserListService(offset, limit int) userViewArr {
 		wg       = sync.WaitGroup{}
 	)
 
-	userModels, err := m.List(offset, limit)
+	ums, err := userModel.List(offset, limit)
 	if err != nil {
 		return userViewModels
 	}
 
 	// 获得 id 列表，记录顺序
-	for _, u := range userModels {
+	for _, u := range ums {
 		ids = append(ids, u.ID)
 	}
 
 	userList := userList{
 		Lock:  new(sync.Mutex),
-		IdMap: make(idMap, len(userModels)),
+		IdMap: make(idMap, len(ums)),
 	}
 
-	for _, u := range userModels {
+	for _, u := range ums {
 		wg.Add(1)
 
 		// 对列表的每一项都做操作，如果操作复杂或条数太多，会造成 api 响应延迟，所以这里使用并行查询
-		go func(u *models.User) {
+		go func(u *userModel.User) {
 			defer wg.Done()
 
 			// 在并发处理中，更新同一个变量为了保证数据一致性，通常需要做锁处理

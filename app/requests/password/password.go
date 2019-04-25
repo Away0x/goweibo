@@ -1,7 +1,8 @@
 package password
 
 import (
-	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
+	passwordResetModel "gin_weibo/app/models/password_reset"
 	"gin_weibo/app/requests"
 )
 
@@ -10,10 +11,9 @@ type PasswordEmailForm struct {
 	Email string
 }
 
-func (u *PasswordEmailForm) emailExistValidator() requests.ValidatorFunc {
+func (p *PasswordEmailForm) emailExistValidator() requests.ValidatorFunc {
 	return func() (msg string) {
-		m := &models.User{}
-		if err := m.GetByEmail(u.Email); err == nil {
+		if _, err := userModel.GetByEmail(p.Email); err == nil {
 			return ""
 		}
 		return "该邮箱不存在"
@@ -45,18 +45,18 @@ func (u *PasswordEmailForm) Validate() (errors []string) {
 }
 
 // ValidateAndGetToken 验证参数并且创建验证 pwd 的 token
-func (u *PasswordEmailForm) ValidateAndGetToken() (pwd *models.PasswordReset, errors []string) {
-	errors = u.Validate()
+func (p *PasswordEmailForm) ValidateAndGetToken() (pwd *passwordResetModel.PasswordReset, errors []string) {
+	errors = p.Validate()
 
 	if len(errors) != 0 {
 		return nil, errors
 	}
 
-	pwd = &models.PasswordReset{
-		Email: u.Email,
+	pwd = &passwordResetModel.PasswordReset{
+		Email: p.Email,
 	}
 
-	if _, err := pwd.Create(); err != nil {
+	if err := pwd.Create(); err != nil {
 		errors = append(errors, "失败: "+err.Error())
 		return nil, errors
 	}
@@ -74,11 +74,10 @@ type PassWordResetForm struct {
 	PasswordConfirmation string
 }
 
-func (u *PassWordResetForm) tokenExistValidator() requests.ValidatorFunc {
+func (p *PassWordResetForm) tokenExistValidator() requests.ValidatorFunc {
 	return func() (msg string) {
-		m := &models.PasswordReset{}
-		if err := m.GetByToken(u.Token); err == nil {
-			u.Email = m.Email
+		if m, err := passwordResetModel.GetByToken(p.Token); err == nil {
+			p.Email = m.Email
 			return ""
 		}
 		return "该 token 不存在"
@@ -86,17 +85,17 @@ func (u *PassWordResetForm) tokenExistValidator() requests.ValidatorFunc {
 }
 
 // Validate : 验证函数
-func (u *PassWordResetForm) Validate() (errors []string) {
+func (p *PassWordResetForm) Validate() (errors []string) {
 	errors = requests.RunValidators(
 		requests.ValidatorMap{
 			"password": {
-				requests.RequiredValidator(u.Password),
-				requests.MixLengthValidator(u.Password, 6),
-				requests.EqualValidator(u.Password, u.PasswordConfirmation),
+				requests.RequiredValidator(p.Password),
+				requests.MixLengthValidator(p.Password, 6),
+				requests.EqualValidator(p.Password, p.PasswordConfirmation),
 			},
 			"token": {
-				requests.RequiredValidator(u.Token),
-				u.tokenExistValidator(),
+				requests.RequiredValidator(p.Token),
+				p.tokenExistValidator(),
 			},
 		},
 		requests.ValidatorMsgArr{
@@ -116,28 +115,27 @@ func (u *PassWordResetForm) Validate() (errors []string) {
 }
 
 // ValidateAndUpdateUser 验证参数并且创建验证 pwd 的 token
-func (u *PassWordResetForm) ValidateAndUpdateUser() (user *models.User, errors []string) {
-	errors = u.Validate()
+func (p *PassWordResetForm) ValidateAndUpdateUser() (user *userModel.User, errors []string) {
+	errors = p.Validate()
 
 	if len(errors) != 0 {
 		return nil, errors
 	}
 
 	// 验证成功，删除 token
-	pwd := &models.PasswordReset{}
-	if err := pwd.DeleteByToken(u.Token); err != nil {
+	if err := passwordResetModel.DeleteByToken(p.Token); err != nil {
 		errors = append(errors, "重置密码失败: "+err.Error())
 		return nil, errors
 	}
 
 	// 更新用户密码
-	user = &models.User{}
-	if err := user.GetByEmail(u.Email); err != nil {
+	user, err := userModel.GetByEmail(p.Email)
+	if err != nil {
 		errors = append(errors, "重置密码失败: "+err.Error())
 		return nil, errors
 	}
-	user.Password = u.Password
-	if err := user.Update(true); err != nil {
+	user.Password = p.Password
+	if err = user.Update(true); err != nil {
 		errors = append(errors, "重置密码失败: "+err.Error())
 		return nil, errors
 	}

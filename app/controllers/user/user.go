@@ -6,11 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/auth"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/app/models"
 	"gin_weibo/routes/named"
 
 	"gin_weibo/app/controllers"
-	"gin_weibo/app/helpers"
 	"gin_weibo/app/policies"
 	userRequest "gin_weibo/app/requests/user"
 	"gin_weibo/app/services"
@@ -20,13 +20,17 @@ import (
 )
 
 // Index 用户列表
-func Index(c *gin.Context, currentUser *models.User) {
+func Index(c *gin.Context, currentUser *userModel.User) {
 	var (
-		m               = models.User{}
 		defaultPageLine = 10
 	)
 
-	allUserCount := m.AllCount()
+	allUserCount, err := userModel.AllCount()
+	if err != nil {
+		flash.NewDangerFlash(c, "获取用户数据失败: "+err.Error())
+		controllers.Redirect(c, named.G("users.index")+"?page=1", false)
+		return
+	}
 	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, defaultPageLine, allUserCount)
 
 	if currentPage > pageTotalCount {
@@ -49,7 +53,7 @@ func Create(c *gin.Context) {
 }
 
 // Show 用户详情
-func Show(c *gin.Context, currentUser *models.User) {
+func Show(c *gin.Context, currentUser *userModel.User) {
 	id, err := controllers.GetIntParam(c, "id")
 	if err != nil {
 		controllers.Render404(c)
@@ -59,8 +63,7 @@ func Show(c *gin.Context, currentUser *models.User) {
 	// 如果要看的就是当前用户，那么就不用再去数据库中获取了
 	user := currentUser
 	if id != int(currentUser.ID) {
-		user = &models.User{}
-		err = user.Get(id)
+		user, err = userModel.Get(id)
 	}
 
 	if err != nil || user == nil {
@@ -104,7 +107,7 @@ func Store(c *gin.Context) {
 }
 
 // Edit 编辑用户页面
-func Edit(c *gin.Context, currentUser *models.User) {
+func Edit(c *gin.Context, currentUser *userModel.User) {
 	id, err := controllers.GetIntParam(c, "id")
 	if err != nil {
 		controllers.Render404(c)
@@ -122,7 +125,7 @@ func Edit(c *gin.Context, currentUser *models.User) {
 }
 
 // Update 编辑用户
-func Update(c *gin.Context, currentUser *models.User) {
+func Update(c *gin.Context, currentUser *userModel.User) {
 	id, err := controllers.GetIntParam(c, "id")
 	if err != nil {
 		controllers.Render404(c)
@@ -153,7 +156,7 @@ func Update(c *gin.Context, currentUser *models.User) {
 }
 
 // Destory 删除用户
-func Destory(c *gin.Context, currentUser *models.User) {
+func Destory(c *gin.Context, currentUser *userModel.User) {
 	page := c.DefaultQuery("page", "1")
 
 	id, err := controllers.GetIntParam(c, "id")
@@ -168,8 +171,7 @@ func Destory(c *gin.Context, currentUser *models.User) {
 	}
 
 	// 删除用户
-	user := &models.User{}
-	if err = user.Delete(id); err != nil {
+	if err = userModel.Delete(id); err != nil {
 		flash.NewDangerFlash(c, "删除失败: "+err.Error())
 	} else {
 		flash.NewSuccessFlash(c, "成功删除用户！")
@@ -182,8 +184,7 @@ func Destory(c *gin.Context, currentUser *models.User) {
 func ConfirmEmail(c *gin.Context) {
 	token := c.Param("token")
 
-	user := &models.User{}
-	err := user.GetByActivationToken(token)
+	user, err := userModel.GetByActivationToken(token)
 	if user == nil || err != nil {
 		controllers.Render404(c)
 		return
@@ -202,13 +203,4 @@ func ConfirmEmail(c *gin.Context) {
 	auth.Login(c, user)
 	flash.NewSuccessFlash(c, "恭喜你，激活成功！")
 	controllers.RedirectRouter(c, "users.show", user.ID)
-}
-
-// -------------- private
-func sendConfirmEmail(u *models.User) error {
-	subject := "感谢注册 Weibo 应用！请确认你的邮箱。"
-	tpl := "mail/confirm.html"
-	confirmURL := named.G("signup.confirm", "token", u.ActivationToken)
-
-	return helpers.SendMail([]string{u.Email}, subject, tpl, gin.H{"confirmURL": confirmURL})
 }

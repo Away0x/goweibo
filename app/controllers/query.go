@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"math"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func GetPageQuery(c *gin.Context, defaultPageLine, totalCount int) (offset, limi
 
 	limit = pageline
 
-	pageTotalCount = int(totalCount / pageline)
+	pageTotalCount = int(math.Ceil(float64(totalCount) / float64(pageline)))
 	if pageTotalCount <= 0 {
 		pageTotalCount = 1
 	}

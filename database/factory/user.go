@@ -3,6 +3,7 @@ package factory
 import (
 	"fmt"
 	"gin_weibo/app/models"
+	userModel "gin_weibo/app/models/user"
 	"gin_weibo/pkg/utils"
 
 	"time"
@@ -25,7 +26,7 @@ var (
 )
 
 func userFactory(i int) *factory.Factory {
-	u := &models.User{
+	u := &userModel.User{
 		Password:        "123456",
 		EmailVerifiedAt: time.Now(),
 		Activated:       models.TrueTinyint,
@@ -55,11 +56,11 @@ func userFactory(i int) *factory.Factory {
 // UsersTableSeeder -
 func UsersTableSeeder(needCleanTable bool) {
 	if needCleanTable {
-		DropAndCreateTable(&models.User{})
+		DropAndCreateTable(&userModel.User{})
 	}
 
 	for i := 0; i < fakeCount; i++ {
-		user := userFactory(i).MustCreate().(*models.User)
+		user := userFactory(i).MustCreate().(*userModel.User)
 		if err := user.Create(); err != nil {
 			fmt.Printf("mock user error： %v\n", err)
 		}
