@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"gin_weibo/app/helpers"
+	followerModel "gin_weibo/app/models/follower"
 	passwordResetModel "gin_weibo/app/models/password_reset"
 	statusModel "gin_weibo/app/models/status"
 	userModel "gin_weibo/app/models/user"
@@ -49,6 +50,7 @@ func main() {
 		&userModel.User{},
 		&passwordResetModel.PasswordReset{},
 		&statusModel.Status{},
+		&followerModel.Follower{},
 	)
 	defer db.Close()
 

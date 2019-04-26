@@ -56,6 +56,13 @@ func registerWeb(g *gin.Engine) {
 			// 删除用户
 			userRouter.POST("/destory/:id", wrapper.Auth(user.Destory))
 			named.Name(userRouter, "users.destory", "/destory/:id")
+
+			// 用户关注者列表
+			userRouter.GET("/followings/:id", wrapper.Auth(user.Followings))
+			named.Name(userRouter, "users.followings", "/followings/:id")
+			// 用户粉丝列表
+			userRouter.GET("/followers/:id", wrapper.Auth(user.Followers))
+			named.Name(userRouter, "users.followers", "/followers/:id")
 		}
 	}
 

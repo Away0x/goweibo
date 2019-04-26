@@ -18,6 +18,10 @@
           <section class="user_info">
             {{ template "shared/user_info" . }}
           </section>
+          <section class="stats mt-2">
+            {{ template "shared/stats" . }}
+          </section>
+          <hr>
           <!-- 微博 -->
           <section class="status">
             {{ if gt .statusesLength 0 }}

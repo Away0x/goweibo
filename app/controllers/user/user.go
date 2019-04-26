@@ -86,9 +86,11 @@ func Show(c *gin.Context, currentUser *userModel.User) {
 
 	controllers.Render(c, "user/show.html",
 		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
-			"userData":       viewmodels.NewUserViewModelSerializer(user),
-			"statuses":       statusesViewModels,
-			"statusesLength": statusesAllLength,
+			"userData":         viewmodels.NewUserViewModelSerializer(user),
+			"statuses":         statusesViewModels,
+			"statusesLength":   statusesAllLength,
+			"followingsLength": 0,
+			"followersLength":  0,
 		}))
 }
 

@@ -1,0 +1,22 @@
+{{ define "shared/stats" }}
+
+<a href='{{ Route "users.followings" .userData.ID }}'>
+  <strong id="following" class="stat">
+    {{ .followingsLength }}
+  </strong>
+  关注
+</a>
+<a href='{{ Route "users.followers" .userData.ID }}'>
+  <strong id="followers" class="stat">
+    {{ .followersLength }}
+  </strong>
+  粉丝
+</a>
+<a href='{{ Route "users.show" .userData.ID }}'>
+  <strong id="statuses" class="stat">
+    {{ .statusesLength }}
+  </strong>
+  微博
+</a>
+
+{{ end }}
