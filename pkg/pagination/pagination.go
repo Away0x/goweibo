@@ -27,9 +27,13 @@ func CreatePaginationFillToTplData(c *gin.Context, pageQueryKeyName string, curr
 			queryValues.Add(k, v[0])
 		}
 	}
+	query := queryValues.Encode()
+	if query != "" {
+		query = query + "&"
+	}
 
 	pageData := paginationRenderData{
-		URL:          c.Request.URL.Path + "?" + queryValues.Encode() + "&" + pageQueryKeyName + "=",
+		URL:          c.Request.URL.Path + "?" + query + pageQueryKeyName + "=",
 		CurrentPage:  currentPage,
 		OnFirstPage:  currentPage == 1,
 		HasMorePages: currentPage != totalPage,

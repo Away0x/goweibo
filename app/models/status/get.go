@@ -27,7 +27,20 @@ func GetUser(statusID int) (*userModel.User, error) {
 	return u, nil
 }
 
-// GetUserStatus 获取该用户的所有微博
+// GetUserAllStatus 获取该用户的所有微博
+func GetUserAllStatus(userID int) ([]*Status, error) {
+	status := make([]*Status, 0)
+
+	err := database.DB.Where("user_id = ?", userID).Order("id desc").Find(&status).Error
+
+	if err != nil {
+		return status, err
+	}
+
+	return status, nil
+}
+
+// GetUserStatus 获取该用户的微博 (分页)
 func GetUserStatus(userID, offset, limit int) ([]*Status, error) {
 	status := make([]*Status, 0)
 
