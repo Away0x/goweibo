@@ -13,18 +13,43 @@
     <div class="offset-md-1 col-md-10">
       {{ template "shared/messages" . }}
 
-      <div class="jumbotron">
-        <h1>Hello Gin</h1>
-        <p class="lead">
-          你现在所看到的是 Gin weibo 主页。
-        </p>
-        <p>
-          一切，将从这里开始。
-        </p>
-        <p>
-          <a class="btn btn-lg btn-success" href='{{ Route "signup" }}' role="button">现在注册</a>
-        </p>
-      </div>
+      {{ if .currentUserData }}
+        <div class="row">
+          <div class="col-md-8">
+            <section class="status_form">
+              <form action='{{ Route "statuses.store" }}' method="POST">
+                {{ .csrfField }}
+                <input hidden name="back" value='{{ RelativeRoute "root" }}'>
+                <textarea class="form-control" rows="3" placeholder="聊聊新鲜事儿..." name="content">{{ .oldValue.content }}</textarea>
+                <div class="text-right">
+                  <button type="submit" class="btn btn-primary mt-3">发布</button>
+                </div>
+              </form>
+            </section>
+          </div>
+          <aside class="col-md-4">
+            <section class="user_info">
+              <a href='{{ Route "users.show" .currentUserData.ID }}'>
+                <img src="{{ .currentUserData.Avatar }}?s=140" alt="{{ .currentUserData.Name }}" class="gravatar"/>
+              </a>
+              <h1>{{ .currentUserData.Name }}</h1>
+            </section>
+          </aside>
+        </div>
+      {{ else }}
+        <div class="jumbotron">
+          <h1>Hello Gin</h1>
+          <p class="lead">
+            你现在所看到的是 Gin weibo 主页。
+          </p>
+          <p>
+            一切，将从这里开始。
+          </p>
+          <p>
+            <a class="btn btn-lg btn-success" href='{{ Route "signup" }}' role="button">现在注册</a>
+          </p>
+        </div>
+      {{ end }}
 
       {{ template "shared/footer" }}
     </div>

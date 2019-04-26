@@ -74,9 +74,10 @@ func setupGin(g *gin.Engine) {
 	// 模板配置
 	// 注册模板函数
 	g.SetFuncMap(template.FuncMap{
-		"Mix":    helpers.Mix,
-		"Static": helpers.Static,
-		"Route":  named.G,
+		"Mix":           helpers.Mix,
+		"Static":        helpers.Static,
+		"Route":         named.G,
+		"RelativeRoute": named.GR,
 	})
 	g.LoadHTMLGlob(config.AppConfig.ViewsPath + "/**/*")
 }

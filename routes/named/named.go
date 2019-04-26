@@ -37,13 +37,22 @@ func Name(g gin.IRouter, name string, path string) {
 // Name(g, "users.create", "/users/create/:id")
 //     -> G("users.create", 1) 得到 "/users/create/1"
 func G(name string, values ...interface{}) string {
-	rootURL := config.AppConfig.URL
-	path := rootURL + RouterMap[name]
+	return config.AppConfig.URL + getRoute(name, values...)
+}
+
+// GR -
+func GR(name string, values ...interface{}) string {
+	return getRoute(name, values...)
+}
+
+// --------- private
+func getRoute(name string, values ...interface{}) string {
+	path := RouterMap[name]
 	valuesArrLen := len(values)
 
 	// 不存在该 name 的路由则 return 一个随机字符串，保证会访问到 404 页面
 	if RouterMap[name] == "" {
-		return rootURL + "/" + string(utils.RandomCreateBytes(10))
+		return "/" + string(utils.RandomCreateBytes(10))
 	}
 
 	// 要么 values length 为 0，要么就为 2

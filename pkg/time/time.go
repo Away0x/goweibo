@@ -21,15 +21,14 @@ func SinceForHuman(t time.Time) string {
 	} else if hour > 30 {
 		s = int(math.Floor(hour / 30))
 		unit = "月"
-	} else if hour > 0 {
+	} else if hour > 1 {
 		s = int(math.Floor(hour))
 		unit = "小时"
-	} else if minutes > 0 {
+	} else if minutes > 1 {
 		s = int(math.Floor(minutes))
 		unit = "分钟"
 	} else if seconds > 0 {
-		s = int(math.Floor(seconds))
-		unit = "秒"
+		return "刚刚"
 	}
 
 	return strconv.Itoa(s) + unit + "前"
