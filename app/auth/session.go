@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	rememberFormKey    = "remember"
-	rememberCookieName = "remember_me"
-	rememberMaxAge     = 88888888
+	rememberFormKey    = "remember"    // 表单提交时的 form name
+	rememberCookieName = "remember_me" // 存在 cookie 中的 key name
+	rememberMaxAge     = 88888888      // 过期时间
 )
 
 // Login 登录
@@ -41,6 +41,7 @@ func getCurrentUserFromSession(c *gin.Context) (*userModel.User, error) {
 			Login(c, user)
 			return user, nil
 		}
+		delRememberToken(c)
 	}
 
 	// 从 session 中获取用户 id
@@ -86,7 +87,6 @@ func getRememberTokenFromCookie(c *gin.Context) string {
 		if v, err := url.QueryUnescape(cookie.Value); err == nil {
 			return v
 		}
-		return ""
 	}
 
 	return ""

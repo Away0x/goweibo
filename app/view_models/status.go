@@ -2,6 +2,7 @@ package viewmodels
 
 import (
 	statusModel "gin_weibo/app/models/status"
+	"gin_weibo/pkg/time"
 )
 
 // StatusViewModel 微博
@@ -18,6 +19,6 @@ func NewStatusViewModelSerializer(s *statusModel.Status) *StatusViewModel {
 		ID:        int(s.ID),
 		Content:   s.Content,
 		UserID:    int(s.UserID),
-		CreatedAt: s.CreatedAt.String(),
+		CreatedAt: time.SinceForHuman(s.CreatedAt),
 	}
 }
