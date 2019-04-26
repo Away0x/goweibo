@@ -15,3 +15,16 @@ func (s *Status) Create() (err error) {
 
 	return nil
 }
+
+// Delete -
+func Delete(id int) (err error) {
+	status := &Status{}
+	status.BaseModel.ID = uint(id)
+
+	if err = database.DB.Delete(&status).Error; err != nil {
+		log.Warnf("微博删除失败: %v", err)
+		return err
+	}
+
+	return nil
+}

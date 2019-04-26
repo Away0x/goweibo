@@ -4,6 +4,7 @@ import (
 	"gin_weibo/app/controllers"
 	statusModel "gin_weibo/app/models/status"
 	userModel "gin_weibo/app/models/user"
+	"gin_weibo/app/policies"
 	"gin_weibo/pkg/flash"
 
 	"github.com/gin-gonic/gin"
@@ -42,7 +43,33 @@ func Store(c *gin.Context, currentUser *userModel.User) {
 
 // Destroy 删除微博
 func Destroy(c *gin.Context, currentUser *userModel.User) {
+	statusID, err := controllers.GetIntParam(c, "id")
+	if err != nil {
+		controllers.Render404(c)
+		return
+	}
 
+	status, err := statusModel.Get(statusID)
+	if err != nil {
+		flash.NewDangerFlash(c, "删除失败")
+		backTo(c, currentUser)
+		return
+	}
+
+	// 权限判断
+	if ok := policies.StatusPolicyDestroy(c, currentUser, status); !ok {
+		return
+	}
+
+	// 删除微博
+	if err := statusModel.Delete(int(status.ID)); err != nil {
+		flash.NewDangerFlash(c, "删除失败")
+		backTo(c, currentUser)
+		return
+	}
+
+	flash.NewSuccessFlash(c, "删除成功")
+	backTo(c, currentUser)
 }
 
 // ------------ private

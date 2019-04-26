@@ -39,6 +39,13 @@
                       <h5 class="mt-0 mb-1">{{ $.currentUserData.Name }} <small> / {{ .CreatedAt }}</small></h5>
                       {{ .Content }}
                     </div>
+                    {{ if eq .UserID $.currentUserData.ID }}
+                      <form action='{{ Route "statuses.destroy" .ID }}' method="POST" onsubmit="return confirm('您确定要删除本条微博吗？');">
+                        {{ $.csrfField }}
+                        <input hidden name="back" value='{{ RelativeRoute "root" }}'>
+                        <button type="submit" class="btn btn-sm btn-danger">删除</button>
+                      </form>
+                    {{ end }}
                   </li>
                 {{ end }}
               </ul>
