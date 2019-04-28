@@ -2,8 +2,10 @@
 package named
 
 import (
+	"fmt"
 	"gin_weibo/config"
 	"gin_weibo/pkg/utils"
+	"os"
 	"strconv"
 	"strings"
 
@@ -104,4 +106,12 @@ func getRoute(name string, values ...interface{}) string {
 	}
 
 	return path
+}
+
+// PrintRoutes 打印 route
+func PrintRoutes() {
+	fmt.Print("\n\n-------------------------------------------------- ROUTE NAME --------------------------------------------------\n\n")
+	for k, v := range RouterMap {
+		fmt.Fprintf(os.Stderr, "[Route-Name] "+"%-25s --> %s\n", k, v)
+	}
 }

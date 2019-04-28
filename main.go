@@ -56,6 +56,7 @@ func main() {
 
 	// router register
 	routes.Register(g)
+	printRoute()
 
 	// 启动
 	fmt.Printf("\n\n-------------------------------------------------- Start to listening the incoming requests on http address: %s --------------------------------------------------\n\n", config.AppConfig.Addr)
@@ -104,4 +105,14 @@ func factoryMake() (do bool) {
 	factory.UsersTableSeeder(true)
 	factory.StatusTableSeeder(true)
 	return true
+}
+
+// 打印命名路由
+func printRoute() {
+	// 只有非 release 时才可用该函数
+	if config.AppConfig.RunMode == config.RunmodeRelease {
+		return
+	}
+
+	named.PrintRoutes()
 }

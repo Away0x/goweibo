@@ -71,14 +71,3 @@ func Destroy(c *gin.Context, currentUser *userModel.User) {
 	flash.NewSuccessFlash(c, "删除成功")
 	backTo(c, currentUser)
 }
-
-// ------------ private
-func backTo(c *gin.Context, currentUser *userModel.User) {
-	back := c.DefaultPostForm("back", "")
-	if back != "" {
-		controllers.Redirect(c, back, true)
-		return
-	}
-
-	controllers.RedirectRouter(c, "users.show", currentUser.ID)
-}
