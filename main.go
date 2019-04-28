@@ -41,10 +41,6 @@ func main() {
 
 	// db config
 	db := database.InitDB()
-	// mock data
-	if do := factoryMake(); do {
-		return
-	}
 	// db migrate
 	db.AutoMigrate(
 		&userModel.User{},
@@ -52,9 +48,13 @@ func main() {
 		&statusModel.Status{},
 		&followerModel.Follower{},
 	)
+	// mock data
+	if do := factoryMake(); do {
+		return
+	}
 	defer db.Close()
 
-	// router config
+	// router register
 	routes.Register(g)
 
 	// 启动
@@ -76,11 +76,15 @@ func setupGin(g *gin.Engine) {
 	// 模板配置
 	// 注册模板函数
 	g.SetFuncMap(template.FuncMap{
-		"Mix":           helpers.Mix,
-		"Static":        helpers.Static,
+		// 根据 laravel-mix 的 public/mix-manifest.json 生成静态文件 path
+		"Mix": helpers.Mix,
+		// 生成项目静态文件地址
+		"Static": helpers.Static,
+		// 获取命名路由的 path
 		"Route":         named.G,
 		"RelativeRoute": named.GR,
 	})
+	// 模板存储路径
 	g.LoadHTMLGlob(config.AppConfig.ViewsPath + "/**/*")
 }
 

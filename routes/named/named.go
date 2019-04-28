@@ -29,7 +29,7 @@ func Name(g gin.IRouter, name string, path string) {
 	RouterMap[name] = s
 }
 
-// G : 根据 name 获取路由 path
+// G : 根据 name 获取路由 path (完整路径)
 // Name(g, "root", "/")
 //     -> G("root") 得到 "/"
 // Name(g, "signup.confirm", "/signup/confirm/:token")
@@ -40,7 +40,7 @@ func G(name string, values ...interface{}) string {
 	return config.AppConfig.URL + getRoute(name, values...)
 }
 
-// GR -
+// GR : 根据 name 获取路由 path (相对于网站根路径)
 func GR(name string, values ...interface{}) string {
 	return getRoute(name, values...)
 }

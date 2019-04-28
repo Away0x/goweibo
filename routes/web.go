@@ -16,9 +16,13 @@ func registerWeb(g *gin.Engine) {
 	// ------------------------------ static page ------------------------------
 	{
 		g.GET("/", staticpage.Home)
+		// 绑定路由 path 和 路由 name，之后可通过 named.G("root") 或 named.GR("root") 获取到路由 path
+		// 模板文件中可通过 {{ Route "root" }} 或 {{ RelativeRoute "root" }} 获取 path
 		named.Name(g, "root", "/")
+
 		g.GET("/help", staticpage.Help)
 		named.Name(g, "help", "/help")
+
 		g.GET("/about", staticpage.About)
 		named.Name(g, "about", "/about")
 	}
@@ -27,8 +31,11 @@ func registerWeb(g *gin.Engine) {
 	{
 		g.GET("/signup", wrapper.Guest(user.Create))
 		named.Name(g, "signup", "/signup")
+
 		g.GET("/signup/confirm/:token", wrapper.Guest(user.ConfirmEmail))
-		named.Name(g, "signup.confirm", "/signup/confirm/:token")
+		// 带参路由绑定，可通过 named.G("signup.confirm", token) 或 named.GR("signup.confirm", token) 获取 path
+		// 模板文件中可通过 {{ Route "signup.confirm" .token }} 或 {{ RelativeRoute "signup.confirm" .token }} 获取 path
+		named.Name(g, "signup.confirm", "/signup/confirm/:token") //
 
 		userRouter := g.Group("/users")
 		{
