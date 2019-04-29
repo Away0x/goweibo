@@ -15,11 +15,12 @@ import (
 var (
 	// RouterMap : 存放路由 name 和它的 path map
 	RouterMap = make(map[string]string, 0)
+	methodMap = make(map[string]string, 0)
 )
 
 // Name : 注册路由
 // 动态参数目前只支持 :xx 形式
-func Name(g gin.IRouter, name string, path string) {
+func Name(g gin.IRouter, name string, method string, path string) {
 	s := path
 	if group, ok := g.(*gin.RouterGroup); ok {
 		s = group.BasePath() + path
@@ -29,14 +30,15 @@ func Name(g gin.IRouter, name string, path string) {
 		panic("该路由已经命名过了: [" + name + "] " + s)
 	}
 	RouterMap[name] = s
+	methodMap[name] = method
 }
 
 // G : 根据 name 获取路由 path (完整路径)
-// Name(g, "root", "/")
+// Name(g, "root", "GET", "/")
 //     -> G("root") 得到 "/"
-// Name(g, "signup.confirm", "/signup/confirm/:token")
+// Name(g, "signup.confirm", "POST", "/signup/confirm/:token")
 //     -> G("signup.confirm", "token", "abc") 得到 "/signup/confirm/abc"
-// Name(g, "users.create", "/users/create/:id")
+// Name(g, "users.create", "GET", "/users/create/:id")
 //     -> G("users.create", 1) 得到 "/users/create/1"
 func G(name string, values ...interface{}) string {
 	return config.AppConfig.URL + getRoute(name, values...)
@@ -110,8 +112,8 @@ func getRoute(name string, values ...interface{}) string {
 
 // PrintRoutes 打印 route
 func PrintRoutes() {
-	fmt.Print("\n\n-------------------------------------------------- ROUTE NAME --------------------------------------------------\n\n")
 	for k, v := range RouterMap {
-		fmt.Fprintf(os.Stderr, "[Route-Name] "+"%-25s --> %s\n", k, v)
+		m := methodMap[k]
+		fmt.Fprintf(os.Stderr, "[Route-Name] "+"%-7s %-25s --> %s\n", m, k, v)
 	}
 }
