@@ -35,8 +35,11 @@ func Home(c *gin.Context) {
 
 	controllers.Render(c, "static_page/home.html",
 		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
-			"statuses":       statusesViewModels,
-			"statusesLength": statusesAllLength,
+			"statuses":         statusesViewModels,
+			"statusesLength":   statusesAllLength,
+			"followingsLength": 0,
+			"followersLength":  0,
+			"userData":         viewmodels.NewUserViewModelSerializer(currentUser),
 		}))
 }
 

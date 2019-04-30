@@ -63,6 +63,9 @@
               </a>
               <h1>{{ .currentUserData.Name }}</h1>
             </section>
+            <section class="stats mt-2">
+              {{ template "shared/stats" . }}
+            </section>
           </aside>
         </div>
       {{ else }}

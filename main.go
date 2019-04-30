@@ -104,6 +104,7 @@ func factoryMake() (do bool) {
 	fmt.Print("\n\n-------------------------------------------------- MOCK --------------------------------------------------\n\n")
 	factory.UsersTableSeeder(true)
 	factory.StatusTableSeeder(true)
+	factory.FollowerTableSeeder(true)
 	return true
 }
 
