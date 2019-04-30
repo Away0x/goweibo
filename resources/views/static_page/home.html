@@ -32,15 +32,15 @@
               <ul class="list-unstyled">
                 {{ range .statuses }}
                   <li class="media mt-4 mb-4">
-                    <a href='{{ Route "users.show" .UserID }}'>
-                      <img src="{{ $.currentUserData.Avatar }}" alt="{{ $.currentUserData.Name }}" class="mr-3 gravatar"/>
+                    <a href='{{ Route "users.show" .status.UserID }}'>
+                      <img src="{{ .user.Avatar }}" alt="{{ .user.Name }}" class="mr-3 gravatar"/>
                     </a>
                     <div class="media-body">
-                      <h5 class="mt-0 mb-1">{{ $.currentUserData.Name }} <small> / {{ .CreatedAt }}</small></h5>
-                      {{ .Content }}
+                      <h5 class="mt-0 mb-1">{{ .user.Name }} <small> / {{ .status.CreatedAt }}</small></h5>
+                      {{ .status.Content }}
                     </div>
-                    {{ if eq .UserID $.currentUserData.ID }}
-                      <form action='{{ Route "statuses.destroy" .ID }}' method="POST" onsubmit="return confirm('您确定要删除本条微博吗？');">
+                    {{ if eq .status.UserID $.currentUserData.ID }}
+                      <form action='{{ Route "statuses.destroy" .status.ID }}' method="POST" onsubmit="return confirm('您确定要删除本条微博吗？');">
                         {{ $.csrfField }}
                         <input hidden name="back" value='{{ RelativeRoute "root" }}'>
                         <button type="submit" class="btn btn-sm btn-danger">删除</button>

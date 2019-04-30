@@ -1,8 +1,10 @@
 package status
 
 import (
+	"fmt"
 	userModel "gin_weibo/app/models/user"
 	"gin_weibo/database"
+	"strconv"
 )
 
 // Get -
@@ -10,6 +12,41 @@ func Get(id int) (*Status, error) {
 	s := &Status{}
 	d := database.DB.First(&s, id)
 	return s, d.Error
+}
+
+// GetByUsersStatusesCount 获取指定用户们的微博数量
+func GetByUsersStatusesCount(ids []uint) (int, error) {
+	sqlStr := fmt.Sprintf("select count(*) from %s where deleted_at is null and user_id in (", tableName)
+	l := len(ids) - 1
+	for i, v := range ids {
+		sqlStr = sqlStr + strconv.Itoa(int(v))
+		if i < l {
+			sqlStr = sqlStr + ","
+		}
+	}
+	sqlStr = sqlStr + ")"
+
+	count := 0
+	d := database.DB.Raw(sqlStr).Count(&count)
+	return count, d.Error
+}
+
+// GetByUsersStatuses 获取指定用户们的微博
+func GetByUsersStatuses(ids []uint, offset, limit int) ([]*Status, error) {
+	status := make([]*Status, 0)
+
+	sqlStr := fmt.Sprintf("select * from %s where deleted_at is null and user_id in (", tableName)
+	l := len(ids) - 1
+	for i, v := range ids {
+		sqlStr = sqlStr + strconv.Itoa(int(v))
+		if i < l {
+			sqlStr = sqlStr + ","
+		}
+	}
+	sqlStr = sqlStr + fmt.Sprintf(") order by `created_at` desc limit %d offset %d", limit, offset)
+
+	d := database.DB.Raw(sqlStr).Scan(&status)
+	return status, d.Error
 }
 
 // GetUser 通过 status_id 获取该微博的所有者

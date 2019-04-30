@@ -4,6 +4,8 @@ import (
 	"gin_weibo/app/models"
 )
 
+const tableName = "statuses"
+
 // Status 微博
 type Status struct {
 	models.BaseModel
@@ -13,5 +15,5 @@ type Status struct {
 
 // TableName 表名
 func (Status) TableName() string {
-	return "statuses"
+	return tableName
 }
