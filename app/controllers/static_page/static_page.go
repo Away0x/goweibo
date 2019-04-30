@@ -3,6 +3,7 @@ package staticpage
 import (
 	"gin_weibo/app/auth"
 	"gin_weibo/app/controllers"
+	followerModel "gin_weibo/app/models/follower"
 	statusModel "gin_weibo/app/models/status"
 	viewmodels "gin_weibo/app/view_models"
 	"gin_weibo/pkg/pagination"
@@ -32,13 +33,16 @@ func Home(c *gin.Context) {
 	for _, s := range statuses {
 		statusesViewModels = append(statusesViewModels, viewmodels.NewStatusViewModelSerializer(s))
 	}
+	// 获取关注/粉丝
+	followingsLength, _ := followerModel.FollowingsCount(int(currentUser.ID))
+	followersLength, _ := followerModel.FollowersCount(int(currentUser.ID))
 
 	controllers.Render(c, "static_page/home.html",
 		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
 			"statuses":         statusesViewModels,
 			"statusesLength":   statusesAllLength,
-			"followingsLength": 0,
-			"followersLength":  0,
+			"followingsLength": followingsLength,
+			"followersLength":  followersLength,
 			"userData":         viewmodels.NewUserViewModelSerializer(currentUser),
 		}))
 }

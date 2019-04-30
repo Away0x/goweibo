@@ -3,6 +3,7 @@ package user
 import (
 	"github.com/gin-gonic/gin"
 
+	followerModel "gin_weibo/app/models/follower"
 	statusModel "gin_weibo/app/models/status"
 	userModel "gin_weibo/app/models/user"
 	"gin_weibo/routes/named"
@@ -69,7 +70,7 @@ func Show(c *gin.Context, currentUser *userModel.User) {
 	statusesAllLength, _ := statusModel.GetUserAllStatusCount(int(user.ID))
 	offset, limit, currentPage, pageTotalCount := controllers.GetPageQuery(c, 10, statusesAllLength)
 	if currentPage > pageTotalCount {
-		controllers.Redirect(c, named.G("users.show")+"?page=1", false)
+		controllers.Redirect(c, named.G("users.show", id)+"?page=1", false)
 		return
 	}
 
@@ -79,14 +80,22 @@ func Show(c *gin.Context, currentUser *userModel.User) {
 	for _, s := range statuses {
 		statusesViewModels = append(statusesViewModels, viewmodels.NewStatusViewModelSerializer(s))
 	}
+	// 获取关注/粉丝
+	followingsLength, _ := followerModel.FollowingsCount(id)
+	followersLength, _ := followerModel.FollowersCount(id)
+	isFollowing := false
+	if id != int(currentUser.ID) {
+		isFollowing = followerModel.IsFollowing(int(currentUser.ID), id)
+	}
 
 	controllers.Render(c, "user/show.html",
 		pagination.CreatePaginationFillToTplData(c, "page", currentPage, pageTotalCount, gin.H{
 			"userData":         viewmodels.NewUserViewModelSerializer(user),
 			"statuses":         statusesViewModels,
 			"statusesLength":   statusesAllLength,
-			"followingsLength": 0,
-			"followersLength":  0,
+			"followingsLength": followingsLength,
+			"followersLength":  followersLength,
+			"isFollowing":      isFollowing,
 		}))
 }
 
@@ -165,8 +174,8 @@ func Update(c *gin.Context, currentUser *userModel.User) {
 	controllers.RedirectRouter(c, "users.show", currentUser.ID)
 }
 
-// Destory 删除用户
-func Destory(c *gin.Context, currentUser *userModel.User) {
+// Destroy 删除用户
+func Destroy(c *gin.Context, currentUser *userModel.User) {
 	page := c.DefaultQuery("page", "1")
 
 	id, err := controllers.GetIntParam(c, "id")
@@ -176,7 +185,7 @@ func Destory(c *gin.Context, currentUser *userModel.User) {
 	}
 
 	// 是否有删除权限
-	if ok := policies.UserPolicyDestory(c, currentUser, id); !ok {
+	if ok := policies.UserPolicyDestroy(c, currentUser, id); !ok {
 		return
 	}
 

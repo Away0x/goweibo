@@ -40,7 +40,7 @@ func GetByRememberToken(token string) (*User, error) {
 func List(offset, limit int) (users []*User, err error) {
 	users = make([]*User, 0)
 
-	if err := database.DB.Offset(offset).Limit(limit).Find(&users).Error; err != nil {
+	if err := database.DB.Offset(offset).Limit(limit).Order("id").Find(&users).Error; err != nil {
 		return users, err
 	}
 
@@ -51,7 +51,7 @@ func List(offset, limit int) (users []*User, err error) {
 func All() (users []*User, err error) {
 	users = make([]*User, 0)
 
-	if err := database.DB.Find(&users).Error; err != nil {
+	if err := database.DB.Order("id").Find(&users).Error; err != nil {
 		return users, err
 	}
 

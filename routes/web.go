@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gin-gonic/gin"
 
+	"gin_weibo/app/controllers/followers"
 	"gin_weibo/app/controllers/password"
 	"gin_weibo/app/controllers/sessions"
 	staticpage "gin_weibo/app/controllers/static_page"
@@ -61,8 +62,8 @@ func registerWeb(g *gin.Engine) {
 			named.Name(userRouter, "users.update", "POST", "/update/:id")
 
 			// 删除用户
-			userRouter.POST("/destory/:id", wrapper.Auth(user.Destory))
-			named.Name(userRouter, "users.destory", "POST", "/destory/:id")
+			userRouter.POST("/destroy/:id", wrapper.Auth(user.Destroy))
+			named.Name(userRouter, "users.destroy", "POST", "/destroy/:id")
 
 			// 用户关注者列表
 			userRouter.GET("/followings/:id", wrapper.Auth(user.Followings))
@@ -70,6 +71,12 @@ func registerWeb(g *gin.Engine) {
 			// 用户粉丝列表
 			userRouter.GET("/followers/:id", wrapper.Auth(user.Followers))
 			named.Name(userRouter, "users.followers", "GET", "/followers/:id")
+			// 关注用户
+			userRouter.POST("/followers/store/:id", wrapper.Auth(followers.Store))
+			named.Name(userRouter, "followers.store", "POST", "/followers/store/:id")
+			// 取消关注用户
+			userRouter.POST("/followers/destroy/:id", wrapper.Auth(followers.Destroy))
+			named.Name(userRouter, "followers.destroy", "POST", "/followers/destroy/:id")
 		}
 	}
 
@@ -83,7 +90,7 @@ func registerWeb(g *gin.Engine) {
 		named.Name(g, "login.store", "POST", "/login")
 		// 登出
 		g.POST("/logout", sessions.Destroy)
-		named.Name(g, "login.destory", "POST", "/logout")
+		named.Name(g, "login.destroy", "POST", "/logout")
 		named.Name(g, "logout", "POST", "/logout")
 	}
 
@@ -114,4 +121,5 @@ func registerWeb(g *gin.Engine) {
 		statusRouter.POST("/destroy/:id", wrapper.Auth(status.Destroy))
 		named.Name(statusRouter, "statuses.destroy", "POST", "/destroy/:id")
 	}
+
 }
