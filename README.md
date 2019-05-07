@@ -3,6 +3,16 @@
 
 项目结构和风格模仿 Laravel。
 
+## 启动
+```bash
+# 需先安装 fresh (https://github.com/gravityblast/fresh)
+# 启动前建议配置环境变量: GOPROXY=https://goproxy.io
+
+cd gin_weibo
+make dev # 或者也可直接 fresh -c ./fresh.conf
+# 项目相关命令参见 Makefile
+```
+
 ## 项目目录结构
 <details>
 <summary>展开查看</summary>
