@@ -9,6 +9,7 @@
 # 启动前建议配置环境变量: GOPROXY=https://goproxy.io
 
 cd gin_weibo
+cp ./config.example.yaml ./config.yaml
 make dev # 或者也可直接 fresh -c ./fresh.conf
 # 项目相关命令参见 Makefile
 ```
