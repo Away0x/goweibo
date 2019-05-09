@@ -14,6 +14,13 @@ make dev # 或者也可直接 fresh -c ./fresh.conf
 # 项目相关命令参见 Makefile
 ```
 
+## 部署
+```bash
+cd gin_weibo
+make
+./deploy start
+```
+
 ## 项目目录结构
 <details>
 <summary>展开查看</summary>
