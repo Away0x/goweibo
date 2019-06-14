@@ -3,6 +3,11 @@
 
 项目结构和风格模仿 Laravel。
 
+## 相关项目
+[L02 Laravel 教程 - Web 开发实战进阶、L03 Laravel 教程 - 实战构架 API 服务器、L04 Laravel 教程 - 微信小程序从零到发布：golang bbs 项目](https://github.com/Away0x/gin_bbs)
+
+[L05 Laravel 教程 - 电商实战、L06 Laravel 教程 - 电商进阶：golang 商城项目](https://github.com/Away0x/echo_shop)
+
 ## 启动
 ```bash
 # 需先安装 fresh (https://github.com/gravityblast/fresh)
