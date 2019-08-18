@@ -15,12 +15,12 @@ import (
 var (
 	// 头像假数据
 	avatars = []string{
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/s5ehp11z6s.png",
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/Lhd1SHqu86.png",
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/LOnMrqbHJn.png",
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/xAuDMxteQy.png",
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/ZqM7iaP4CR.png",
-		"https://iocaffcdn.phphub.org/uploads/images/201710/14/1/NDnzMutoxX.png",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
+		"https://cdn.learnku.com/uploads/avatars/7850_1481780622.jpeg!/both/380x380",
 	}
 )
 
