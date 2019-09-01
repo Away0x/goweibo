@@ -22,8 +22,6 @@ func InitDB() *gorm.DB {
 		fmt.Print("\n\n------------------------------------------ GORM OPEN SUCCESS! -----------------------------------------------\n\n")
 	}
 
-	db = db.Set("gorm:table_options", "ENGINE=InnoDB  DEFAULT CHARSET=utf8;").AutoMigrate()
-
 	db.LogMode(config.DBConfig.Debug)
 	DB = db
 
