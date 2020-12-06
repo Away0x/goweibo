@@ -1,8 +1,0 @@
-{{ define "shared/user_info" }}
-
-<a href='{{ Route "users.show" .userData.ID }}'>
-  <img src="{{ .userData.Avatar }}?s=140" alt="{{ .userData.Name }}" class="gravatar"/>
-</a>
-<h1>{{ .userData.Name }}</h1>
-
-{{ end }}
