@@ -2,10 +2,23 @@
   "name": "goweibo",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "report": "react-app-rewired build --analyze",
+    "storybook:start": "start-storybook -p 9009 -s public",
+    "storybook:build": "build-storybook -s public",
+    "new:component": "hygen component new",
+    "new:page": "hygen page new",
+    "new:layout": "hygen layout new",
+    "new:container": "hygen container new"
+  },
   "dependencies": {
     "@types/qs": "^6.9.5",
     "@types/react": "^16.14.2",
     "@types/react-dom": "^16.9.10",
+    "@types/react-router-dom": "^5.1.6",
     "@types/styled-components": "^5.1.4",
     "ahooks": "^2.9.2",
     "antd": "^4.9.1",
@@ -16,15 +29,10 @@
     "qs": "^6.9.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
     "styled-components": "^5.2.1",
     "unstated-next": "^1.1.0",
     "use-immer": "^0.4.2"
-  },
-  "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "report": "react-app-rewired build --analyze"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +53,11 @@
     ]
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^6.1.10",
+    "@storybook/addon-links": "^6.1.10",
+    "@storybook/addons": "^6.1.10",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.10",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.5.0",
@@ -58,13 +71,13 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "http-proxy-middleware": "^1.0.6",
+    "hygen": "^6.0.4",
     "jest-enzyme": "^7.1.2",
     "less": "^3.12.2",
     "less-loader": "^7.1.0",
     "react-app-rewired": "^2.1.7",
     "react-scripts": "4.0.1",
     "typescript": "^4.1.2",
-    "web-vitals": "^0.2.4",
     "webpack-bundle-analyzer": "^4.2.0"
   }
 }

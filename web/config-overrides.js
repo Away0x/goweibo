@@ -4,7 +4,7 @@ const dayjs = require('dayjs');
 
 const envMap = {
   version: '1.0.0',
-  branche: 'master',
+  branche: 'v2',
   buildtime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
   desc: '',
 };
@@ -23,7 +23,7 @@ module.exports = override(
   addLessLoader({
     lessOptions: {
       javascriptEnabled: true,
-      modifyVars: { '@primary-color': '#f47983' },
+      modifyVars: { '@primary-color': '#d44439' },
     },
   }),
   // define env

@@ -1,15 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root'),
-);
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // 存储项目信息
 (window as any).__project__ = (() => {
@@ -20,5 +14,3 @@ ReactDOM.render(
     desc: process.env.desc,
   };
 })();
-
-reportWebVitals();
