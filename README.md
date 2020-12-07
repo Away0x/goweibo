@@ -1,4 +1,5 @@
 # goweibo
+
 Go Weibo App
 
 - v1 版本地址: https://github.com/Away0x/goweibo/tree/master
@@ -16,14 +17,15 @@ Go Weibo App
       - 配置: [viper](github.com/spf13/viper)
       - 热重载: [air](https://github.com/cosmtrek/air)
       - 命令行: [cobra](https://github.com/spf13/cobra)
+      - API 文档: [swagger](https://github.com/go-swagger/go-swagger)
     - 前端技术栈:
       - typescript、react、react hooks
       - 测试: jest, enzyme
       - UI 框架: [ant-design](https://github.com/ant-design/ant-design)
+      - CSS: [sass](https://github.com/sass/node-sass), [styled-components](https://github.com/styled-components/styled-components)
       - 状态管理: [unstated-next](https://github.com/jamiebuilds/unstated-next), [immer]()
       - Event emitter: [mitt](https://github.com/developit/mitt)
       - Hooks Library: [hooks](https://github.com/alibaba/hooks)
       - HTTP Client: [axios](https://github.com/axios/axios)
       - UI 文档: [storybook](https://github.com/storybookjs/storybook)
       - 代码生成工具: [hygen](https://github.com/jondot/hygen)
-      
