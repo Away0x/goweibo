@@ -1,0 +1,28 @@
+root = "."
+tmp_dir = "storage/air"
+
+[build]
+cmd = "go build -o ./storage/air/main ."
+bin = "storage/air/main"
+full_bin = "APP_ENV=dev APP_USER=air ./storage/air/main"
+include_ext = ["go", "tpl", "tmpl", "html"]
+exclude_dir = ["storage", "bin", "resources", "tests"]
+include_dir = []
+exclude_file = []
+log = "air.log"
+delay = 1000 # ms
+stop_on_error = true
+send_interrupt = false
+kill_delay = 500 # ms
+
+[log]
+time = false
+
+[color]
+main = "magenta"
+watcher = "cyan"
+build = "yellow"
+runner = "green"
+
+[misc]
+clean_on_exit = true

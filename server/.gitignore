@@ -1,0 +1,4 @@
+storage/logs
+storage/tmp
+config.yaml
+.DS_Store

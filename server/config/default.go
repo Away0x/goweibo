@@ -1,0 +1,51 @@
+package config
+
+import (
+	"time"
+
+	"github.com/spf13/viper"
+)
+
+const (
+	defaultTempDir = "storage"
+	defaultAppPort = ":9999"
+	defaultAppName = "app"
+)
+
+var now = time.Now()
+
+// 默认配置
+var defaultConfigMap = map[string]interface{}{
+	// app
+	"APP.NAME":          defaultAppName,
+	"APP.VERSION":       "1.0.0",
+	"APP.RUNMODE":       "production", // 环境
+	"APP.PORT":          defaultAppPort,
+	"APP.URL":           "http://localhost" + defaultAppPort,
+	"APP.KEY":           "Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5",
+	"APP.TEMP_DIR":      defaultTempDir,    // 临时文件存储位置 (log ...)
+	"APP.PUBLIC_DIR":    "public",          // public 文件夹
+	"APP.UPLOAD_DIR":    "public/uploads",  //文件上传文件夹
+	"APP.RESOURCES_DIR": "resources",       // resources 文件夹
+	"APP.TEMPLATE_DIR":  "resources/views", // 模板文件存放文件夹
+	"APP.GZIP":          true,              // 是否开启 gzip
+
+	// db
+	"DB.DEFAULT.CONNECTION":           "mysql",
+	"DB.DEFAULT.HOST":                 "127.0.0.1",
+	"DB.DEFAULT.PORT":                 "3306",
+	"DB.DEFAULT.DATABASE":             defaultAppName,
+	"DB.DEFAULT.USERNAME":             "root",
+	"DB.DEFAULT.PASSWORD":             "",
+	"DB.DEFAULT.OPTIONS":              "charset=utf8&parseTime=true&loc=Local",
+	"DB.DEFAULT.MAX_OPEN_CONNECTIONS": 100,
+	"DB.DEFAULT.MAX_IDLE_CONNECTIONS": 20,
+	"DB.DEFAULT.AUTO_MIGRATE":         true,
+}
+
+// 设置配置默认值
+func setupDefaultConfig() {
+	for k, v := range defaultConfigMap {
+		viper.SetDefault(k, v)
+	}
+}

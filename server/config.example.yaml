@@ -1,0 +1,14 @@
+APP:
+  NAME: goweibo
+  RUNMODE: development # 模式: development, production, staging, test
+  PORT: :9999 # 端口
+  URL: http://localhost:9999 # 网站地址
+  KEY: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
+
+DB:
+  CONNECTION: mysql
+  HOST: 127.0.0.1
+  PORT: 3306
+  DATABASE: goweibo # DB.DATABASE_APP.RUNMODE: goweibo_development
+  USERNAME: root
+  PASSWORD: 1234

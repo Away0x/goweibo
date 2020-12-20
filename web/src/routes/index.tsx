@@ -20,16 +20,12 @@ function RootRoutes() {
     <Switch>
       {/* 首页 */}
       <Route exact path={SpecialRoutePath.Root}>
-        <Suspense>
-          <Home />
-        </Suspense>
+        <Suspense component={<Home />} />
       </Route>
 
       {/* 登录 */}
       <GuestRoute exact path={SpecialRoutePath.Login} homeRoutePath={SpecialRoutePath.Root}>
-        <Suspense>
-          <Login />
-        </Suspense>
+        <Suspense component={<Login />} />
       </GuestRoute>
 
       {/* not found */}

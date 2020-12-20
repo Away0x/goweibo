@@ -1,0 +1,30 @@
+{
+  "app": {
+    "gzip": true,
+    "key": "Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5",
+    "name": "goweibo",
+    "port": ":9999",
+    "public_dir": "public",
+    "resources_dir": "resources",
+    "runmode": "development",
+    "temp_dir": "storage",
+    "template_dir": "resources/views",
+    "upload_dir": "public/uploads",
+    "url": "http://localhost:9999",
+    "version": "1.0.0"
+  },
+  "db": {
+    "default": {
+      "auto_migrate": true,
+      "connection": "mysql",
+      "database": "goweibo",
+      "host": "127.0.0.1",
+      "max_idle_connections": 20,
+      "max_open_connections": 100,
+      "options": "charset=utf8\u0026parseTime=true\u0026loc=Local",
+      "password": "a12345678",
+      "port": 3306,
+      "username": "root"
+    }
+  }
+}
