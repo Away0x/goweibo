@@ -57,6 +57,7 @@ func SetupServerRender(e *echo.Echo) {
 
 		pongoCtx.Update(tpldata)
 	})
+
 	e.Renderer = render
 
 	// tags
