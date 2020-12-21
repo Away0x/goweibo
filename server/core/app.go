@@ -2,6 +2,7 @@ package core
 
 import (
 	"encoding/json"
+	"goweibo/core/context"
 	"io/ioutil"
 	"strings"
 
@@ -45,4 +46,33 @@ func (a *Application) PrintRoutes(filename string) {
 	}, "", "  ")
 
 	ioutil.WriteFile(filename, routesStr, 0644)
+}
+
+// RegisterRoutes 注册路由
+func (a *Application) RegisterRoutes(register func(*Application)) {
+	// 包装 context
+	a.Engine.Use(func(hf echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			cc := &context.AppContext{Context: c}
+			return hf(cc)
+		}
+	})
+
+	register(a)
+}
+
+// RegisterHandler 注册 handler
+func (a *Application) RegisterHandler(fn context.EchoRegisterFunc, path string, h context.AppHandlerFunc, m ...echo.MiddlewareFunc) *echo.Route {
+	if path != "" && !strings.HasPrefix(path, "/") {
+		path = "/" + path
+	}
+
+	return fn(path, func(c echo.Context) error {
+		cc, ok := c.(*context.AppContext)
+		if !ok {
+			cc = context.NewAppContext(c)
+			return h(cc)
+		}
+		return h(cc)
+	}, m...)
 }

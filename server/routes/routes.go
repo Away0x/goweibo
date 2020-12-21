@@ -14,7 +14,9 @@ const (
 )
 
 // Register 注册路由
-func Register(e *echo.Echo) {
+func Register(app *core.Application) {
+	e := app.Engine
+
 	e.Use(middleware.Recover())
 
 	if core.GetConfig().IsDev() {
@@ -44,7 +46,7 @@ func Register(e *echo.Echo) {
 	e.File("/favicon.ico", core.GetConfig().String("APP.PUBLIC_DIR")+"/favicon.ico")
 
 	// 注册路由
-	registerError(e)
-	registerWeb(e)
-	registerAPI(e)
+	registerError(app)
+	registerWeb(app)
+	registerAPI(app)
 }

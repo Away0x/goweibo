@@ -21,7 +21,7 @@ func SetupServer() {
 
 	core.NewApplication(e)
 	// 注册路由
-	routes.Register(e)
+	core.GetApplication().RegisterRoutes(routes.Register)
 	// 输出路由配置
 	core.GetApplication().PrintRoutes(core.GetConfig().String("APP.TEMP_DIR") + "/routes.json")
 	// init render
