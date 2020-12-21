@@ -10,7 +10,15 @@ func SetupDB() {
 	db, sqlDB := database.SetupDefaultDatabase()
 
 	// 自动迁移
-	db.AutoMigrate()
+	if core.GetConfig().Bool("DB.DEFAULT.AUTO_MIGRATE") {
+		db.AutoMigrate(database.RegisterAutoMigrateModle()...)
+	}
 
 	core.NewDefaultConnection(db, sqlDB)
+}
+
+// SetupRedis 初始化 redis
+func SetupRedis() {
+	client := database.SetupRedis()
+	core.NewRedis(client)
 }

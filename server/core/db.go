@@ -3,6 +3,7 @@ package core
 import (
 	"database/sql"
 
+	"github.com/go-redis/redis"
 	"gorm.io/gorm"
 )
 
@@ -18,4 +19,9 @@ func NewDefaultConnection(e *gorm.DB, d *sql.DB) {
 		Engine: e,
 		DB:     d,
 	}
+}
+
+// NewRedis setup redis
+func NewRedis(r *redis.Client) {
+	redisClient = r
 }

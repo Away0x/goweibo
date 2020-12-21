@@ -4,7 +4,9 @@ import (
 	"database/sql"
 	"goweibo/config"
 
+	"github.com/go-redis/redis"
 	"github.com/labstack/echo/v4"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -12,6 +14,8 @@ var (
 	application       *Application
 	defaultConnection *GormConnection
 	appConfig         *config.ConfigUtil
+	redisClient       *redis.Client
+	appLog            *zap.SugaredLogger
 )
 
 // GetApplication 获取全局应用实例
@@ -46,6 +50,15 @@ func GetDefaultConnectionEngine() *gorm.DB {
 	return defaultConnection.Engine
 }
 
+// GetRedis 获取全局默认 redis 实例
+func GetRedis() *redis.Client {
+	if redisClient == nil {
+		panic("redis is not initialized")
+	}
+
+	return redisClient
+}
+
 // GetConfig 获取全局配置
 func GetConfig() *config.ConfigUtil {
 	if appConfig == nil {
@@ -53,4 +66,13 @@ func GetConfig() *config.ConfigUtil {
 	}
 
 	return appConfig
+}
+
+// GetLog 获取全局默认日志实例
+func GetLog() *zap.SugaredLogger {
+	if appLog == nil {
+		panic("log is not initialized")
+	}
+
+	return appLog
 }

@@ -1,4 +1,3 @@
-storage/logs
-storage/tmp
+storage/*
 config.yaml
 .DS_Store

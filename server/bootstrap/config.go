@@ -10,5 +10,5 @@ func SetupConfig(configFilePath, configFileType string) {
 	c := config.Setup(configFilePath, configFileType)
 	core.NewAppConfig(c)
 
-	config.WriteConfig(c.String("APP.TEMP_DIR") + "/config.json")
+	config.WriteConfig(c.String("APP.TEMP_DIR") + "/config_runtime.json")
 }

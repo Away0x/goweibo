@@ -41,6 +41,11 @@ func SetupDefaultDatabase() (*gorm.DB, *sql.DB) {
 	return db, sqlDB
 }
 
+// RegisterAutoMigrateModle 注册需要自动迁移的 model
+func RegisterAutoMigrateModle() []interface{} {
+	return []interface{}{}
+}
+
 func getGormLoggerLevel() logger.LogLevel {
 	if core.GetConfig().IsDev() {
 		return logger.Info

@@ -10,6 +10,9 @@ import (
 
 // SetupServer 初始化 server
 func SetupServer() {
+	// 初始化日志
+	core.SetupLog()
+
 	e := echo.New()
 	e.Debug = core.GetConfig().IsDev()
 	e.HideBanner = true

@@ -41,6 +41,13 @@ var defaultConfigMap = map[string]interface{}{
 	"DB.DEFAULT.MAX_OPEN_CONNECTIONS": 100,
 	"DB.DEFAULT.MAX_IDLE_CONNECTIONS": 20,
 	"DB.DEFAULT.AUTO_MIGRATE":         true,
+
+	// log
+	"LOG.PREFIX":     "[ZAP_LOGGER]",
+	"LOG.Folder":     defaultTempDir + "/logs/zap",
+	"LOG.MAXSIZE":    10, // 在进行切割之前，日志文件的最大大小（以MB为单位）
+	"LOG.MAXBACKUPS": 5,  // 保留旧文件的最大个数
+	"LOG.MAXAGES":    30, // 保留旧文件的最大天数
 }
 
 // 设置配置默认值
