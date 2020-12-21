@@ -5,6 +5,8 @@ import (
 	"goweibo/core"
 	"goweibo/core/pkg/db"
 
+	"goweibo/app/models/user"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -43,7 +45,9 @@ func SetupDefaultDatabase() (*gorm.DB, *sql.DB) {
 
 // RegisterAutoMigrateModle 注册需要自动迁移的 model
 func RegisterAutoMigrateModle() []interface{} {
-	return []interface{}{}
+	return []interface{}{
+		user.User{},
+	}
 }
 
 func getGormLoggerLevel() logger.LogLevel {
