@@ -7,8 +7,8 @@ import (
 
 // SetupConfig 初始化配置
 func SetupConfig(configFilePath, configFileType string) {
-	c := config.Setup(configFilePath, configFileType)
-	core.NewAppConfig(c)
+	config.Setup(configFilePath, configFileType)
+	core.NewAppConfig()
 
-	config.WriteConfig(c.String("APP.TEMP_DIR") + "/config_runtime.json")
+	config.WriteConfig(core.GetConfig().String("APP.TEMP_DIR") + "/config.json")
 }

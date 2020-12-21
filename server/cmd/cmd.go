@@ -10,7 +10,7 @@ import (
 
 const (
 	// 默认配置文件路径
-	defaultConfigFilePath = "config.yaml"
+	defaultConfigFilePath = "config/config.yaml"
 	// 配置文件格式
 	configFileType = "yaml"
 )
