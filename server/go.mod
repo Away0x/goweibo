@@ -6,6 +6,8 @@ require (
 	github.com/flosch/pongo2 v0.0.0-20200913210552-0d938eb266f3
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/gorilla/context v1.1.1
+	github.com/gorilla/sessions v1.2.1
 	github.com/labstack/echo/v4 v4.1.17
 	github.com/labstack/gommon v0.3.0
 	github.com/magiconair/properties v1.8.4 // indirect
