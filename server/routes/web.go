@@ -1,20 +1,19 @@
 package routes
 
 import (
-	"net/http"
+	"goweibo/core"
+	"goweibo/core/context"
 	"time"
-
-	"github.com/labstack/echo/v4"
 )
 
-func registerWeb(e *echo.Echo) {
-	ee := e.Group("/")
+func registerWeb(app *core.Application) {
+	e := app.Engine
 
-	ee.GET("welcome", func(c echo.Context) error {
+	app.RegisterHandler(e.GET, "welcome", func(c *context.AppContext) error {
 		now := time.Now()
 
-		return c.Render(http.StatusOK, "welcome.tpl", map[string]interface{}{
+		return c.RenderHTML("welcome", context.TplData{
 			"time": now.Format("2006-01-02"),
 		})
-	}).Name = "welcome"
+	})
 }

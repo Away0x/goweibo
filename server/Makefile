@@ -12,14 +12,14 @@ version:
 	go run main.go version
 
 dev:
-  # go get -u github.com/cosmtrek/air
+  # go install -u github.com/cosmtrek/air
 	env GOWEIBO_APP_RUNMODE=development air -c air.toml
 
 deploy:
 	make && ./bin/deploy restart
 
 api-doc:
-  # go get -u github.com/swaggo/swag/cmd/swag
+  # go install -u github.com/swaggo/swag/cmd/swag
 	swag init -g routes/api.go
 
 mock:

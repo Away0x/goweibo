@@ -2,7 +2,6 @@ package core
 
 import (
 	"database/sql"
-	"goweibo/config"
 
 	"github.com/go-redis/redis"
 	"github.com/labstack/echo/v4"
@@ -13,7 +12,7 @@ import (
 var (
 	application       *Application
 	defaultConnection *GormConnection
-	appConfig         *config.ConfigUtil
+	appConfig         *AppConfig
 	redisClient       *redis.Client
 	appLog            *zap.SugaredLogger
 )
@@ -60,7 +59,7 @@ func GetRedis() *redis.Client {
 }
 
 // GetConfig 获取全局配置
-func GetConfig() *config.ConfigUtil {
+func GetConfig() *AppConfig {
 	if appConfig == nil {
 		panic("config is not initialized")
 	}

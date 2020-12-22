@@ -12,8 +12,6 @@ import (
 type (
 	// Runmode 开发模式
 	Runmode string
-	// ConfigUtil 配置文件工具方法
-	ConfigUtil struct{}
 )
 
 const (
@@ -30,7 +28,7 @@ const (
 // Setup 初始化配置
 // configFilePath: 配置文件路径
 // configFileType: 配置文件类型
-func Setup(configFilePath, configFileType string) *ConfigUtil {
+func Setup(configFilePath, configFileType string) {
 	// 初始化 viper 配置
 	viper.SetConfigFile(configFilePath)
 	viper.SetConfigType(configFileType)
@@ -49,8 +47,6 @@ func Setup(configFilePath, configFileType string) *ConfigUtil {
 
 	// 监听配置文件变化
 	watchConfig()
-
-	return &ConfigUtil{}
 }
 
 // WriteConfig 写配置到文件
@@ -64,62 +60,4 @@ func watchConfig() {
 	viper.OnConfigChange(func(ev fsnotify.Event) {
 		log.Infof("Config file changed: %s", ev.Name)
 	})
-}
-
-// String 获取 string 配置值
-func (*ConfigUtil) String(key string) string {
-	return viper.GetString(key)
-}
-
-// DefaultString 获取 string 配置值，可设置默认值
-func (*ConfigUtil) DefaultString(key string, defaultVal string) string {
-	v := viper.GetString(key)
-	if v == "" {
-		return defaultVal
-	}
-
-	return v
-}
-
-// Int 获取 int 配置值
-func (*ConfigUtil) Int(key string) int {
-	return viper.GetInt(key)
-}
-
-// DefaultInt 获取 int 配置值，可设置默认值
-func (*ConfigUtil) DefaultInt(key string, defaultVal int) int {
-	v := viper.GetInt(key)
-	if v == 0 {
-		return defaultVal
-	}
-
-	return v
-}
-
-// Bool 获取 bool 配置值
-func (*ConfigUtil) Bool(key string) bool {
-	return viper.GetBool(key)
-}
-
-// IsDev 是否为开发模式
-func (c *ConfigUtil) IsDev() bool {
-	return c.AppRunMode() == RunmodeDevelopment
-}
-
-// AppRunMode 获取当前应用的启动模式
-func (c *ConfigUtil) AppRunMode() Runmode {
-	mode := Runmode(c.String("APP.RUNMODE"))
-
-	switch mode {
-	case RunmodeProduction:
-		return RunmodeProduction
-	case RunmodeStaging:
-		return RunmodeStaging
-	case RunmodeDevelopment:
-		return RunmodeDevelopment
-	case RunmodeTest:
-		return RunmodeTest
-	default:
-		return RunmodeDevelopment
-	}
 }
