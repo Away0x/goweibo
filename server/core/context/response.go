@@ -1,6 +1,7 @@
 package context
 
 import (
+	"goweibo/core/constants"
 	"goweibo/core/errno"
 	"net/http"
 )
@@ -10,13 +11,13 @@ type RespData map[string]interface{}
 
 // CommonResponse 通用响应
 type CommonResponse struct {
-	Code    int         `json:"code"`
-	Message string      `json:"msg"`
-	Data    interface{} `json:"data,omitempty"`
+	Code    constants.LogicCode `json:"code"`
+	Message string              `json:"msg"`
+	Data    interface{}         `json:"data,omitempty"`
 }
 
 // NewCommonResponse new CommonResponse
-func NewCommonResponse(code int, message string, data interface{}) *CommonResponse {
+func NewCommonResponse(code constants.LogicCode, message string, data interface{}) *CommonResponse {
 	return &CommonResponse{
 		Code:    code,
 		Message: message,
@@ -26,7 +27,7 @@ func NewCommonResponse(code int, message string, data interface{}) *CommonRespon
 
 // NewSuccessResponse new success response
 func NewSuccessResponse(message string, data interface{}) *CommonResponse {
-	return NewCommonResponse(0, message, data)
+	return NewCommonResponse(constants.SuccessCode, message, data)
 }
 
 // NewErrResponse new error response
@@ -34,12 +35,12 @@ func NewErrResponse(e *errno.Errno) *CommonResponse {
 	return NewCommonResponse(e.Code, e.Message, nil)
 }
 
-// SuccessResp success response
-func (c *AppContext) SuccessResp(data RespData) error {
-	return c.JSON(http.StatusOK, NewSuccessResponse("", data))
+// AWSuccessJSON success response
+func (c *AppContext) AWSuccessJSON(data RespData) error {
+	return c.JSON(http.StatusOK, NewSuccessResponse("ok", data))
 }
 
-// ErrorResp error response
-func (c *AppContext) ErrorResp(e *errno.Errno) error {
+// AWErrorJSON error response
+func (c *AppContext) AWErrorJSON(e *errno.Errno) error {
 	return c.JSON(e.HTTPCode, NewErrResponse(e))
 }

@@ -20,7 +20,7 @@ func registerWeb(router *core.Application) {
 	router.RegisterHandler(e.GET, "welcome", func(c *context.AppContext) error {
 		now := time.Now()
 
-		return c.RenderHTML("welcome", context.TplData{
+		return c.AWHtml("welcome", context.TplData{
 			"time": now.Format("2006-01-02"),
 		})
 	})

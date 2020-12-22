@@ -25,10 +25,11 @@ var defaultConfigMap = map[string]interface{}{
 	"APP.KEY":           "Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5",
 	"APP.TEMP_DIR":      defaultTempDir,    // 临时文件存储位置 (log ...)
 	"APP.PUBLIC_DIR":    "public",          // public 文件夹
-	"APP.UPLOAD_DIR":    "public/uploads",  //文件上传文件夹
+	"APP.UPLOAD_DIR":    "public/uploads",  // 文件上传文件夹
 	"APP.RESOURCES_DIR": "resources",       // resources 文件夹
 	"APP.TEMPLATE_DIR":  "resources/views", // 模板文件存放文件夹
 	"APP.GZIP":          true,              // 是否开启 gzip
+	"APP.TEMPLATE_EXT":  "tpl",             // 模版文件后缀
 
 	// db
 	"DB.DEFAULT.CONNECTION":           "mysql",

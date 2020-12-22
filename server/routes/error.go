@@ -25,7 +25,7 @@ func registerError(router *core.Application) {
 			} else {
 				// 响应错误的处理
 				cc := context.NewAppContext(c)
-				err = cc.ErrorResp(errnoData)
+				err = cc.AWErrorJSON(errnoData)
 			}
 			if err != nil {
 				log.Printf("routes/error#HTTPErrorHandler: %s", err)

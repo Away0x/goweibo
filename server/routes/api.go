@@ -16,7 +16,7 @@ func registerAPI(router *core.Application) {
 	e := router.Group(APIPrefix, middleware.CORS())
 
 	router.RegisterHandler(e.GET, "test", func(c *context.AppContext) error {
-		return c.SuccessResp(context.RespData{
+		return c.AWSuccessJSON(context.RespData{
 			"hello": "world",
 		})
 	})

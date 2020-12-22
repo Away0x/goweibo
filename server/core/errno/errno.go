@@ -1,13 +1,16 @@
 package errno
 
-import "fmt"
+import (
+	"fmt"
+	"goweibo/core/constants"
+)
 
 // Errno 项目统一错误类型
 type Errno struct {
-	HTTPCode int    // http 状态码
-	Message  string // 错误信息
-	Code     int    // 自定义错误码
-	Err      error  // 具体错误
+	HTTPCode int                 // http 状态码
+	Message  string              // 错误信息
+	Code     constants.LogicCode // 自定义错误码
+	Err      error               // 具体错误
 }
 
 func (e Errno) Error() string {
