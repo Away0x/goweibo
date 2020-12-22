@@ -8,7 +8,7 @@ import (
 )
 
 func registerWeb(e *echo.Echo) {
-	ee := e.Group("")
+	ee := e.Group("/")
 
 	ee.GET("welcome", func(c echo.Context) error {
 		now := time.Now()
