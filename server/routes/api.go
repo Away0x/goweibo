@@ -19,5 +19,5 @@ func registerAPI(router *core.Application) {
 		return c.AWSuccessJSON(context.RespData{
 			"hello": "world",
 		})
-	})
+	}).Name = "api-test"
 }

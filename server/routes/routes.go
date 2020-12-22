@@ -2,6 +2,7 @@ package routes
 
 import (
 	"goweibo/core"
+	"goweibo/core/pkg/session"
 	"net/http"
 	"strings"
 
@@ -19,7 +20,7 @@ func Register(router *core.Application) {
 
 	if core.GetConfig().IsDev() {
 		router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-			Format: `${status}   ${method}   ${latency_human}               ${uri}`,
+			Format: "${status}   ${method}   ${latency_human}               ${uri}\n",
 		}))
 	}
 
@@ -38,6 +39,15 @@ func Register(router *core.Application) {
 			},
 		}))
 	}
+
+	// session
+	router.Use(session.NewMiddleware(session.MiddlewareOptions{
+		HttpOnly:    true,
+		Path:        "/",
+		MaxAge:      86400 * 30,
+		SessionName: core.GetConfig().String("APP.NAME"),
+		SessionKey:  core.GetConfig().String("APP.KEY"),
+	}))
 
 	// 静态文件路由
 	router.Static(staticPath, core.GetConfig().String("APP.PUBLIC_DIR"))

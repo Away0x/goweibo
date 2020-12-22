@@ -25,7 +25,7 @@ func SetupServer() {
 	// 输出路由配置
 	core.GetApplication().PrintRoutes(core.GetConfig().String("APP.TEMP_DIR") + "/routes.json")
 	// init render
-	SetupServerRender(e)
+	SetupServerRender()
 
 	fmt.Printf("\napp runmode is %s\n\n", core.GetConfig().AppRunMode())
 	// 启动 server
@@ -33,7 +33,7 @@ func SetupServer() {
 }
 
 // SetupServerRender 初始化 echo 渲染器
-func SetupServerRender(e *echo.Echo) {
+func SetupServerRender() {
 	render := tpl.NewRenderer()
 	tpl.SetupTpl(&tpl.Config{
 		GetRoutePath: core.GetApplication().RoutePath,
@@ -58,7 +58,7 @@ func SetupServerRender(e *echo.Echo) {
 		pongoCtx.Update(tpldata)
 	})
 
-	e.Renderer = render
+	core.GetApplication().Renderer = render
 
 	// tags
 	pongo2.RegisterTag("route", tpl.RouteTag)

@@ -36,7 +36,7 @@ func registerError(router *core.Application) {
 
 func transformErrorType(err error) *errno.Errno {
 	switch typed := err.(type) {
-	// 请求参数错误
+	// 项目自定义 error
 	case *errno.Errno:
 		return typed
 		// 其他 error

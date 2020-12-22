@@ -4,9 +4,9 @@ tmp_dir = "storage/air"
 [build]
 cmd = "go build -o ./storage/air/main ."
 bin = "storage/air/main"
-full_bin = "APP_ENV=dev APP_USER=air ./storage/air/main server -c config/development.yaml"
+full_bin = "APP_ENV=dev APP_USER=air ./storage/air/main server -c config/local.yaml"
 include_ext = ["go", "tpl", "tmpl", "html"]
-exclude_dir = ["storage", "bin", "resources", "tests"]
+exclude_dir = ["storage", "bin", "public", "tests"]
 include_dir = []
 exclude_file = []
 log = "air.log"

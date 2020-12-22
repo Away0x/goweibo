@@ -36,7 +36,7 @@ func NewErrResponse(e *errno.Errno) *CommonResponse {
 }
 
 // AWSuccessJSON success response
-func (c *AppContext) AWSuccessJSON(data RespData) error {
+func (c *AppContext) AWSuccessJSON(data interface{}) error {
 	return c.JSON(http.StatusOK, NewSuccessResponse("ok", data))
 }
 
