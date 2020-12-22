@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-func registerWeb(app *core.Application) {
-	e := app.Engine
+func registerWeb(router *core.Application) {
+	e := router.Group("")
 
-	app.RegisterHandler(e.GET, "welcome", func(c *context.AppContext) error {
+	router.RegisterHandler(e.GET, "welcome", func(c *context.AppContext) error {
 		now := time.Now()
 
 		return c.RenderHTML("welcome", context.TplData{

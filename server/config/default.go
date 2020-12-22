@@ -44,10 +44,11 @@ var defaultConfigMap = map[string]interface{}{
 
 	// log
 	"LOG.PREFIX":     "[ZAP_LOGGER]",
-	"LOG.Folder":     defaultTempDir + "/logs/zap",
-	"LOG.MAXSIZE":    10, // 在进行切割之前，日志文件的最大大小（以MB为单位）
-	"LOG.MAXBACKUPS": 5,  // 保留旧文件的最大个数
-	"LOG.MAXAGES":    30, // 保留旧文件的最大天数
+	"LOG.FOLDER":     defaultTempDir + "/logs/zap",
+	"LOG.LEVEL":      "debug", // 日志级别: debug, info, warn, error, dpanic, panic, fatal
+	"LOG.MAXSIZE":    10,      // 在进行切割之前，日志文件的最大大小（以MB为单位）
+	"LOG.MAXBACKUPS": 5,       // 保留旧文件的最大个数
+	"LOG.MAXAGES":    30,      // 保留旧文件的最大天数
 }
 
 // 设置配置默认值

@@ -1,0 +1,15 @@
+APP:
+  NAME: goweibo
+  RUNMODE: production
+  PORT: :9999
+  URL: http://localhost:9999
+  KEY: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
+
+DB:
+  DEFAULT:
+    CONNECTION: mysql
+    HOST: 127.0.0.1
+    PORT: 3306
+    DATABASE: goweibo
+    USERNAME: root
+    PASSWORD: a12345678

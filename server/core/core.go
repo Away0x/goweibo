@@ -4,7 +4,6 @@ import (
 	"database/sql"
 
 	"github.com/go-redis/redis"
-	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -24,11 +23,6 @@ func GetApplication() *Application {
 	}
 
 	return application
-}
-
-// GetApplicationEngine 获取全局应用实例
-func GetApplicationEngine() *echo.Echo {
-	return GetApplication().Engine
 }
 
 // GetDefaultConnection 获取全局默认数据库实例

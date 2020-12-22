@@ -10,12 +10,12 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func registerError(app *core.Application) {
+func registerError(router *core.Application) {
 	echo.NotFoundHandler = notFoundHandler
 	echo.MethodNotAllowedHandler = notFoundHandler
 
 	// 统一错误处理
-	app.Engine.HTTPErrorHandler = func(err error, c echo.Context) {
+	router.HTTPErrorHandler = func(err error, c echo.Context) {
 		errnoData := transformErrorType(err)
 
 		// Send response

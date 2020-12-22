@@ -12,10 +12,10 @@ const (
 	APIPrefix = "/api"
 )
 
-func registerAPI(app *core.Application) {
-	e := app.Engine.Group(APIPrefix, middleware.CORS())
+func registerAPI(router *core.Application) {
+	e := router.Group(APIPrefix, middleware.CORS())
 
-	app.RegisterHandler(e.GET, "test", func(c *context.AppContext) error {
+	router.RegisterHandler(e.GET, "test", func(c *context.AppContext) error {
 		return c.SuccessResp(context.RespData{
 			"hello": "world",
 		})

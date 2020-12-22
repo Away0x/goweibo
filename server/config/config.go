@@ -47,6 +47,8 @@ func Setup(configFilePath, configFileType string) {
 
 	// 监听配置文件变化
 	watchConfig()
+
+	fmt.Printf("\nConfiguration file loaded successfully: %s\n", configFilePath)
 }
 
 // WriteConfig 写配置到文件

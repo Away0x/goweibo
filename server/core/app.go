@@ -11,25 +11,25 @@ import (
 
 // Application global application
 type Application struct {
-	Engine *echo.Echo
+	*echo.Echo
 }
 
 // NewApplication setup application
 func NewApplication(e *echo.Echo) {
 	application = &Application{
-		Engine: e,
+		Echo: e,
 	}
 }
 
 // RoutePath 根据 route name 获取 route path
 func (a *Application) RoutePath(name string, params ...interface{}) string {
-	return a.Engine.Reverse(name, params...)
+	return a.Reverse(name, params...)
 }
 
 // PrintRoutes 输出路由配置
 func (a *Application) PrintRoutes(filename string) {
 	routes := make([]*echo.Route, 0)
-	for _, item := range a.Engine.Routes() {
+	for _, item := range a.Routes() {
 		if strings.HasPrefix(item.Name, "github.com") {
 			continue
 		}
@@ -51,7 +51,7 @@ func (a *Application) PrintRoutes(filename string) {
 // RegisterRoutes 注册路由
 func (a *Application) RegisterRoutes(register func(*Application)) {
 	// 包装 context
-	a.Engine.Use(func(hf echo.HandlerFunc) echo.HandlerFunc {
+	a.Use(func(hf echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			cc := &context.AppContext{Context: c}
 			return hf(cc)

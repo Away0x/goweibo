@@ -2,6 +2,7 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"goweibo/core"
 	"goweibo/core/pkg/db"
 
@@ -40,6 +41,7 @@ func SetupDefaultDatabase() (*gorm.DB, *sql.DB) {
 	sqlDB.SetMaxOpenConns(core.GetConfig().Int("DB.DEFAULT.MAX_OPEN_CONNECTIONS"))
 	sqlDB.SetMaxIdleConns(core.GetConfig().Int("DB.DEFAULT.MAX_IDLE_CONNECTIONS"))
 
+	fmt.Printf("\nDefault atabase connection successful: %s\n", dsn)
 	return db, sqlDB
 }
 

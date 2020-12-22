@@ -14,26 +14,24 @@ const (
 )
 
 // Register 注册路由
-func Register(app *core.Application) {
-	e := app.Engine
-
-	e.Use(middleware.Recover())
+func Register(router *core.Application) {
+	router.Use(middleware.Recover())
 
 	if core.GetConfig().IsDev() {
-		e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 			Format: `${status}   ${method}   ${latency_human}               ${uri}`,
 		}))
 	}
 
-	e.Pre(middleware.MethodOverrideWithConfig(middleware.MethodOverrideConfig{
+	router.Pre(middleware.MethodOverrideWithConfig(middleware.MethodOverrideConfig{
 		Getter: middleware.MethodFromForm("_method"),
 	}))
-	e.Pre(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{
+	router.Pre(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{
 		RedirectCode: http.StatusMovedPermanently,
 	}))
 
 	if core.GetConfig().Bool("APP.GZIP") {
-		e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		router.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 			Skipper: func(c echo.Context) bool {
 				// 只 gzip 静态文件
 				return !strings.HasPrefix(c.Request().URL.Path, staticPath)
@@ -42,11 +40,11 @@ func Register(app *core.Application) {
 	}
 
 	// 静态文件路由
-	e.Static(staticPath, core.GetConfig().String("APP.PUBLIC_DIR"))
-	e.File("/favicon.ico", core.GetConfig().String("APP.PUBLIC_DIR")+"/favicon.ico")
+	router.Static(staticPath, core.GetConfig().String("APP.PUBLIC_DIR"))
+	router.File("/favicon.ico", core.GetConfig().String("APP.PUBLIC_DIR")+"/favicon.ico")
 
 	// 注册路由
-	registerError(app)
-	registerWeb(app)
-	registerAPI(app)
+	registerError(router)
+	registerWeb(router)
+	registerAPI(router)
 }

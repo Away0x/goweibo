@@ -27,9 +27,9 @@ func SetupServer() {
 	// init render
 	SetupServerRender(e)
 
-	fmt.Printf("\n\napp runmode is %s\n\n", core.GetConfig().AppRunMode())
+	fmt.Printf("\napp runmode is %s\n\n", core.GetConfig().AppRunMode())
 	// 启动 server
-	e.Logger.Fatal(core.GetApplicationEngine().Start(core.GetConfig().String("APP.PORT")))
+	e.Logger.Fatal(core.GetApplication().Start(core.GetConfig().String("APP.PORT")))
 }
 
 // SetupServerRender 初始化 echo 渲染器

@@ -14,10 +14,11 @@ import (
 func SetupLog() {
 	writeSyncer := getLogWriter()
 	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
+	core := zapcore.NewCore(encoder, writeSyncer, getLevel())
 	logger := zap.New(core, zap.AddCaller())
 	appLog = logger.Sugar()
-	fmt.Println("zap logger init success")
+
+	fmt.Printf("\nLogger initialization successful: in %s, level is %s\n", GetConfig().String("LOG.FOLDER"), getLevel())
 }
 
 func getEncoder() zapcore.Encoder {
@@ -38,7 +39,7 @@ func getLogWriter() zapcore.WriteSyncer {
 	}
 	// timeStr := time.Now().Format("2006-01-02-13-04-05")
 	timeStr := time.Now().Format("2006-01-02")
-	filename := path.Join(GetConfig().String("LOG.Folder"), prefix+timeStr+".log")
+	filename := path.Join(GetConfig().String("LOG.FOLDER"), prefix+timeStr+".log")
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   filename,
 		MaxSize:    GetConfig().Int("LOG.MAXSIZE"),
@@ -46,4 +47,26 @@ func getLogWriter() zapcore.WriteSyncer {
 		MaxAge:     GetConfig().Int("LOG.MAXAGES"),
 	}
 	return zapcore.AddSync(lumberJackLogger)
+}
+
+func getLevel() zapcore.Level {
+	level := GetConfig().String("LOG.LEVEL")
+	switch level {
+	case "debug":
+		return zapcore.DebugLevel
+	case "info":
+		return zapcore.InfoLevel
+	case "warn":
+		return zapcore.WarnLevel
+	case "error":
+		return zapcore.ErrorLevel
+	case "dpanic":
+		return zapcore.DPanicLevel
+	case "panic":
+		return zapcore.PanicLevel
+	case "fatal":
+		return zapcore.FatalLevel
+	default:
+		return zapcore.DebugLevel
+	}
 }
