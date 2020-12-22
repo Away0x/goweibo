@@ -8,7 +8,7 @@ import (
 
 const (
 	defaultTempDir = "storage"
-	defaultAppPort = ":9999"
+	defaultAppPort = "9999"
 	defaultAppName = "app"
 )
 
@@ -20,8 +20,8 @@ var defaultConfigMap = map[string]interface{}{
 	"APP.NAME":          defaultAppName,
 	"APP.VERSION":       "1.0.0",
 	"APP.RUNMODE":       "production", // 环境
-	"APP.PORT":          defaultAppPort,
-	"APP.URL":           "http://localhost" + defaultAppPort,
+	"APP.ADDR":          ":" + defaultAppPort,
+	"APP.URL":           "http://localhost:" + defaultAppPort,
 	"APP.KEY":           "Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5",
 	"APP.TEMP_DIR":      defaultTempDir,    // 临时文件存储位置 (log ...)
 	"APP.PUBLIC_DIR":    "public",          // public 文件夹

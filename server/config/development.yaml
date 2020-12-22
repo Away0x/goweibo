@@ -1,7 +1,7 @@
 APP:
   NAME: goweibo
   RUNMODE: development # 模式: development, production, staging, test
-  PORT: :9999 # 端口
+  ADDR: :9999
   URL: http://localhost:9999 # 网站地址
   KEY: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
 

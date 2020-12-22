@@ -1,7 +1,7 @@
 APP:
   NAME: goweibo
   RUNMODE: production
-  PORT: :9999
+  ADDR: :9999
   URL: http://localhost:9999
   KEY: Rtg8BPKNEf2mB4mgvKONGPZZQSaJWNLijxR42qRgq0iBb5
 

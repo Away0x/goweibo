@@ -29,7 +29,7 @@ func SetupServer() {
 
 	fmt.Printf("\napp runmode is %s\n\n", core.GetConfig().AppRunMode())
 	// 启动 server
-	e.Logger.Fatal(core.GetApplication().Start(core.GetConfig().String("APP.PORT")))
+	e.Logger.Fatal(core.GetApplication().Start(core.GetConfig().String("APP.ADDR")))
 }
 
 // SetupServerRender 初始化 echo 渲染器
