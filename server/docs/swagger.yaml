@@ -1,0 +1,58 @@
+basePath: /api
+definitions:
+  api.testResp:
+    properties:
+      hello:
+        type: string
+    type: object
+  context.CommonResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        type: object
+      msg:
+        type: string
+    type: object
+host: localhost:9999
+info:
+  contact:
+    email: wutong0910@foxmail.com
+    name: Away0x
+    url: https://github.com/Away0x
+  description: goweibo api document
+  title: goweibo Api
+  version: "1.0"
+paths:
+  /test:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: test key
+        in: query
+        name: key
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/context.CommonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/api.testResp'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: api test
+      tags:
+      - Test
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
