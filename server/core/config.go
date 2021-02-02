@@ -2,8 +2,9 @@ package core
 
 import (
 	"goweibo/config"
+  "time"
 
-	"github.com/spf13/viper"
+  "github.com/spf13/viper"
 )
 
 // AppConfig app 配置
@@ -47,6 +48,11 @@ func (*AppConfig) DefaultInt(key string, defaultVal int) int {
 // Bool 获取 bool 配置值
 func (*AppConfig) Bool(key string) bool {
 	return viper.GetBool(key)
+}
+
+// Duration 获取 duration 配置值
+func (*AppConfig) Duration(key string) time.Duration {
+  return viper.GetDuration(key)
 }
 
 // IsDev 是否为开发模式

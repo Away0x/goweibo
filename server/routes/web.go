@@ -11,7 +11,7 @@ func registerWeb(router *core.Application) {
 		now := time.Now()
 
 		return c.AWHtml("welcome", context.TplData{
-			"time": now.Format("2006-01-02"),
+			"timeutils": now.Format("2006-01-02"),
 		})
 	}).Name = "welcome"
 }

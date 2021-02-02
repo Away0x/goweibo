@@ -4,8 +4,9 @@ import (
 	"goweibo/app/controllers/api"
 	"goweibo/core"
 	_ "goweibo/docs"
+  "goweibo/routes/wrapper"
 
-	"github.com/labstack/echo/v4/middleware"
+  "github.com/labstack/echo/v4/middleware"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -36,4 +37,11 @@ func registerAPI(router *core.Application) {
 	e := router.Group(APIPrefix, middleware.CORS())
 
 	router.RegisterHandler(e.GET, "test", api.Test).Name = "api-test"
+
+	auth := e.Group("/auth")
+	{
+	  router.RegisterHandler(auth.POST, "/token", api.AuthLogin).Name = "auth.token.get"
+    router.RegisterHandler(auth.PUT, "/token", wrapper.TokenAuth(api.AuthRefreshToken)).Name = "auth.token.refresh"
+    router.RegisterHandler(auth.GET, "/user", wrapper.TokenAuth(api.AuthGetUserInfo)).Name = "auth.user"
+  }
 }

@@ -14,5 +14,7 @@ func dropAndCreateTable(table interface{}) {
 // Run run database factory
 func Run() {
 	bootstrap.SetupDB()
+
+  usersTableSeeder()
 	fmt.Println("database.factory runing")
 }

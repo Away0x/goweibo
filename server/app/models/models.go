@@ -1,12 +1,11 @@
 package models
 
 import (
-	"database/sql"
-	"goweibo/core"
-	"strconv"
-	"time"
+  "goweibo/core"
+  "strconv"
+  "time"
 
-	"gorm.io/gorm"
+  "gorm.io/gorm"
 )
 
 const (
@@ -30,8 +29,8 @@ func (m *BaseModel) IDString() string {
 }
 
 // DB 获取默认数据库
-func DB() *sql.DB {
-	return core.GetDefaultConnection()
+func DB() *gorm.DB {
+	return core.GetDefaultConnectionEngine()
 }
 
 // TinyBool tinyint => bool

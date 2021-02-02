@@ -14,8 +14,8 @@ var (
 	ResourceErr = &Errno{HTTPCode: http.StatusOK, Code: constants.ResourceErrorCode, Message: "resource error"}
 	// DatabaseErr 数据库错误
 	DatabaseErr = &Errno{HTTPCode: http.StatusOK, Code: constants.DatabaseErrorCode, Message: "database error"}
-	// TokenErr token 错误
-	TokenErr = &Errno{HTTPCode: http.StatusOK, Code: constants.TokenErrorCode, Message: "token error"}
+	// TokenErr jwttoken 错误
+	TokenErr = &Errno{HTTPCode: http.StatusOK, Code: constants.TokenErrorCode, Message: "jwttoken error"}
 	// NotFoundErr route not found
 	NotFoundErr = &Errno{HTTPCode: http.StatusOK, Code: constants.NotFoundErrorCode, Message: "route not found"}
 )

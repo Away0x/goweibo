@@ -3,7 +3,10 @@ module goweibo
 go 1.15
 
 require (
+	github.com/Pallinder/go-randomdata v1.2.0
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/bluele/factory-go v0.0.0-20200430111232-df9c4ffc2e3e
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/flosch/pongo2 v0.0.0-20200913210552-0d938eb266f3
 	github.com/fsnotify/fsnotify v1.4.9
 	github.com/go-redis/redis v6.15.9+incompatible
