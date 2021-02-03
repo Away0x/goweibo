@@ -2,12 +2,18 @@ package api
 
 import (
   "goweibo/app/models/user"
+  "goweibo/app/requests"
   "goweibo/core/context"
   "goweibo/routes/wrapper"
   "strconv"
 )
 
-func AuthLogin(c *context.AppContext) error {
+func AuthLogin(c *context.AppContext) (err error) {
+  req := new(requests.UserLogin)
+  if err = c.AWBindValidatorStruct(req); err != nil {
+    return err
+  }
+
   id := c.QueryParam("id")
   iid, _ := strconv.Atoi(id)
 
@@ -21,7 +27,10 @@ func AuthLogin(c *context.AppContext) error {
     return err
   }
 
-  return c.AWSuccessJSON(result)
+  return c.AWSuccessJSON(map[string]interface{}{
+    "result": result,
+    "req": req,
+  })
 }
 
 func AuthRefreshToken(c *context.AppContext, a *wrapper.AuthInfo) error {

@@ -32,7 +32,7 @@ func NewSuccessResponse(message string, data interface{}) *CommonResponse {
 
 // NewErrResponse new error response
 func NewErrResponse(e *errno.Errno) *CommonResponse {
-	return NewCommonResponse(e.Code, e.Message, nil)
+	return NewCommonResponse(e.Code, e.Message, e.Data)
 }
 
 // AWSuccessJSON success response

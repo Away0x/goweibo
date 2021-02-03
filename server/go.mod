@@ -28,6 +28,7 @@ require (
 	github.com/spf13/viper v1.7.1
 	github.com/swaggo/echo-swagger v1.1.0
 	github.com/swaggo/swag v1.7.0
+	github.com/thedevsaddam/govalidator v1.9.10
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
