@@ -3,6 +3,7 @@ package wrapper
 import (
   "goweibo/app/models/user"
   "goweibo/core/context"
+  "goweibo/core/errno"
   "goweibo/core/pkg/jwttoken"
 )
 
@@ -15,17 +16,17 @@ func TokenAuth(handler func(*context.AppContext, *AuthInfo) error) context.AppHa
   return func(c *context.AppContext) error {
     t, err := jwttoken.GetToken(c.Context)
     if err != nil {
-      return err
+      return errno.TokenErr.WithErr(err)
     }
 
     claims, err := jwttoken.VerifyToken(t)
     if err != nil {
-      return err
+      return errno.TokenErr.WithErr(err)
     }
 
     u, err := user.GetUser(claims.UserID)
     if err != nil {
-      return err
+      return errno.DatabaseErr.WithErr(err)
     }
 
     a := &AuthInfo{

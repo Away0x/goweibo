@@ -20,8 +20,7 @@ func (c *AppContext) AWBindValidatorStruct(v validator.Validator) error {
     return err
   }
 
-  errs := validator.ValidateStruct(v)
-  if len(errs) > 0 {
+  if errs, ok := validator.ValidateStruct(v); !ok {
     return errno.ReqErr.WitData(errs)
   }
 

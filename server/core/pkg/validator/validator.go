@@ -5,20 +5,38 @@ import (
 )
 
 type Validator interface {
-  Options() govalidator.Options
+  Options() Options
+}
+
+type MapData = govalidator.MapData
+
+type Options struct {
+  TagIdentifier string
+  Rules MapData
+  Messages MapData
 }
 
 type BaseValidator struct {}
 
-func (v *BaseValidator) DefaultTagIdentifier() string {
-  return "json"
+func (v *BaseValidator) Options() Options {
+  return Options{}
 }
 
-func (v *BaseValidator) Options() govalidator.Options {
-  return govalidator.Options{}
-}
+func ValidateStruct(v Validator) (map[string][]string, bool) {
+  o := v.Options()
+  if o.TagIdentifier == "" {
+    o.TagIdentifier = "valid"
+  }
 
-func ValidateStruct(v Validator) map[string][]string {
-  errs := govalidator.New(v.Options()).ValidateStruct()
-  return errs
+  errs := govalidator.New(govalidator.Options{
+    TagIdentifier: o.TagIdentifier,
+    Data: v,
+    Rules: o.Rules,
+    Messages: o.Messages,
+  }).ValidateStruct()
+
+  if len(errs) > 0 {
+    return errs, false
+  }
+  return nil, true
 }

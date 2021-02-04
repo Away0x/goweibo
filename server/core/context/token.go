@@ -1,6 +1,7 @@
 package context
 
 import (
+  "goweibo/core/errno"
   "goweibo/core/pkg/jwttoken"
 )
 
@@ -13,7 +14,7 @@ type TokenResp struct {
 func (c *AppContext) AWTokenSign(userID uint) (*TokenResp, error) {
   a, r, err := jwttoken.CreateToken(userID)
   if err != nil {
-    return nil, err
+    return nil, errno.TokenErr.WithErr(err)
   }
 
   return &TokenResp{AccessToken: a, RefreshToken: r}, nil
@@ -23,12 +24,12 @@ func (c *AppContext) AWTokenSign(userID uint) (*TokenResp, error) {
 func (c *AppContext) AWTokenRefresh(t string) (*TokenResp, error) {
   t, err := jwttoken.GetToken(c.Context)
   if err != nil {
-    return nil, err
+    return nil, errno.TokenErr.WithErr(err)
   }
 
   td, err := jwttoken.RefreshToken(t)
   if err != nil {
-    return nil, err
+    return nil, errno.TokenErr.WithErr(err)
   }
 
   return &TokenResp{AccessToken: td}, nil

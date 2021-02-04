@@ -1,24 +1,21 @@
 package requests
 
 import (
-  "github.com/thedevsaddam/govalidator"
   "goweibo/core/pkg/validator"
 )
 
 type UserLogin struct {
-  validator.BaseValidator
-  Email string `json:"email"`
-  Password string `json:"password"`
+  Email    string `valid:"email"`
+  Password string `valid:"password"`
 }
 
-func (u *UserLogin) Options() govalidator.Options {
-  return govalidator.Options{
-    Data: u,
-    Rules: govalidator.MapData{
+func (u *UserLogin) Options() validator.Options {
+  return validator.Options{
+    Rules: validator.MapData{
       "email":    []string{"required", "max:255", "email"},
       "password": []string{"required", "min:6"},
     },
-    Messages: govalidator.MapData{
+    Messages: validator.MapData{
       "email": []string{
         "required:邮箱不能为空",
         "max:邮箱长度不能大于255个字符",
@@ -31,6 +28,3 @@ func (u *UserLogin) Options() govalidator.Options {
     },
   }
 }
-
-
-
