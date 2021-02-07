@@ -1,10 +1,5 @@
 basePath: /api
 definitions:
-  api.testResp:
-    properties:
-      hello:
-        type: string
-    type: object
   context.CommonResponse:
     properties:
       code:
@@ -12,6 +7,42 @@ definitions:
       data:
         type: object
       msg:
+        type: string
+    type: object
+  context.TokenResp:
+    properties:
+      access_token:
+        $ref: '#/definitions/jwttoken.AppJWTInfo'
+      refresh_token:
+        $ref: '#/definitions/jwttoken.AppJWTInfo'
+    type: object
+  jwttoken.AppJWTInfo:
+    properties:
+      expires_in:
+        type: string
+      token:
+        type: string
+    type: object
+  requests.UserLogin:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  user.User:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updated_at:
         type: string
     type: object
 host: localhost:9999
@@ -24,15 +55,10 @@ info:
   title: goweibo Api
   version: "1.0"
 paths:
-  /test:
-    get:
+  /token/refresh:
+    put:
       consumes:
       - application/json
-      parameters:
-      - description: test key
-        in: query
-        name: key
-        type: string
       produces:
       - application/json
       responses:
@@ -43,13 +69,60 @@ paths:
             - $ref: '#/definitions/context.CommonResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/api.testResp'
+                  $ref: '#/definitions/context.TokenResp'
               type: object
       security:
       - ApiKeyAuth: []
-      summary: api test
+      summary: refresh token
       tags:
-      - Test
+      - Token
+  /token/store:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UserLogin'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/context.CommonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/context.TokenResp'
+              type: object
+      summary: create token
+      tags:
+      - Token
+  /user/show:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/context.CommonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/user.User'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户信息
+      tags:
+      - User
 securityDefinitions:
   ApiKeyAuth:
     in: header

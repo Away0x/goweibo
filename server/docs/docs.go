@@ -28,8 +28,8 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/test": {
-            "get": {
+        "/token/refresh": {
+            "put": {
                 "security": [
                     {
                         "ApiKeyAuth": []
@@ -42,15 +42,52 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Test"
+                    "Token"
                 ],
-                "summary": "api test",
+                "summary": "refresh token",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/context.CommonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/context.TokenResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/token/store": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "create token",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "test key",
-                        "name": "key",
-                        "in": "query"
+                        "description": "登录信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UserLogin"
+                        }
                     }
                 ],
                 "responses": {
@@ -65,7 +102,46 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/api.testResp"
+                                            "$ref": "#/definitions/context.TokenResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/user/show": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "获取用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/context.CommonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/user.User"
                                         }
                                     }
                                 }
@@ -77,14 +153,6 @@ var doc = `{
         }
     },
     "definitions": {
-        "api.testResp": {
-            "type": "object",
-            "properties": {
-                "hello": {
-                    "type": "string"
-                }
-            }
-        },
         "context.CommonResponse": {
             "type": "object",
             "properties": {
@@ -95,6 +163,62 @@ var doc = `{
                     "type": "object"
                 },
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "context.TokenResp": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "$ref": "#/definitions/jwttoken.AppJWTInfo"
+                },
+                "refresh_token": {
+                    "$ref": "#/definitions/jwttoken.AppJWTInfo"
+                }
+            }
+        },
+        "jwttoken.AppJWTInfo": {
+            "type": "object",
+            "properties": {
+                "expires_in": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.UserLogin": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "user.User": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

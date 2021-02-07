@@ -43,9 +43,9 @@ var defaultConfigMap = map[string]interface{}{
 	"DB.DEFAULT.MAX_IDLE_CONNECTIONS": 20,
 	"DB.DEFAULT.AUTO_MIGRATE":         true,
 
-	// jwttoken
-	"TOKEN.ACCESS_TOKEN_LIFETIME": 5 * time.Minute,
-	"TOKEN.REFRESH_TOKEN_LIFETIME": 30 * time.Minute,
+	// jwt token
+	"TOKEN.ACCESS_TOKEN_LIFETIME": 60 * time.Minute,
+	"TOKEN.REFRESH_TOKEN_LIFETIME": 60 * 24 * time.Minute,
 
 	// log
 	"LOG.PREFIX":     "[ZAP_LOGGER]",

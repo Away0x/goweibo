@@ -1,13 +1,13 @@
 package routes
 
 import (
-	"goweibo/app/controllers/api"
-	"goweibo/core"
-	_ "goweibo/docs"
+  "goweibo/app/controllers/api"
+  "goweibo/core"
+  _ "goweibo/docs"
   "goweibo/routes/wrapper"
 
   "github.com/labstack/echo/v4/middleware"
-	echoSwagger "github.com/swaggo/echo-swagger"
+  echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 const (
@@ -31,17 +31,22 @@ const (
 // @name Authorization
 func registerAPI(router *core.Application) {
 	if core.GetConfig().IsDev() {
-		router.GET("/apidoc/*", echoSwagger.WrapHandler).Name = "apidoc"
+		router.GET("/api-doc/*", echoSwagger.WrapHandler).Name = "api-doc"
 	}
 
 	e := router.Group(APIPrefix, middleware.CORS())
 
-	router.RegisterHandler(e.GET, "test", api.Test).Name = "api-test"
-
-	auth := e.Group("/auth")
+	auth := e.Group("/token")
 	{
-	  router.RegisterHandler(auth.POST, "/token", api.AuthLogin).Name = "auth.token.get"
-    router.RegisterHandler(auth.PUT, "/token", wrapper.TokenAuth(api.AuthRefreshToken)).Name = "auth.token.refresh"
-    router.RegisterHandler(auth.GET, "/user", wrapper.TokenAuth(api.AuthGetUserInfo)).Name = "auth.user"
+	  tc := api.NewTokenController()
+	  router.RegisterHandler(auth.POST, "/store", tc.Store).Name = "token.get"
+    router.RegisterHandler(auth.PUT, "/refresh", wrapper.TokenAuth(tc.Refresh)).Name = "token.refresh"
+  }
+
+  user := e.Group("/user")
+  {
+    uc := api.NewUserController()
+    router.RegisterHandler(user.GET, "", wrapper.TokenAuth(uc.Index)).Name = "user.index"
+    router.RegisterHandler(user.GET, ":id", wrapper.User(uc.Show)).Name = "user.show"
   }
 }

@@ -1,39 +1,23 @@
 package wrapper
 
 import (
-  "goweibo/app/models/user"
+  "goweibo/app/auth"
   "goweibo/core/context"
-  "goweibo/core/errno"
-  "goweibo/core/pkg/jwttoken"
 )
 
-type AuthInfo struct {
-  User *user.User
-  Token string
-}
-
-func TokenAuth(handler func(*context.AppContext, *AuthInfo) error) context.AppHandlerFunc {
+func TokenAuth(handler func(*context.AppContext, *auth.TokenAuthInfo) error) context.AppHandlerFunc {
   return func(c *context.AppContext) error {
-    t, err := jwttoken.GetToken(c.Context)
+    t, err := auth.GetToken(c)
     if err != nil {
-      return errno.TokenErr.WithErr(err)
+      return err
     }
 
-    claims, err := jwttoken.VerifyToken(t)
+    u, err := auth.GetUser(c)
     if err != nil {
-      return errno.TokenErr.WithErr(err)
+      return err
     }
 
-    u, err := user.GetUser(claims.UserID)
-    if err != nil {
-      return errno.DatabaseErr.WithErr(err)
-    }
-
-    a := &AuthInfo{
-      User: u,
-      Token: t,
-    }
-
+    a := &auth.TokenAuthInfo{User: u, Token: t}
     return handler(c, a)
   }
 }

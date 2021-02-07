@@ -27,12 +27,12 @@ type AppJWTInfo struct {
 var (
   tokenClaimsErr   = errors.New("token claims parse error")
   tokenInvalidErr  = errors.New("token invalid error")
-  tokenParseErr    = errors.New("token parse error")
+  tokenParseErr    = errors.New("token error")
   tokenNotFoundErr = errors.New("token not found")
   config            *Config
 )
 
-func SetupToken(c *Config) {
+func Setup(c *Config) {
   config = c
 }
 

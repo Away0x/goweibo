@@ -6,10 +6,29 @@ import (
   "strconv"
 )
 
-func (c *AppContext) AWIntParam(key string) (int, error) {
-  i, err := strconv.Atoi(c.Param(key))
+func (c *AppContext) AWIntParam(key ...string) (int, error) {
+  k := key[0]
+  if k == "" {
+    k = "id"
+  }
+
+  i, err := strconv.Atoi(c.Param(k))
   if err != nil {
-    return 0, err
+    return 0, errno.ReqErr.WithErr(err)
+  }
+
+  return i, nil
+}
+
+func (c *AppContext) AWIntQuery(key ...string) (int, error) {
+  k := key[0]
+  if k == "" {
+    k = "id"
+  }
+
+  i, err := strconv.Atoi(c.QueryParam(k))
+  if err != nil {
+    return 0, errno.ReqErr.WithErr(err)
   }
 
   return i, nil

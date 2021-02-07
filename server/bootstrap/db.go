@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	"goweibo/core"
-	"goweibo/database"
+  "goweibo/core"
+  "goweibo/database"
 )
 
 // SetupDB 初始化数据库

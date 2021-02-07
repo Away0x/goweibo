@@ -4,19 +4,21 @@ import (
   "github.com/thedevsaddam/govalidator"
 )
 
-type Validator interface {
-  Options() Options
-}
+type (
+  Validator interface {
+    Options() Options
+  }
 
-type MapData = govalidator.MapData
+  MapData = govalidator.MapData
 
-type Options struct {
-  TagIdentifier string
-  Rules MapData
-  Messages MapData
-}
+  Options struct {
+    TagIdentifier string
+    Rules MapData
+    Messages MapData
+  }
 
-type BaseValidator struct {}
+  BaseValidator struct {}
+)
 
 func (v *BaseValidator) Options() Options {
   return Options{}
