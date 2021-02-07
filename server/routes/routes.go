@@ -16,7 +16,9 @@ const (
 
 // Register 注册路由
 func Register(router *core.Application) {
-	router.Use(middleware.Recover())
+  if !core.GetConfig().IsDev() {
+    router.Use(middleware.Recover())
+  }
 
 	if core.GetConfig().IsDev() {
 		router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{

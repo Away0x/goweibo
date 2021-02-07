@@ -102,10 +102,39 @@ paths:
       summary: create token
       tags:
       - Token
-  /user/show:
+  /user:
     get:
       consumes:
       - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/context.CommonResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/user.User'
+                  type: array
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 获取用户列表
+      tags:
+      - User
+  /user/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户 id
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:

@@ -16,7 +16,7 @@ require (
 	github.com/labstack/gommon v0.3.0
 	github.com/magiconair/properties v1.8.4 // indirect
 	github.com/mattn/go-colorable v0.1.8 // indirect
-	github.com/mitchellh/mapstructure v1.4.0 // indirect
+	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/onsi/ginkgo v1.14.2 // indirect
 	github.com/onsi/gomega v1.10.4 // indirect

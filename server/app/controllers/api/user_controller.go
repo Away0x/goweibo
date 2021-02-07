@@ -2,8 +2,8 @@ package api
 
 import (
   "goweibo/app/auth"
-  "goweibo/app/models"
   "goweibo/app/models/user"
+  "goweibo/app/services"
   "goweibo/core/context"
   "goweibo/core/errno"
 )
@@ -13,15 +13,25 @@ type IUserController interface {
   Show(*context.AppContext, *auth.TokenAuthInfo, *user.User) error
 }
 
-type UserController struct {}
-
-func NewUserController() IUserController {
-  return &UserController{}
+type UserController struct {
+  UserServices services.IUserServices
 }
 
-func (*UserController) Index(c *context.AppContext, a *auth.TokenAuthInfo) error {
-  users := new([]*user.User)
-  if err := models.DB().Find(users).Error; err != nil {
+func NewUserController(s services.IUserServices) IUserController {
+  return &UserController{UserServices: s}
+}
+
+// Index 获取用户列表
+// @Summary 获取用户列表
+// @Tags User
+// @Accept json
+// @Produce json
+// @Success 200 {object} context.CommonResponse{data=[]user.User}
+// @Security ApiKeyAuth
+// @Router /user [get]
+func (u *UserController) Index(c *context.AppContext, a *auth.TokenAuthInfo) error {
+  users, err := u.UserServices.List()
+  if err != nil {
     return errno.DatabaseErr.WithErr(err)
   }
   return c.AWSuccessJSON(users)
@@ -32,9 +42,10 @@ func (*UserController) Index(c *context.AppContext, a *auth.TokenAuthInfo) error
 // @Tags User
 // @Accept json
 // @Produce json
+// @Param id path int true "用户 id"
 // @Success 200 {object} context.CommonResponse{data=user.User}
 // @Security ApiKeyAuth
-// @Router /user/show [get]
+// @Router /user/{id} [get]
 func (*UserController) Show(c *context.AppContext, a *auth.TokenAuthInfo, u *user.User) error {
-  return c.AWSuccessJSON(u)
+  return c.AWSuccessJSON(u.Serialize())
 }

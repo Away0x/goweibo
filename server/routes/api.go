@@ -2,6 +2,7 @@ package routes
 
 import (
   "goweibo/app/controllers/api"
+  "goweibo/app/services"
   "goweibo/core"
   _ "goweibo/docs"
   "goweibo/routes/wrapper"
@@ -39,13 +40,14 @@ func registerAPI(router *core.Application) {
 	auth := e.Group("/token")
 	{
 	  tc := api.NewTokenController()
+
 	  router.RegisterHandler(auth.POST, "/store", tc.Store).Name = "token.get"
     router.RegisterHandler(auth.PUT, "/refresh", wrapper.TokenAuth(tc.Refresh)).Name = "token.refresh"
   }
 
   user := e.Group("/user")
   {
-    uc := api.NewUserController()
+    uc := api.NewUserController(services.NewUserServices())
     router.RegisterHandler(user.GET, "", wrapper.TokenAuth(uc.Index)).Name = "user.index"
     router.RegisterHandler(user.GET, ":id", wrapper.User(uc.Show)).Name = "user.show"
   }

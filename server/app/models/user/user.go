@@ -13,6 +13,6 @@ type User struct {
 	Password string `gorm:"type:varchar(255);not null" json:"-"`
 }
 
-func (u *User) Serialize() interface{} {
+func (u User) Serialize() interface{} {
   return u
 }
