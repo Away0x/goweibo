@@ -4,12 +4,13 @@ import (
   "fmt"
   "github.com/Pallinder/go-randomdata"
   "github.com/bluele/factory-go/factory"
-  "goweibo/app/models/user"
+  "goweibo/app/models"
   "goweibo/core"
+  "os/user"
 )
 
 func userFactory(i int) *factory.Factory {
-  u := &user.User{
+  u := &models.User{
     Name: fmt.Sprintf("user-%d", i + 1),
     Password: "123456",
     Email: randomdata.Email(),

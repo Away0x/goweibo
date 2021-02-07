@@ -3,7 +3,8 @@ package context
 import (
   "goweibo/core/constants"
 	"goweibo/core/errno"
-	"net/http"
+  "goweibo/core/pkg/serializer"
+  "net/http"
 )
 
 // RespData 响应数据类型
@@ -43,4 +44,9 @@ func (c *AppContext) AWSuccessJSON(data interface{}) error {
 // AWErrorJSON error response
 func (c *AppContext) AWErrorJSON(e *errno.Errno) error {
 	return c.JSON(e.HTTPCode, NewErrResponse(e))
+}
+
+func (c *AppContext) AWSerializeData(data interface{}) error {
+  d := serializer.Serialize(data)
+  return c.AWSuccessJSON(d)
 }

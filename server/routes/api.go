@@ -50,5 +50,6 @@ func registerAPI(router *core.Application) {
     uc := api.NewUserController(services.NewUserServices())
     router.RegisterHandler(user.GET, "", wrapper.TokenAuth(uc.Index)).Name = "user.index"
     router.RegisterHandler(user.GET, ":id", wrapper.User(uc.Show)).Name = "user.show"
+    router.RegisterHandler(user.POST, "", uc.Create).Name = "user.create"
   }
 }

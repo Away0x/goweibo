@@ -2,7 +2,7 @@ package auth
 
 import (
   "github.com/labstack/echo/v4"
-  userModel "goweibo/app/models/user"
+  "goweibo/app/models"
   "goweibo/core/context"
   "goweibo/core/errno"
   "goweibo/core/pkg/jwttoken"
@@ -12,13 +12,13 @@ const (
   contextUserKeyName = "__user_key__"
 )
 
-func getUserFromContext(c echo.Context) (*userModel.User, bool) {
+func getUserFromContext(c echo.Context) (*models.User, bool) {
   u := c.Get(contextUserKeyName)
   if u == nil {
     return nil, false
   }
 
-  if uu, ok := u.(*userModel.User); ok {
+  if uu, ok := u.(*models.User); ok {
     return uu, true
   }
 
@@ -33,7 +33,7 @@ func GetToken(c *context.AppContext) (t string, err error) {
   return
 }
 
-func GetUser(c *context.AppContext) (u *userModel.User, err error) {
+func GetUser(c *context.AppContext) (u *models.User, err error) {
   if u, ok := getUserFromContext(c.Context); ok {
     return u, nil
   }
@@ -48,7 +48,7 @@ func GetUser(c *context.AppContext) (u *userModel.User, err error) {
     return nil, errno.TokenErr.WithErr(err)
   }
 
-  u, err = userModel.Get(claims.UserID)
+  u, err = models.GetUserByID(claims.UserID)
   if err != nil {
     return nil, errno.DatabaseErr.WithErr(err)
   }
@@ -65,7 +65,7 @@ func MustGetToken(c *context.AppContext) string {
   return t
 }
 
-func MustGetUser(c *context.AppContext) *userModel.User {
+func MustGetUser(c *context.AppContext) *models.User {
   u, err := GetUser(c)
   if err != nil {
     panic(err)

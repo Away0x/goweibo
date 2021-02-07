@@ -2,7 +2,7 @@ package api
 
 import (
   "goweibo/app/auth"
-  userModel "goweibo/app/models/user"
+  "goweibo/app/models"
   "goweibo/app/requests"
   "goweibo/core/context"
   "goweibo/core/errno"
@@ -33,7 +33,7 @@ func (*TokenController) Store(c *context.AppContext) (err error) {
     return err
   }
 
-  u, err := userModel.GetByEmail(req.Email)
+  u, err := models.GetUserByEmail(req.Email)
   if err != nil {
     return errno.DatabaseErr.WithErr(err)
   }

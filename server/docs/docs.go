@@ -143,8 +143,59 @@ var doc = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/user.User"
+                                                "type": "array",
+                                                "items": {
+                                                    "$ref": "#/definitions/serializers.User"
+                                                }
                                             }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "创建用户",
+                "parameters": [
+                    {
+                        "description": "用户信息",
+                        "name": "json",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateUser"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/context.CommonResponse"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/serializers.User"
                                         }
                                     }
                                 }
@@ -192,7 +243,7 @@ var doc = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/user.User"
+                                            "$ref": "#/definitions/serializers.User"
                                         }
                                     }
                                 }
@@ -240,6 +291,20 @@ var doc = `{
                 }
             }
         },
+        "requests.CreateUser": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.UserLogin": {
             "type": "object",
             "properties": {
@@ -251,20 +316,14 @@ var doc = `{
                 }
             }
         },
-        "user.User": {
+        "serializers.User": {
             "type": "object",
             "properties": {
                 "avatar": {
                     "type": "string"
                 },
-                "created_at": {
-                    "type": "string"
-                },
                 "email": {
                     "type": "string"
-                },
-                "id": {
-                    "type": "integer"
                 },
                 "name": {
                     "type": "string"

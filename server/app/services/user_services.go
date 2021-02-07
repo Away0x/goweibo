@@ -2,11 +2,10 @@ package services
 
 import (
   "goweibo/app/models"
-  "goweibo/app/models/user"
 )
 
 type IUserServices interface {
-  List() ([]*user.User, error)
+  List() ([]*models.User, error)
 }
 
 type UserServices struct {}
@@ -15,8 +14,8 @@ func NewUserServices() *UserServices {
   return &UserServices{}
 }
 
-func (*UserServices) List() (users []*user.User, err error) {
-  users = make([]*user.User, 0)
+func (*UserServices) List() (users []*models.User, err error) {
+  users = make([]*models.User, 0)
   err = models.DB().Find(&users).Error
   return
 }

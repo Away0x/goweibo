@@ -12,3 +12,8 @@ func Encrypt(source string) (string, error) {
 func Compare(hashedPassword, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
 }
+
+// Encrypted 判断密码是否加密过了
+func Encrypted(pwd string) (status bool) {
+  return len(pwd) == 60 // 长度等于 60 说明加密过了
+}

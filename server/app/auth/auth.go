@@ -1,8 +1,10 @@
 package auth
 
-import "goweibo/app/models/user"
+import (
+  "goweibo/app/models"
+)
 
 type TokenAuthInfo struct {
-  User  *user.User
+  User  *models.User
   Token string
 }

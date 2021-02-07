@@ -23,6 +23,15 @@ definitions:
       token:
         type: string
     type: object
+  requests.CreateUser:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
   requests.UserLogin:
     properties:
       email:
@@ -30,16 +39,12 @@ definitions:
       password:
         type: string
     type: object
-  user.User:
+  serializers.User:
     properties:
       avatar:
         type: string
-      created_at:
-        type: string
       email:
         type: string
-      id:
-        type: integer
       name:
         type: string
       updated_at:
@@ -117,12 +122,41 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/user.User'
+                    items:
+                      $ref: '#/definitions/serializers.User'
+                    type: array
                   type: array
               type: object
       security:
       - ApiKeyAuth: []
       summary: 获取用户列表
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户信息
+        in: body
+        name: json
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/context.CommonResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/serializers.User'
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: 创建用户
       tags:
       - User
   /user/{id}:
@@ -145,7 +179,7 @@ paths:
             - $ref: '#/definitions/context.CommonResponse'
             - properties:
                 data:
-                  $ref: '#/definitions/user.User'
+                  $ref: '#/definitions/serializers.User'
               type: object
       security:
       - ApiKeyAuth: []
