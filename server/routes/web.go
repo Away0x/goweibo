@@ -3,15 +3,14 @@ package routes
 import (
 	"goweibo/core"
 	"goweibo/core/context"
-	"time"
+  "goweibo/core/pkg/timeutils"
+  "time"
 )
 
 func registerWeb(router *core.Application) {
 	router.RegisterHandler(router.GET, "welcome", func(c *context.AppContext) error {
-		now := time.Now()
-
 		return c.AWHtml("welcome", context.TplData{
-			"timeutils": now.Format("2006-01-02"),
+			"time": timeutils.FormatTime(time.Now()),
 		})
 	}).Name = "welcome"
 }

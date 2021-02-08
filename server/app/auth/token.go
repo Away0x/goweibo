@@ -57,6 +57,18 @@ func GetUser(c *context.AppContext) (u *models.User, err error) {
   return
 }
 
+func GetTokenAndUser(c *context.AppContext) (t string, u *models.User, err error) {
+  if t, err = GetToken(c); err != nil {
+    return
+  }
+
+  if u, err = GetUser(c); err != nil {
+    return
+  }
+
+  return
+}
+
 func MustGetToken(c *context.AppContext) string {
   t, err := GetToken(c)
   if err != nil {

@@ -7,12 +7,7 @@ import (
 
 func TokenAuth(handler func(*context.AppContext, *auth.TokenAuthInfo) error) context.AppHandlerFunc {
   return func(c *context.AppContext) error {
-    t, err := auth.GetToken(c)
-    if err != nil {
-      return err
-    }
-
-    u, err := auth.GetUser(c)
+    t, u, err := auth.GetTokenAndUser(c)
     if err != nil {
       return err
     }

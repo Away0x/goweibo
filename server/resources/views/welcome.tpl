@@ -9,7 +9,7 @@
 <body>
   <h2>Welcome {{ APP_NAME }}</h2>
 
-  <a href="/apidoc/index.html">API document</a>
+  <a href="/api-doc/index.html">API document</a>
 
   <p>{{ time }}</p>
 </body>

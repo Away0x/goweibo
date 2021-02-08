@@ -20,4 +20,6 @@ const (
 	TokenErrorCode LogicCode = 103
 	// NotFoundErrorCode not found error code
 	NotFoundErrorCode LogicCode = 104
+	// AuthErrorCode auth error code
+  AuthErrorCode LogicCode = 105
 )

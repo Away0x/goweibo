@@ -20,8 +20,6 @@ func SetupLog() {
 	appLog = logger.Sugar()
 
 	fmt.Printf("\nLogger initialization successful: in %s, level is %s\n", GetConfig().String("LOG.FOLDER"), getLevel())
-
-  appLog.Error("123")
 }
 
 func getEncoder() zapcore.Encoder {

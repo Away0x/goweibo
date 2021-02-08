@@ -4,7 +4,7 @@ package context
 type CommonPageData struct {
 	Total    int           `json:"total"`
 	Page     int           `json:"page"`
-	PageLine int           `json:"pageLine"`
+	PageLine int           `json:"line"`
 	List     []interface{} `json:"list"`
 }
 
