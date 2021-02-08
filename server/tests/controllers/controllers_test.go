@@ -2,7 +2,6 @@ package controllers_test
 
 import (
   "github.com/gavv/httpexpect/v2"
-  "gopkg.in/h2non/gock.v1"
   "goweibo/bootstrap"
   "goweibo/core"
   "net/http"
@@ -11,19 +10,19 @@ import (
 )
 
 func TestMain(m *testing.M) {
-  defer gock.Off()
-
-  before()
+  if err := before(); err != nil {
+    panic(err)
+  }
   m.Run()
   after()
 }
 
-func before() {
-  os.Chdir("../..")
-
+func before() (err error) {
+  err = os.Chdir("../..")
   bootstrap.SetupConfig("config/test.yaml", "yaml")
   bootstrap.SetupDB()
   bootstrap.SetupServer()
+  return
 }
 
 func after() {}
@@ -40,7 +39,7 @@ func apiClient(t *testing.T) *httpexpect.Expect {
     Reporter: httpexpect.NewAssertReporter(t),
     Printers: []httpexpect.Printer{
       // log
-      httpexpect.NewDebugPrinter(t, true),
+      // httpexpect.NewDebugPrinter(t, true),
     },
   })
 }

@@ -17,11 +17,9 @@ func TestMain(m *testing.M)  {
 }
 
 func before() (err error) {
-  os.Chdir("../..")
-
+  err = os.Chdir("../..")
   bootstrap.SetupConfig("config/test.yaml", "yaml")
   bootstrap.SetupDB()
-
   err = clearDatabase(&models.User{})
   return
 }
