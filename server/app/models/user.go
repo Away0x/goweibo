@@ -23,7 +23,8 @@ type User struct {
   Activated       uint       `gorm:"type:tinyint(1);not null;comment:用户是否激活" json:"activated"`
   EmailVerifiedAt *time.Time `gorm:"comment:邮件激活时间" json:"-"`
 
-  Statuses []Status
+  Statuses  []Status
+  Followers []User `gorm:"many2many:user_follower"`
 }
 
 func (u *User) BeforeSave(tx *gorm.DB) (err error) {

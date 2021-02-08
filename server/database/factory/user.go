@@ -54,7 +54,19 @@ func usersTableSeeder() {
   for i := 0; i < 10; i++ {
     u := userFactory(i).MustCreate().(*models.User)
     if err := models.CreateModel(u); err != nil {
-      fmt.Printf("mock user error： %v\n", err)
+      panic(err)
     }
+  }
+
+  users := make([]*models.User, 0)
+  if err := models.DB().Find(&users).Error; err != nil {
+    panic(err)
+  }
+
+  admin := users[0]
+  followers := users[1:]
+
+  if err := models.DB().Model(&admin).Association("Followers").Append(followers); err != nil {
+    panic(err)
   }
 }

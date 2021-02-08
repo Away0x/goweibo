@@ -13,5 +13,6 @@ func dropAndCreateTable(table interface{}) {
 // Run run database factory
 func Run() {
   usersTableSeeder()
+  StatusTableSeeder()
 	fmt.Println("database.factory runing")
 }
