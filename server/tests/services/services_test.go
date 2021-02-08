@@ -1,4 +1,4 @@
-package models_test
+package services
 
 import (
   "goweibo/bootstrap"
@@ -24,4 +24,3 @@ func before() (err error) {
 }
 
 func after() {}
-

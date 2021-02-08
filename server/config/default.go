@@ -12,8 +12,6 @@ const (
 	defaultAppName = "app"
 )
 
-var now = time.Now()
-
 // 默认配置
 var defaultConfigMap = map[string]interface{}{
 	// app

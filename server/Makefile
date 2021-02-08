@@ -31,6 +31,14 @@ test-controller:
 test-model:
 	go test -v ./tests/models/...
 
+test-service:
+	go test -v ./tests/services/...
+
+test:
+	make test-model;
+	make test-service;
+	make test-controller
+
 clean:
 	if [ -f ${APP_NAME} ]; then rm ${APP_NAME}; fi
 
@@ -41,7 +49,9 @@ help:
 	@echo "make dev - run go fresh"
 	@echo "make deploy - deploy app"
 	@echo "make mock - mock data"
+	@echo "make test - test all"
 	@echo "make test-controller - test controller"
 	@echo "make test-model - test model"
+	@echo "make test-service - test service"
 	@echo "make doc - generate swagger api docs"
 	@echo "make clean - remove binary file"

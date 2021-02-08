@@ -4,15 +4,17 @@ import (
   "github.com/gavv/httpexpect/v2"
   "goweibo/app/requests"
   "goweibo/core/constants"
+  "goweibo/tests"
   "testing"
 )
 
-func TestApiTokenStore(t *testing.T) {
+func TestApiTokenControllerStore(t *testing.T) {
   var (
     client = apiClient(t)
     url = "/token/store"
     resp *httpexpect.Object
   )
+  u := tests.CreateUserModel(t)
 
   // fail
   resp = getOKApiJSon(client.POST(url))
@@ -20,8 +22,8 @@ func TestApiTokenStore(t *testing.T) {
 
   // ok
   resp = getOKApiJSon(client.POST(url).WithJSON(requests.UserLogin{
-    Email: "1@qq.com",
-    Password: "123456",
+    Email: u.Email,
+    Password: tests.DefaultUserPassword,
   }))
   resp.Value("code").Equal(constants.SuccessCode)
 }
