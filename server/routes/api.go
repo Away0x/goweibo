@@ -4,6 +4,8 @@ import (
   "goweibo/app/controllers/api"
   "goweibo/app/services"
   "goweibo/core"
+  "goweibo/core/context"
+  "goweibo/core/pkg/captcha"
   _ "goweibo/docs"
   "goweibo/routes/wrapper"
 
@@ -15,6 +17,7 @@ import (
 const (
   // APIPrefix api prefix
   APIPrefix = "/api"
+  CaptchaURLPrefix = "/captcha"
 )
 
 // @title goweibo Api
@@ -36,7 +39,20 @@ func registerAPI(router *core.Application) {
     router.GET("/api-doc/*", echoSwagger.WrapHandler).Name = "api-doc"
   }
 
+  // 验证码
+  router.RegisterHandler(router.GET, CaptchaURLPrefix + "/:id", func(c *context.AppContext) error {
+    return captcha.Handler(c)
+  }).Name = "captcha"
+
   e := router.Group(APIPrefix, middleware.CORS())
+
+  // 验证码
+  captchaCon := e.Group(CaptchaURLPrefix)
+  {
+    cc := api.NewCaptchaController(CaptchaURLPrefix)
+    router.RegisterHandler(captchaCon.GET, "", cc.New).Name = "captcha.new"
+    router.RegisterHandler(captchaCon.POST, "", cc.Verify).Name = "captcha.verify"
+  }
 
   auth := e.Group("/token")
   {

@@ -36,5 +36,10 @@ func (u *UserLogin) GetUser() (*models.User, error) {
   if err != nil {
     return nil, errno.DatabaseErr.WithErr(err)
   }
+
+  if err = user.ComparePassword(u.Password); err != nil {
+    return nil, errno.ReqErr.WithMessage("密码错误")
+  }
+
   return user, nil
 }

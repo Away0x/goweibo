@@ -1,13 +1,14 @@
 package routes
 
 import (
-	"goweibo/core"
-	"goweibo/core/pkg/session"
-	"net/http"
-	"strings"
+  "goweibo/core"
+  "goweibo/core/pkg/session"
+  "goweibo/core/sdhandler"
+  "net/http"
+  "strings"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+  "github.com/labstack/echo/v4"
+  "github.com/labstack/echo/v4/middleware"
 )
 
 const (
@@ -26,9 +27,13 @@ func Register(router *core.Application) {
 		}))
 	}
 
+  // 可以指定请求从 POST 重写为其他 (DELETE、PUT、PATCH ...)
+  // form value 中需要携带 _method 参数
 	router.Pre(middleware.MethodOverrideWithConfig(middleware.MethodOverrideConfig{
 		Getter: middleware.MethodFromForm("_method"),
 	}))
+
+  // 去除 url 尾部 /
 	router.Pre(middleware.RemoveTrailingSlashWithConfig(middleware.TrailingSlashConfig{
 		RedirectCode: http.StatusMovedPermanently,
 	}))
@@ -54,6 +59,9 @@ func Register(router *core.Application) {
 	// 静态文件路由
 	router.Static(staticPath, core.GetConfig().String("APP.PUBLIC_DIR"))
 	router.File("/favicon.ico", core.GetConfig().String("APP.PUBLIC_DIR")+"/favicon.ico")
+
+  // 服务器健康自检
+  sdhandler.RegisterSDHandlers(router.Echo, "/sd")
 
 	// 注册路由
 	registerError(router)
