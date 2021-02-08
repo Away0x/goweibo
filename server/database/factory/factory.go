@@ -1,9 +1,8 @@
 package factory
 
 import (
-	"fmt"
-	"goweibo/bootstrap"
-	"goweibo/core"
+  "fmt"
+  "goweibo/core"
 )
 
 func dropAndCreateTable(table interface{}) {
@@ -13,8 +12,6 @@ func dropAndCreateTable(table interface{}) {
 
 // Run run database factory
 func Run() {
-	bootstrap.SetupDB()
-
   usersTableSeeder()
 	fmt.Println("database.factory runing")
 }

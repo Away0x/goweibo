@@ -45,7 +45,8 @@ func (u *CreateUser) Create() (user *models.User, err error) {
     Password: u.Password,
     Avatar: "",
   }
-  if err = user.Create(); err != nil {
+
+  if err = models.CreateModel(user); err != nil {
     err = errno.DatabaseErr.WithErr(err)
   }
   return

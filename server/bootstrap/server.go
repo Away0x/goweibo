@@ -28,8 +28,11 @@ func SetupServer() {
   SetupServerRender()
 
   fmt.Printf("\napp runmode is %s, %s\n\n", core.GetConfig().AppRunMode(), core.GetConfig().String("APP.URL"))
-  // 启动 server
-  e.Logger.Fatal(core.GetApplication().Start(core.GetConfig().String("APP.ADDR")))
+}
+
+// RunServer 启动 server
+func RunServer() {
+  core.GetApplication().Echo.Logger.Fatal(core.GetApplication().Start(core.GetConfig().String("APP.ADDR")))
 }
 
 // SetupServerRender 初始化 echo 渲染器

@@ -1,6 +1,10 @@
 package requests
 
-import "goweibo/core/pkg/validator"
+import (
+  "goweibo/app/models"
+  "goweibo/core/errno"
+  "goweibo/core/pkg/validator"
+)
 
 type UserLogin struct {
   Email    string `valid:"email"`
@@ -25,4 +29,12 @@ func (u *UserLogin) Options() validator.Options {
       },
     },
   }
+}
+
+func (u *UserLogin) GetUser() (*models.User, error) {
+  user, err := models.GetUserByEmail(u.Email)
+  if err != nil {
+    return nil, errno.DatabaseErr.WithErr(err)
+  }
+  return user, nil
 }

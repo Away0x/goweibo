@@ -2,7 +2,8 @@ package core
 
 import (
 	"fmt"
-	"path"
+  "goweibo/core/pkg/timeutils"
+  "path"
 	"time"
 
 	"github.com/natefinch/lumberjack"
@@ -19,12 +20,14 @@ func SetupLog() {
 	appLog = logger.Sugar()
 
 	fmt.Printf("\nLogger initialization successful: in %s, level is %s\n", GetConfig().String("LOG.FOLDER"), getLevel())
+
+  appLog.Error("123")
 }
 
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
-	encoderConfig.TimeKey = "timeutils"
+	encoderConfig.TimeKey = "time"
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	encoderConfig.EncodeDuration = zapcore.SecondsDurationEncoder
 	encoderConfig.EncodeCaller = zapcore.ShortCallerEncoder
@@ -37,8 +40,10 @@ func getLogWriter() zapcore.WriteSyncer {
 	if prefix == "" {
 		_ = fmt.Errorf("logger prefix not found")
 	}
-	// timeStr := timeutils.Now().Format("2006-01-02-13-04-05")
-	timeStr := time.Now().Format("2006-01-02")
+
+  prefix += "(" + string(GetConfig().AppRunMode()) + ")"
+
+	timeStr := timeutils.FormatDate(time.Now())
 	filename := path.Join(GetConfig().String("LOG.FOLDER"), prefix+timeStr+".log")
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   filename,

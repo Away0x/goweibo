@@ -2,10 +2,8 @@ package api
 
 import (
   "goweibo/app/auth"
-  "goweibo/app/models"
   "goweibo/app/requests"
   "goweibo/core/context"
-  "goweibo/core/errno"
 )
 
 type ITokenController interface {
@@ -33,9 +31,9 @@ func (*TokenController) Store(c *context.AppContext) (err error) {
     return err
   }
 
-  u, err := models.GetUserByEmail(req.Email)
+  u, err := req.GetUser()
   if err != nil {
-    return errno.DatabaseErr.WithErr(err)
+    return err
   }
 
   result, err := c.AWTokenSign(u.ID)

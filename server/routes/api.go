@@ -40,7 +40,6 @@ func registerAPI(router *core.Application) {
 	auth := e.Group("/token")
 	{
 	  tc := api.NewTokenController()
-
 	  router.RegisterHandler(auth.POST, "/store", tc.Store).Name = "token.get"
     router.RegisterHandler(auth.PUT, "/refresh", wrapper.TokenAuth(tc.Refresh)).Name = "token.refresh"
   }

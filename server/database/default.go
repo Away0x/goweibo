@@ -26,14 +26,14 @@ func SetupDefaultDatabase() (*gorm.DB, *sql.DB) {
 		return core.GetConfig().String("DB.DEFAULT.DATABASE") + "_" + string(core.GetConfig().AppRunMode())
 	})
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+	dd, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(getGormLoggerLevel()),
 	})
 	if err != nil {
 		panic("[SetupDefaultDatabase#newConnection error]: " + err.Error() + " " + dsn)
 	}
 
-	sqlDB, err := db.DB()
+	sqlDB, err := dd.DB()
 	if err != nil {
 		panic("[SetupDefaultDatabase#newConnection error]: " + err.Error() + " " + dsn)
 	}
@@ -42,13 +42,15 @@ func SetupDefaultDatabase() (*gorm.DB, *sql.DB) {
 	sqlDB.SetMaxIdleConns(core.GetConfig().Int("DB.DEFAULT.MAX_IDLE_CONNECTIONS"))
 
 	fmt.Printf("\nDefault atabase connection successful: %s\n", dsn)
-	return db, sqlDB
+	return dd, sqlDB
 }
 
 // RegisterAutoMigrateModle 注册需要自动迁移的 model
 func RegisterAutoMigrateModle() []interface{} {
 	return []interface{}{
     models.User{},
+    models.PasswordReset{},
+    models.Status{},
 	}
 }
 

@@ -13,7 +13,7 @@ version:
 
 dev:
   # go install -u github.com/cosmtrek/air
-	env GOWEIBO_APP_RUNMODE=development air -c air.toml
+	 env GOWEIBO_APP_RUNMODE=development air -c air.toml
 
 deploy:
 	make && ./bin/deploy restart
@@ -25,8 +25,11 @@ api-doc:
 mock:
 	env GOWEIBO_APP_RUNMODE=development go run main.go mock
 
-api-test:
-	env GOWEIBO_APP_RUNMODE=test go test ./test/controllers/api/...
+test-controller:
+	env GOWEIBO_APP_RUNMODE=test go test -v ./tests/controllers/...
+
+test-model:
+	env GOWEIBO_APP_RUNMODE=test go test -v ./tests/models/...
 
 clean:
 	if [ -f ${APP_NAME} ]; then rm ${APP_NAME}; fi
@@ -38,6 +41,7 @@ help:
 	@echo "make dev - run go fresh"
 	@echo "make deploy - deploy app"
 	@echo "make mock - mock data"
-	@echo "make api-test - test api"
+	@echo "make test-controller - test controller"
+	@echo "make test-model - test model"
 	@echo "make doc - generate swagger api docs"
 	@echo "make clean - remove binary file"

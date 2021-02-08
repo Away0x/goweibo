@@ -38,7 +38,7 @@ var defaultConfigMap = map[string]interface{}{
 	"DB.DEFAULT.DATABASE":             defaultAppName,
 	"DB.DEFAULT.USERNAME":             "root",
 	"DB.DEFAULT.PASSWORD":             "",
-	"DB.DEFAULT.OPTIONS":              "charset=utf8&parseTime=true&loc=Local",
+	"DB.DEFAULT.OPTIONS":              "charset=utf8&parseTime=True&loc=Local",
 	"DB.DEFAULT.MAX_OPEN_CONNECTIONS": 100,
 	"DB.DEFAULT.MAX_IDLE_CONNECTIONS": 20,
 	"DB.DEFAULT.AUTO_MIGRATE":         true,

@@ -14,6 +14,7 @@ var serverCmd = &cobra.Command{
 		bootstrap.SetupDB()
 		// init server
 		bootstrap.SetupServer()
+		bootstrap.RunServer()
 	},
 }
 

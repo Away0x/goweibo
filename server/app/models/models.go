@@ -28,13 +28,24 @@ func (m *BaseModel) IDString() string {
 	return strconv.Itoa(int(m.ID))
 }
 
-func (m *BaseModel) Serialize() interface{} {
-  return m
-}
-
 // DB 获取默认数据库
 func DB() *gorm.DB {
 	return core.GetDefaultConnectionEngine()
+}
+
+func CreateModel(value interface{}) (err error) {
+  err = DB().Create(value).Error
+  return
+}
+
+func UpdateModel(value interface{}) (err error) {
+  err = DB().Save(value).Error
+  return
+}
+
+func DeleteModel(value interface{}) (err error) {
+  err = DB().Delete(value).Error
+  return
 }
 
 // TinyBool tinyint => bool

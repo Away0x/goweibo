@@ -9,6 +9,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/flosch/pongo2 v0.0.0-20200913210552-0d938eb266f3
 	github.com/fsnotify/fsnotify v1.4.9
+	github.com/gavv/httpexpect/v2 v2.1.0
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/gorilla/context v1.1.1
 	github.com/gorilla/sessions v1.2.1
@@ -26,6 +27,7 @@ require (
 	github.com/spf13/cobra v1.1.1
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/viper v1.7.1
+	github.com/stretchr/testify v1.6.1
 	github.com/swaggo/echo-swagger v1.1.0
 	github.com/swaggo/swag v1.7.0
 	github.com/thedevsaddam/govalidator v1.9.10
@@ -36,6 +38,7 @@ require (
 	golang.org/x/sys v0.0.0-20210110051926-789bb1bd4061 // indirect
 	golang.org/x/text v0.3.5 // indirect
 	golang.org/x/tools v0.0.0-20210108195828-e2f9c7f1fc8e // indirect
+	gopkg.in/h2non/gock.v1 v1.0.16
 	gopkg.in/ini.v1 v1.62.0 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0 // indirect
 	gorm.io/driver/mysql v1.0.3
