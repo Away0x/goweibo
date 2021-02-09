@@ -1,4 +1,11 @@
-const { override, addBabelPlugins, addBundleVisualizer, fixBabelImports, addLessLoader } = require('customize-cra');
+const {
+  override,
+  addBabelPlugins,
+  addBundleVisualizer,
+  fixBabelImports,
+  addLessLoader,
+  addPostcssPlugins,
+} = require('customize-cra');
 const { overrideProcessEnv } = require('cra-define-override');
 const dayjs = require('dayjs');
 
@@ -36,4 +43,6 @@ module.exports = override(
     },
     true,
   ),
+  // postcss
+  addPostcssPlugins([require('tailwindcss'), require('autoprefixer')]),
 );
