@@ -3,6 +3,7 @@ package bootstrap
 import (
   "fmt"
   "goweibo/core"
+  "goweibo/core/pkg/strutils"
   "goweibo/core/pkg/tpl"
   "goweibo/routes"
 
@@ -40,6 +41,13 @@ func SetupServerRender() {
   render := tpl.NewRenderer()
   tpl.SetupTpl(&tpl.Config{
     GetRoutePath: core.GetApplication().RoutePath,
+    GeneratePublicPath: func(path string) string {
+      staticURL := core.GetConfig().String("APP.STATIC_URL")
+      if core.GetConfig().IsDev() {
+        return fmt.Sprintf("%s%s?v=%s", staticURL, path, strutils.RandomCreateBytes(6))
+      }
+      return fmt.Sprintf("%s%s", staticURL, path)
+    },
   })
 
   // template dir
@@ -50,7 +58,6 @@ func SetupServerRender() {
     "APP_NAME":    core.GetConfig().String("APP.NAME"),
     "APP_RUNMODE": string(core.GetConfig().AppRunMode()),
     "APP_URL":     core.GetConfig().String("APP.URL"),
-    "route":       core.GetApplication().RoutePath,
   }
 
   render.UseContextProcessor(func(echoCtx echo.Context, pongoCtx pongo2.Context) {
@@ -65,4 +72,5 @@ func SetupServerRender() {
 
   // tags
   pongo2.RegisterTag("route", tpl.RouteTag)
+  pongo2.RegisterTag("static", tpl.StaticTag)
 }

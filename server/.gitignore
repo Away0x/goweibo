@@ -1,3 +1,4 @@
 .DS_Store
 .idea
 config/local.yaml
+node_modules

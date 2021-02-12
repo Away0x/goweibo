@@ -11,12 +11,12 @@ import (
   "github.com/labstack/echo/v4/middleware"
 )
 
-const (
-	staticPath = "/public"
-)
-
 // Register 注册路由
 func Register(router *core.Application) {
+  staticURL := core.GetConfig().String("APP.STATIC_URL")
+  publicDir := core.GetConfig().String("APP.PUBLIC_DIR")
+  faviconURl := "/favicon.ico"
+
   if !core.GetConfig().IsDev() {
     router.Use(middleware.Recover())
   }
@@ -24,6 +24,10 @@ func Register(router *core.Application) {
 	if core.GetConfig().IsDev() {
 		router.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 			Format: "${status}   ${method}   ${latency_human}               ${uri}\n",
+			Skipper: func(c echo.Context) bool {
+			  // 静态文件 url 不输出 log
+        return strings.HasPrefix(c.Request().URL.Path, staticURL) || strings.HasPrefix(c.Request().URL.Path, faviconURl)
+      },
 		}))
 	}
 
@@ -42,7 +46,7 @@ func Register(router *core.Application) {
 		router.Use(middleware.GzipWithConfig(middleware.GzipConfig{
 			Skipper: func(c echo.Context) bool {
 				// 只 gzip 静态文件
-				return !strings.HasPrefix(c.Request().URL.Path, staticPath)
+				return !strings.HasPrefix(c.Request().URL.Path, staticURL)
 			},
 		}))
 	}
@@ -57,8 +61,8 @@ func Register(router *core.Application) {
 	}))
 
 	// 静态文件路由
-	router.Static(staticPath, core.GetConfig().String("APP.PUBLIC_DIR"))
-	router.File("/favicon.ico", core.GetConfig().String("APP.PUBLIC_DIR")+"/favicon.ico")
+	router.Static(staticURL, publicDir)
+	router.File(faviconURl, publicDir+faviconURl)
 
   // 服务器健康自检
   sdhandler.RegisterSDHandlers(router.Echo, "/sd")

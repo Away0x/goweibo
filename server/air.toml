@@ -6,7 +6,7 @@ cmd = "go build -o ./storage/air/main ."
 bin = "storage/air/main"
 full_bin = "APP_ENV=dev APP_USER=air ./storage/air/main server -c config/local.yaml"
 include_ext = ["go", "tpl", "tmpl", "html"]
-exclude_dir = ["storage", "bin", "public", "tests"]
+exclude_dir = ["storage", "bin", "public", "resources/scripts", "resources/styles", "tests", "node_modules"]
 include_dir = []
 exclude_file = []
 log = "air.log"
