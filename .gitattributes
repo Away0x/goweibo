@@ -1,2 +1,3 @@
 *.js linguist-language=go
 *.tsx linguist-language=go
+*.css linguist-language=go
